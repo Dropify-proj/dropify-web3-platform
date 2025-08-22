@@ -1,0 +1,102 @@
+'use client';
+
+import { useState } from 'react';
+import AuthButton from './AuthButton';
+
+export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <header className="bg-black/20 backdrop-blur-xl border-b border-cyan-400/20 sticky top-0 z-50 relative">
+      {/* Futuristic background effects */}
+      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-cyan-500/5" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-900/20 via-transparent to-purple-900/20" />
+      
+      <div className="container mx-auto px-4 relative">
+        <div className="flex justify-between items-center h-20">
+          {/* Logo with Futuristic Design */}
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg flex items-center justify-center relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg blur opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
+              <svg className="w-6 h-6 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+              </svg>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                Dropify
+              </span>
+              <span className="text-xs text-cyan-400/60 font-mono">v2.0.1</span>
+            </div>
+          </div>
+
+          {/* Desktop Navigation with Futuristic Style */}
+          <nav className="hidden md:flex items-center space-x-1">
+            {[
+              { href: '/', label: 'Home', color: 'cyan' },
+              { href: '/drop-tokens', label: 'Mint $DROP', color: 'blue' },
+              { href: '/#features', label: 'Features', color: 'purple' },
+              { href: '/#contact', label: 'Contact', color: 'cyan' },
+              { href: '/pitch-deck', label: 'Pitch Deck', color: 'purple' }
+            ].map((item) => (
+              <a 
+                key={item.href}
+                href={item.href} 
+                className="relative px-4 py-2 text-gray-300 hover:text-white transition-all duration-300 font-medium group"
+              >
+                <span className="relative z-10">{item.label}</span>
+                <div className={`absolute inset-0 bg-gradient-to-r from-${item.color}-500/10 to-${item.color}-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-${item.color}-400 to-${item.color}-600 group-hover:w-full transition-all duration-300`} />
+              </a>
+            ))}
+          </nav>
+
+          {/* Auth Button */}
+          <div className="hidden md:block">
+            <AuthButton />
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-gray-300 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-lg"
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu with Futuristic Design */}
+        {isMenuOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-4 space-y-2 bg-black/40 backdrop-blur-xl rounded-xl mt-2 border border-cyan-400/30 relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 rounded-xl" />
+              {[
+                { href: '#home', label: 'Home' },
+                { href: '#scanner', label: 'Scanner' },
+                { href: '#rewards', label: 'Rewards' },
+                { href: '#about', label: 'About' },
+                { href: '/pitch-deck', label: 'Pitch Deck' }
+              ].map((item) => (
+                <a 
+                  key={item.href}
+                  href={item.href} 
+                  className="block px-4 py-3 text-gray-300 hover:text-white transition-colors font-medium relative group"
+                >
+                  <span className="relative z-10">{item.label}</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </a>
+              ))}
+              <div className="px-4 py-2 relative z-10">
+                <AuthButton />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+}

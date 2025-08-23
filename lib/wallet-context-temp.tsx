@@ -11,12 +11,20 @@ class MockAccount {
   address() { return this.addr; }
 }
 
+// Platform stats interface
+interface PlatformStats {
+  totalDropMinted: number;
+  totalDropBurned: number;
+  totalReceiptsProcessed: number;
+  drfTreasuryBalance: number;
+}
+
 interface WalletContextType {
   account: MockAccount | null;
   isConnected: boolean;
   dropBalance: number;
   drfBalance: number;
-  platformStats: any;
+  platformStats: PlatformStats | null;
   recentEvents: any[];
   isLoading: boolean;
   error: string | null;
@@ -36,7 +44,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const [isConnected, setIsConnected] = useState(false);
   const [dropBalance, setDropBalance] = useState(0);
   const [drfBalance, setDrfBalance] = useState(0);
-  const [platformStats, setPlatformStats] = useState(null);
+  const [platformStats, setPlatformStats] = useState<PlatformStats | null>(null);
   const [recentEvents, setRecentEvents] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

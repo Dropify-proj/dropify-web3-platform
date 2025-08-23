@@ -1,0 +1,46 @@
+# Netlify Build Configuration for Dropify
+
+[build]
+  # Build command for production
+  command = "npm ci && npm run build"
+  
+  # Output directory (Next.js builds to .next, but we need static export)
+  publish = "out"
+  
+  # Functions directory (if using Netlify Functions)
+  functions = "netlify/functions"
+
+[build.environment]
+  # Node.js version
+  NODE_VERSION = "18"
+  
+  # Next.js specific environment variables
+  NEXT_TELEMETRY_DISABLED = "1"
+  
+  # Build optimizations
+  NPM_FLAGS = "--production=false"
+  YARN_FLAGS = "--production=false"
+
+# Redirect rules for SPA
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://auth.privy.io https://verify.walletconnect.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://auth.privy.io https://testnet-rpc.supra.com wss: https:; frame-src https://auth.privy.io;"
+
+# Custom headers for API routes
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET,POST,PUT,DELETE,OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type,Authorization"

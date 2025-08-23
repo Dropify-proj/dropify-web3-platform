@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
     "deploy-supra": "npx ts-node scripts/supra-deploy.ts deploy testnet",
     "deploy-supra-mainnet": "npx ts-node scripts/supra-deploy.ts deploy mainnet",
     "check-deployment": "npx ts-node scripts/check-deployment.ts"

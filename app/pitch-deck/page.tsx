@@ -5,7 +5,7 @@ import Header from '../components/Header';
 
 export default function PitchDeck() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const totalSlides = 6;
+  const totalSlides = 7;
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -85,16 +85,16 @@ export default function PitchDeck() {
           <p className="text-lg md:text-xl text-blue-300 mb-8 animate-title">Turn every receipt into valuable Web3 assets.</p>
           <div className="max-w-4xl grid md:grid-cols-3 gap-8 text-left">
             <div className="bg-gray-900/50 p-6 rounded-lg border border-gray-700 animate-grid-item">
-              <h3 className="font-bold text-xl mb-2 text-white">AI Receipt Processing</h3>
-              <p className="text-gray-400">Snap a photo of any receipt and our AI instantly extracts purchase data to generate personalized rewards.</p>
+              <h3 className="font-bold text-xl mb-2 text-white">Dual Token Economy</h3>
+              <p className="text-gray-400">$DROP tokens (infinite supply) for rewards and $DRF tokens (1B fixed) for governance and premium features.</p>
             </div>
             <div className="bg-gray-900/50 p-6 rounded-lg border border-gray-700 animate-grid-item">
-              <h3 className="font-bold text-xl mb-2 text-white">Instant Web3 Assets</h3>
-              <p className="text-gray-400">Every purchase automatically generates tokens, NFTs, and digital collectibles based on spending patterns.</p>
+              <h3 className="font-bold text-xl mb-2 text-white">Instant Web3 Rewards</h3>
+              <p className="text-gray-400">Every purchase automatically generates $DROP tokens that can be burned for gift cards, NFTs, and exclusive experiences.</p>
             </div>
             <div className="bg-gray-900/50 p-6 rounded-lg border border-gray-700 animate-grid-item">
-              <h3 className="font-bold text-xl mb-2 text-white">Real-World Redemption</h3>
-              <p className="text-gray-400">Convert digital assets into gift cards, cashback, exclusive experiences, and physical products.</p>
+              <h3 className="font-bold text-xl mb-2 text-white">Business Partnerships</h3>
+              <p className="text-gray-400">Companies pay $DRF tokens to feature their rewards prominently, creating sustainable revenue and enhanced user value.</p>
             </div>
           </div>
         </div>
@@ -116,29 +116,99 @@ export default function PitchDeck() {
         </div>
       )
     },
-    // Slide 5: Business Model
+    // Slide 5: Tokenomics
     {
       id: 5,
       component: (
         <div className="flex flex-col items-center justify-center text-center px-8">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 animate-title">Business Model</h2>
-          <div className="max-w-2xl w-full bg-gray-900/50 p-8 rounded-lg border border-gray-700 animate-grid-item">
-            <h3 className="font-bold text-2xl mb-4 text-white">Freemium + Premium Tiers</h3>
-            <p className="text-gray-400 text-lg">
-              Free users get basic receipt scanning and token rewards. Premium subscribers unlock exclusive NFTs, higher reward rates, and advanced redemption options.
-            </p>
-            <hr className="my-6 border-gray-600" />
-            <h3 className="font-bold text-2xl mb-4 text-white">Retailer Partnerships</h3>
-            <p className="text-gray-400 text-lg">
-              Revenue share with participating retailers who sponsor enhanced rewards for their customers, creating a win-win ecosystem.
-            </p>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 animate-title">Dual Token Economy</h2>
+          <p className="text-lg md:text-xl text-gray-300 mb-8 animate-title">Two powerful tokens driving sustainable growth</p>
+          <div className="max-w-5xl grid md:grid-cols-2 gap-8">
+            <div className="bg-gradient-to-br from-cyan-900/50 to-blue-900/50 p-8 rounded-lg border border-cyan-500/30 animate-grid-item">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center">
+                  <span className="text-xl font-bold">$</span>
+                </div>
+                <h3 className="font-bold text-2xl text-cyan-400">$DROP Token</h3>
+              </div>
+              <div className="text-left space-y-3">
+                <div className="text-white font-semibold">Infinite Supply • Utility Token</div>
+                <div className="text-gray-300">• Earned by scanning receipts</div>
+                <div className="text-gray-300">• Burned to redeem rewards</div>
+                <div className="text-gray-300">• Dynamic supply based on activity</div>
+                <div className="text-gray-300">• Deflationary through burn mechanics</div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-purple-900/50 to-violet-900/50 p-8 rounded-lg border border-purple-500/30 animate-grid-item">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-violet-500 rounded-full flex items-center justify-center">
+                  <span className="text-xl font-bold">Ð</span>
+                </div>
+                <h3 className="font-bold text-2xl text-purple-400">$DRF Token</h3>
+              </div>
+              <div className="text-left space-y-3">
+                <div className="text-white font-semibold">1B Fixed Supply • Governance Token</div>
+                <div className="text-gray-300">• Platform governance voting</div>
+                <div className="text-gray-300">• Advertising space purchases</div>
+                <div className="text-gray-300">• Premium feature access</div>
+                <div className="text-gray-300">• Staking rewards & airdrops</div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 bg-gray-900/50 p-6 rounded-lg border border-gray-700 animate-grid-item max-w-3xl">
+            <h3 className="font-bold text-xl mb-3 text-white">Revenue Distribution</h3>
+            <div className="text-gray-400">
+              35% Community Governance • 20% Ecosystem Development • 15% Team & Advisors • 12% Staking Rewards • 18% Marketing & Operations
+            </div>
           </div>
         </div>
       )
     },
-    // Slide 6: Call to Action
+    // Slide 6: Business Model
     {
       id: 6,
+      component: (
+        <div className="flex flex-col items-center justify-center text-center px-8">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 animate-title">Business Model</h2>
+          <div className="max-w-4xl grid md:grid-cols-2 gap-8">
+            <div className="bg-gray-900/50 p-8 rounded-lg border border-gray-700 animate-grid-item">
+              <h3 className="font-bold text-2xl mb-4 text-cyan-400">$DROP Token Economy</h3>
+              <p className="text-gray-400 text-lg mb-4">
+                Users earn unlimited $DROP tokens by scanning receipts. Tokens are permanently burned when redeemed for rewards, creating deflationary pressure and sustainable value.
+              </p>
+              <div className="text-sm text-cyan-300 font-semibold">Infinite mint • Burn for rewards • Dynamic supply</div>
+            </div>
+            <div className="bg-gray-900/50 p-8 rounded-lg border border-gray-700 animate-grid-item">
+              <h3 className="font-bold text-2xl mb-4 text-purple-400">$DRF Revenue Model</h3>
+              <p className="text-gray-400 text-lg mb-4">
+                Businesses pay $DRF tokens to feature their rewards prominently. Users get $DRF through governance participation, staking, and exclusive airdrops.
+              </p>
+              <div className="text-sm text-purple-300 font-semibold">1B fixed supply • Advertising revenue • Governance rights</div>
+            </div>
+          </div>
+          <div className="mt-8 max-w-2xl bg-gray-900/50 p-6 rounded-lg border border-gray-700 animate-grid-item">
+            <h3 className="font-bold text-xl mb-3 text-white">Multiple Revenue Streams</h3>
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+              <div className="text-center">
+                <div className="text-green-400 font-bold">Platform Fees</div>
+                <div className="text-gray-400">Transaction processing</div>
+              </div>
+              <div className="text-center">
+                <div className="text-blue-400 font-bold">Advertising Revenue</div>
+                <div className="text-gray-400">Featured rewards placement</div>
+              </div>
+              <div className="text-center">
+                <div className="text-orange-400 font-bold">Premium Features</div>
+                <div className="text-gray-400">Advanced analytics & tools</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    // Slide 7: Call to Action
+    {
+      id: 7,
       component: (
         <div className="slide-gradient flex flex-col items-center justify-center text-center">
           <div className="flex items-center space-x-4 mb-6 animate-title">
@@ -155,6 +225,20 @@ export default function PitchDeck() {
             <h2 className="text-5xl md:text-6xl font-bold text-white">Join Us</h2>
           </div>
           <p className="text-xl md:text-2xl text-gray-300 max-w-xl mx-auto mb-8 animate-text">Let's build the future of retail rewards together.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+            <a 
+              href="/whitepaper" 
+              className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold text-lg px-8 py-4 rounded-lg hover:opacity-90 transition"
+            >
+              📋 Read Whitepaper
+            </a>
+            <a 
+              href="/drop-tokens" 
+              className="bg-gradient-to-r from-purple-500 to-violet-500 text-white font-bold text-lg px-8 py-4 rounded-lg hover:opacity-90 transition"
+            >
+              🚀 Try Platform
+            </a>
+          </div>
           <p className="text-lg text-white font-semibold animate-button">contact@dropify.io</p>
         </div>
       )

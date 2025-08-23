@@ -1,10 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AuthButton from './AuthButton';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Close mobile menu with Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <header className="bg-black/20 backdrop-blur-xl border-b border-cyan-400/20 sticky top-0 z-50 relative">
@@ -13,12 +25,12 @@ export default function Header() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-900/20 via-transparent to-purple-900/20" />
       
       <div className="container mx-auto px-4 relative">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo with Futuristic Design */}
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg flex items-center justify-center relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg blur opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
-              <svg className="w-6 h-6 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="flex justify-between items-center h-24">
+          {/* Logo with Enhanced Spacing */}
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-xl flex items-center justify-center relative group shadow-lg shadow-cyan-400/25">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
+              <svg className="w-8 h-8 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
               </svg>
             </div>
@@ -26,7 +38,7 @@ export default function Header() {
               <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
                 Dropify
               </span>
-              <span className="text-xs text-cyan-400/60 font-mono">v2.0.1</span>
+              <span className="text-xs text-cyan-400/60 font-mono">Receipts to Rewards</span>
             </div>
           </div>
 
@@ -34,8 +46,12 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-1">
             {[
               { href: '/', label: 'Home', color: 'cyan' },
+              { href: '/dashboard', label: 'Dashboard', color: 'green' },
               { href: '/drop-tokens', label: 'Mint $DROP', color: 'blue' },
               { href: '/#features', label: 'Features', color: 'purple' },
+              { href: '/whitepaper', label: 'Whitepaper', color: 'green' },
+              { href: '/#business-partnership', label: 'Partner With Us', color: 'amber' },
+              { href: '/admin/treasury', label: 'Treasury', color: 'red' },
               { href: '/#contact', label: 'Contact', color: 'cyan' },
               { href: '/pitch-deck', label: 'Pitch Deck', color: 'purple' }
             ].map((item) => (
@@ -75,15 +91,19 @@ export default function Header() {
             <div className="px-2 pt-2 pb-4 space-y-2 bg-black/40 backdrop-blur-xl rounded-xl mt-2 border border-cyan-400/30 relative">
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 rounded-xl" />
               {[
-                { href: '#home', label: 'Home' },
-                { href: '#scanner', label: 'Scanner' },
-                { href: '#rewards', label: 'Rewards' },
-                { href: '#about', label: 'About' },
+                { href: '/', label: 'Home' },
+                { href: '/drop-tokens', label: 'Mint $DROP' },
+                { href: '/#features', label: 'Features' },
+                { href: '/whitepaper', label: 'Whitepaper' },
+                { href: '/#business-partnership', label: 'Partner With Us' },
+                { href: '/admin/treasury', label: 'Treasury' },
+                { href: '/#contact', label: 'Contact' },
                 { href: '/pitch-deck', label: 'Pitch Deck' }
               ].map((item) => (
                 <a 
                   key={item.href}
                   href={item.href} 
+                  onClick={() => setIsMenuOpen(false)}
                   className="block px-4 py-3 text-gray-300 hover:text-white transition-colors font-medium relative group"
                 >
                   <span className="relative z-10">{item.label}</span>

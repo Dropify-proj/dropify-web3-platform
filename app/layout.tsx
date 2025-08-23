@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import PrivyWrapper from './components/PrivyWrapper';
+// Using temporary wallet context to avoid Aptos dependency errors
+import { WalletProvider } from '../lib/wallet-context';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,9 +37,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <PrivyWrapper>
-          {children}
-        </PrivyWrapper>
+        <WalletProvider>
+          <PrivyWrapper>
+            {children}
+          </PrivyWrapper>
+        </WalletProvider>
       </body>
     </html>
   );

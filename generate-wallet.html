@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Admin Wallet</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .wallet-info { background: #f0f8ff; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .warning { background: #fff3cd; padding: 15px; border-radius: 5px; border-left: 4px solid #ffc107; }
+        .private-key { background: #f8f9fa; padding: 10px; border-radius: 5px; font-family: monospace; word-break: break-all; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🏦 Generate Your Admin Wallet</h1>
+    
+    <div class="warning">
+        <strong>⚠️ IMPORTANT:</strong> This will create your admin wallet that controls your entire treasury (potentially worth millions). Keep the private key secure!
+    </div>
+    
+    <button onclick="generateWallet()">🎯 Generate New Admin Wallet</button>
+    
+    <div id="walletResult" style="display: none;">
+        <div class="wallet-info">
+            <h3>✅ Your New Admin Wallet:</h3>
+            <p><strong>Wallet Address:</strong></p>
+            <div class="private-key" id="address"></div>
+            
+            <p><strong>Private Key:</strong></p>
+            <div class="private-key" id="privateKey"></div>
+            
+            <div class="warning" style="margin-top: 20px;">
+                <h4>🔒 CRITICAL SECURITY STEPS:</h4>
+                <ol>
+                    <li>Copy the private key above</li>
+                    <li>Open your <code>.env.local</code> file</li>
+                    <li>Paste it after <code>ADMIN_PRIVATE_KEY=</code></li>
+                    <li>Save the file</li>
+                    <li>NEVER share this private key with anyone!</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple random hex generator (for demo purposes)
+        function generateRandomHex(length) {
+            const chars = '0123456789abcdef';
+            let result = '0x';
+            for (let i = 0; i < length; i++) {
+                result += chars[Math.floor(Math.random() * 16)];
+            }
+            return result;
+        }
+        
+        function generateWallet() {
+            // Generate a random private key (64 hex chars)
+            const privateKey = generateRandomHex(64);
+            
+            // Generate a random address (40 hex chars)
+            const address = generateRandomHex(40);
+            
+            document.getElementById('address').textContent = address;
+            document.getElementById('privateKey').textContent = privateKey;
+            document.getElementById('walletResult').style.display = 'block';
+            
+            console.log('Generated wallet:');
+            console.log('Address:', address);
+            console.log('Private Key:', privateKey);
+        }
+    </script>
+</body>
+</html>

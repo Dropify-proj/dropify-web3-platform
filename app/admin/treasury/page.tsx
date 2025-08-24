@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 // Temporary import for demo mode
-import { useWallet } from '@/lib/wallet-context';
+import { useWallet } from '@/lib/wallet-context-build-safe';
 
 export default function TreasuryManagement() {
   const { 

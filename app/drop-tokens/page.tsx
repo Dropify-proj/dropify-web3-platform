@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import ReceiptProcessor from '../components/ReceiptProcessor';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useWallet } from '../../lib/wallet-context';
+import { useWallet } from '../../lib/wallet-context-build-safe';
 
 export default function DropifyMintPage() {
   const router = useRouter();

@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import PrivyWrapper from './components/PrivyWrapper';
 // Using temporary wallet context to avoid Aptos dependency errors
-import { WalletProvider } from '../lib/wallet-context';
+import { WalletProvider } from '../lib/wallet-context-build-safe';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

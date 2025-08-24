@@ -62,6 +62,16 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
       setError(null);
 
+      // TEMPORARY: Production wallet context disabled
+      // TODO: Complete blockchain integration
+      console.log('🚧 Production wallet context - blockchain integration in progress');
+      
+      // Fallback demo behavior
+      setIsConnected(true);
+      setDropBalance(50000);
+      setDrfBalance(1000000);
+
+      /*
       // For demo purposes, create a new account
       // In production, this would integrate with an actual wallet
       const newAccount = DropifyContractClient.createAccount();
@@ -71,6 +81,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       if (!funded) {
         throw new Error('Failed to fund account');
       }
+      */
 
       // Register for both tokens
       await dropifyContract.registerForDrop(newAccount);

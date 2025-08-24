@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useWallet } from '../../lib/wallet-context';
+import { useWallet } from '../../lib/wallet-context-build-safe';
 import { usePrivy } from '@privy-io/react-auth';
 
 interface ScannedReceipt {

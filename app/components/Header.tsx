@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import AuthButton from './AuthButton';
+import SeamlessAuthButton from './SeamlessAuthButton';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -69,7 +69,7 @@ export default function Header() {
 
           {/* Auth Button */}
           <div className="hidden md:block">
-            <AuthButton />
+            <SeamlessAuthButton />
           </div>
 
           {/* Mobile Menu Button */}
@@ -111,7 +111,7 @@ export default function Header() {
                 </a>
               ))}
               <div className="px-4 py-2 relative z-10">
-                <AuthButton />
+                <SeamlessAuthButton />
               </div>
             </div>
           </div>

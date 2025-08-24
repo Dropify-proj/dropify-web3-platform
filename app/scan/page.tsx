@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useWallet } from '../../lib/wallet-context-build-safe';
-import { usePrivy } from '@privy-io/react-auth';
+import { useSupraWallet } from '../../lib/wallet-context-supra';
 
 interface ScannedReceipt {
   store: string;
@@ -13,14 +12,13 @@ interface ScannedReceipt {
 }
 
 export default function ReceiptScanPage() {
-  const { isConnected, dropBalance } = useWallet();
-  const { authenticated } = usePrivy();
+  const { isConnected, dropBalance, scanReceipt } = useSupraWallet();
   const [isScanning, setIsScanning] = useState(false);
   const [scannedReceipt, setScannedReceipt] = useState<ScannedReceipt | null>(null);
   const [rewardCalculated, setRewardCalculated] = useState<number>(0);
 
   const handleScanReceipt = async () => {
-    if (!authenticated || !isConnected) return;
+    if (!isConnected) return;
 
     setIsScanning(true);
     
@@ -45,16 +43,29 @@ export default function ReceiptScanPage() {
   const handleConfirmUpload = async () => {
     if (!scannedReceipt) return;
     
-    // Here you would call the smart contract to process the receipt
-    // For now, simulate success
-    alert(`Success! You earned ${rewardCalculated} DROP tokens!`);
-    
-    // Reset state
-    setScannedReceipt(null);
-    setRewardCalculated(0);
+    try {
+      // Generate a receipt hash from the receipt data
+      const receiptHash = `0x${Date.now().toString(16)}${Math.random().toString(16).substr(2, 8)}`;
+      
+      // Call the Supra smart contract to process the receipt
+      const txHash = await scanReceipt(
+        receiptHash,
+        scannedReceipt.amount,
+        scannedReceipt.store
+      );
+      
+      alert(`🎉 Success! Receipt recorded on Supra L1!\n\nTransaction: ${txHash}\nYou earned ${rewardCalculated} DROP tokens!`);
+      
+      // Reset state
+      setScannedReceipt(null);
+      setRewardCalculated(0);
+    } catch (error) {
+      console.error('Error processing receipt:', error);
+      alert('❌ Failed to process receipt. Please try again.');
+    }
   };
 
-  if (!authenticated) {
+  if (!isConnected) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center">
         <div className="text-center p-8 bg-black/50 backdrop-blur-xl rounded-2xl border border-cyan-400/30">

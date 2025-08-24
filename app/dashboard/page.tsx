@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useWallet } from '../../lib/wallet-context-build-safe';
-import { usePrivy } from '@privy-io/react-auth';
+import { useSupraWallet } from '../../lib/wallet-context-supra';
 
 interface Receipt {
   id: string;
@@ -27,16 +26,42 @@ interface UserStats {
 }
 
 export default function UserDashboard() {
-  const { isConnected, account, dropBalance, drfBalance } = useWallet();
-  const { authenticated, user } = usePrivy();
+  const { 
+    isConnected, 
+    account, 
+    dropBalance, 
+    drfBalance, 
+    refreshBalances, 
+    recentEvents 
+  } = useSupraWallet();
   const [activeTab, setActiveTab] = useState<'overview' | 'receipts' | 'rewards' | 'analytics'>('overview');
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [stats, setStats] = useState<UserStats | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Auto-refresh balances when new events are detected
+  useEffect(() => {
+    if (isConnected && recentEvents.length > 0) {
+      console.log('🔄 New wallet activity detected, refreshing balances...');
+      refreshBalances();
+    }
+  }, [recentEvents, isConnected, refreshBalances]);
+
+  // Periodic balance refresh every 10 seconds when dashboard is active
+  useEffect(() => {
+    if (!isConnected) return;
+    
+    const interval = setInterval(() => {
+      console.log('⏰ Periodic balance refresh...');
+      refreshBalances();
+    }, 10000); // Refresh every 10 seconds
+    
+    return () => clearInterval(interval);
+  }, [isConnected, refreshBalances]);
+
   // Mock data for demo - replace with actual API calls
   useEffect(() => {
-    if (authenticated && isConnected) {
+    if (isConnected) {
       // Simulate loading
       setTimeout(() => {
         setReceipts([
@@ -104,9 +129,9 @@ export default function UserDashboard() {
         setLoading(false);
       }, 1000);
     }
-  }, [authenticated, isConnected]);
+  }, [isConnected]);
 
-  if (!authenticated) {
+  if (!isConnected) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center">
         <div className="text-center p-8 bg-black/50 backdrop-blur-xl rounded-2xl border border-cyan-400/30">
@@ -141,7 +166,7 @@ export default function UserDashboard() {
                 My Dashboard
               </h1>
               <p className="text-gray-400">
-                Welcome back, {user?.email?.address ? user.email.address.split('@')[0] : 'User'}!
+                Welcome back, {account?.address ? `${account.address.slice(0, 6)}...${account.address.slice(-4)}` : 'User'}!
               </p>
             </div>
             <div className="flex items-center gap-4">

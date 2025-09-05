@@ -1,375 +1,634 @@
 'use client';
 
 import { useState } from 'react';
-import { useEnhancedAuth } from '@/lib/enhanced-auth-context';
-import { useSupraWallet } from '@/lib/wallet-context-supra';
 
 export default function DemoPage() {
-  const { 
-    user, 
-    isAuthenticated, 
-    activeWalletAddress,
-    walletType,
-    signUpWithEmail,
-    getCustodialWallet,
-    exportWalletDetails
-  } = useEnhancedAuth();
+  const [showSignupModal, setShowSignupModal] = useState(false);
+  const [showReceiptModal, setShowReceiptModal] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [receiptFile, setReceiptFile] = useState<File | null>(null);
+  const [processingResult, setProcessingResult] = useState<any>(null);
 
-  const { dropBalance, drfBalance, scanReceipt, refreshBalances } = useSupraWallet();
-
-  const [demoStep, setDemoStep] = useState(1);
-  const [demoEmail, setDemoEmail] = useState('demo@dropify.com');
-  const [isScanning, setIsScanning] = useState(false);
-
-  const handleDemoSignup = async () => {
-    try {
-      await signUpWithEmail(demoEmail, 'demo_user');
-      setDemoStep(2);
-      // Refresh balances after signup
-      setTimeout(() => refreshBalances(), 1000);
-    } catch (err) {
-      console.error('Demo signup error:', err);
-    }
+  const handleSignup = async () => {
+    if (!email) return;
+    setIsProcessing(true);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    setIsProcessing(false);
+    setShowSignupModal(false);
+    alert(`🎉 Success! Wallet created for ${email}. Check your email for details!`);
+    setEmail('');
   };
 
-  const handleDemoReceiptScan = async () => {
-    try {
-      setIsScanning(true);
-      const custodialWallet = getCustodialWallet();
-      if (custodialWallet) {
-        // Simulate scanning a Starbucks receipt for $8.50
-        const receiptHash = `receipt_${Date.now()}`;
-        const purchaseAmount = 850; // $8.50 in cents
-        
-        await scanReceipt(receiptHash, purchaseAmount, 'starbucks');
-        setDemoStep(3);
-        // Refresh balances after scanning
-        setTimeout(() => refreshBalances(), 2000);
-      }
-    } catch (err) {
-      console.error('Demo receipt scan error:', err);
-    } finally {
-      setIsScanning(false);
-    }
+  const handleReceiptUpload = async () => {
+    if (!receiptFile) return;
+    setIsProcessing(true);
+    
+    // Simulate AI processing
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    
+    const mockResult = {
+      merchant: "Starbucks",
+      amount: "$12.50",
+      dropTokens: "15 DROP",
+      date: new Date().toLocaleDateString(),
+      transactionId: "0x" + Math.random().toString(16).substr(2, 8)
+    };
+    
+    setProcessingResult(mockResult);
+    setIsProcessing(false);
   };
 
-  const walletDetails = exportWalletDetails();
-
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setReceiptFile(file);
+    }
+  };
   return (
-    <div className="font-sans min-h-screen relative overflow-hidden">
-      {/* Futuristic background */}
-      <div className="fixed inset-0 grid-pattern" />
-      <div className="fixed inset-0 particles">
-        {[...Array(30)].map((_, i) => (
-          <div
-            key={i}
-            className="particle"
-            style={{
-              left: `${(i * 37) % 100}%`,
-              animationDelay: `${(i * 0.3) % 6}s`,
-              animationDuration: `${6 + (i % 4)}s`
-            }}
-          />
-        ))}
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+      <div className="container mx-auto px-6 py-20">
+        <div className="text-center max-w-4xl mx-auto">
+          <h1 className="text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight">
+            <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              DROPIFY
+            </span>
+          </h1>
+          <div className="text-3xl lg:text-4xl font-semibold text-purple-300 mb-6">
+            Revolutionary Blockchain Technology - General Demo
+          </div>
+          <p className="text-xl lg:text-2xl text-blue-200 mb-8 leading-relaxed max-w-3xl mx-auto">
+            Patent-pending email-to-wallet technology eliminates every barrier to blockchain adoption
+          </p>
+          <div className="inline-flex items-center gap-4 bg-green-900/30 border border-green-500/50 rounded-lg px-6 py-3 backdrop-blur-sm">
+            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+            <span className="text-green-300 font-semibold">Open Demo - No Login Required</span>
+          </div>
+        </div>
       </div>
-      
-      {/* Content */}
-      <div className="relative z-10 min-h-screen">
-        {/* Header */}
-        <header className="p-6 glass">
-          <div className="container mx-auto flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-hologram">DROPIFY</h1>
-            <div className="text-sm text-cyan-300">
-              ✅ Connected to Supra Testnet - Ready for real on-chain transactions
+
+      <div className="py-20 bg-gradient-to-r from-indigo-900/30 to-purple-900/30">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-white mb-4">Experience the Future of Web3 🚀</h2>
+            <p className="text-xl text-blue-200">Get started in seconds with our revolutionary technology</p>
+          </div>
+          
+          <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
+            <div className="flex-1 bg-gradient-to-r from-blue-600 to-green-500 p-1 rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300">
+              <div className="bg-gradient-to-r from-blue-600 to-green-500 rounded-xl p-10 text-center h-full">
+                <div className="text-5xl mb-6">🚀</div>
+                <h3 className="text-3xl font-bold text-white mb-6">Join Dropify Revolution</h3>
+                <p className="text-blue-100 mb-8 text-lg leading-relaxed">
+                  Be among the first to experience seamless Web3 onboarding with just your email address
+                </p>
+                <button 
+                  onClick={() => setShowSignupModal(true)}
+                  className="bg-white text-blue-600 font-bold py-4 px-8 rounded-xl text-xl hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-lg w-full"
+                >
+                  Sign Up Now - It's Free!
+                </button>
+              </div>
+            </div>
+
+            <div className="flex-1 bg-gradient-to-r from-blue-600 to-green-500 p-1 rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300">
+              <div className="bg-gradient-to-r from-green-500 to-blue-600 rounded-xl p-10 text-center h-full">
+                <div className="text-5xl mb-6">📄</div>
+                <h3 className="text-3xl font-bold text-white mb-6">AI Receipt Reader Demo</h3>
+                <p className="text-green-100 mb-8 text-lg leading-relaxed">
+                  Upload any receipt and watch our AI instantly extract data and award DROP tokens
+                </p>
+                <button 
+                  onClick={() => setShowReceiptModal(true)}
+                  className="bg-white text-green-600 font-bold py-4 px-8 rounded-xl text-xl hover:bg-green-50 transition-all duration-300 transform hover:scale-105 shadow-lg w-full"
+                >
+                  Upload Receipt & Earn
+                </button>
+              </div>
             </div>
           </div>
-        </header>
+        </div>
+      </div>
 
-        {/* Main Demo Content */}
-        <main className="container mx-auto px-6 py-12">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-8">
-              <span className="block text-hologram">LIVE DEMO</span>
-              <span className="block text-2xl md:text-3xl font-normal text-cyan-300 mt-4">
-                Seamless Web3 Onboarding
-              </span>
-            </h1>
-            <p className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              Experience the future of retail loyalty. Transform everyday purchases into valuable 
-              <span className="text-cyan-400 font-semibold"> $DROP tokens</span> on 
-              <span className="text-purple-400 font-semibold"> Supra Layer 1</span> blockchain.
+      {/* Whitepaper Section */}
+      <div className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl font-bold text-white mb-6">📋 Whitepaper</h2>
+            <p className="text-xl text-blue-200 max-w-3xl mx-auto">
+              Comprehensive technical documentation of our revolutionary email-to-wallet technology
             </p>
           </div>
 
-          {/* Current Status */}
-          <div className="glass neon-border p-8 mb-8 rounded-2xl">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-              <span className="text-hologram">📊 Current Status</span>
-              {isAuthenticated && <span className="w-3 h-3 bg-green-400 rounded-full animate-pulse glow-green"></span>}
-            </h2>
-            
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-lg font-semibold mb-4 text-cyan-400">🔐 Authentication</h3>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span>Status:</span>
-                    <span className={isAuthenticated ? 'text-green-400 glow-green' : 'text-red-400'}>
-                      {isAuthenticated ? '✅ Authenticated' : '❌ Not Authenticated'}
-                    </span>
-                  </div>
-                  {user && (
-                    <>
-                      <div className="flex justify-between">
-                        <span>Email:</span>
-                        <span className="text-cyan-300">{user.email}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Username:</span>
-                        <span className="text-cyan-300">{user.username}</span>
-                      </div>
-                    </>
-                  )}
-                </div>
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12">
+            {/* Abstract */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-8">
+              <h3 className="text-2xl font-bold text-cyan-400 mb-6">📘 Abstract</h3>
+              <div className="space-y-4 text-gray-300">
+                <p className="leading-relaxed">
+                  Dropify introduces a revolutionary approach to blockchain onboarding through our patent-pending 
+                  email-to-wallet technology, eliminating the traditional barriers that prevent mass adoption 
+                  of decentralized technologies.
+                </p>
+                <p className="leading-relaxed">
+                  Our protocol generates cryptographically secure wallets using email addresses as seed inputs, 
+                  enabling instant Web3 participation without requiring users to understand private keys, 
+                  seed phrases, or complex blockchain concepts.
+                </p>
+                <button 
+                  onClick={() => {
+                    // Simulate whitepaper download
+                    const link = document.createElement('a');
+                    link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent('Dropify Whitepaper - Coming Soon!\n\nThis would contain the full technical documentation of our email-to-wallet technology.');
+                    link.download = 'Dropify-Whitepaper.txt';
+                    link.click();
+                  }}
+                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:from-cyan-400 hover:to-blue-500 transition-all duration-300"
+                >
+                  Download Full Whitepaper (PDF)
+                </button>
               </div>
+            </div>
 
-              <div>
-                <h3 className="text-lg font-semibold mb-4 text-purple-400">🔗 Supra Testnet</h3>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span>Wallet Type:</span>
-                    <span className="text-cyan-300 capitalize">{walletType || 'None'}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Address:</span>
-                    <span className="text-purple-300 font-mono text-xs">
-                      {activeWalletAddress ? `${activeWalletAddress.slice(0, 6)}...${activeWalletAddress.slice(-4)}` : 'Not Available'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>DROP Balance:</span>
-                    <span className="text-green-400 font-bold">{dropBalance.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>DRF Balance:</span>
-                    <span className="text-amber-400 font-bold">{drfBalance.toLocaleString()}</span>
-                  </div>
+            {/* Technical Overview */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-8">
+              <h3 className="text-2xl font-bold text-purple-400 mb-6">⚙️ Technical Overview</h3>
+              <div className="space-y-4">
+                <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 rounded-lg p-4">
+                  <h4 className="font-semibold text-purple-300 mb-2">Email Cryptography</h4>
+                  <p className="text-sm text-gray-300">Deterministic wallet generation using email-based entropy</p>
+                </div>
+                <div className="bg-gradient-to-r from-blue-900/50 to-cyan-900/50 rounded-lg p-4">
+                  <h4 className="font-semibold text-blue-300 mb-2">Zero-Knowledge Proofs</h4>
+                  <p className="text-sm text-gray-300">Privacy-preserving identity verification protocols</p>
+                </div>
+                <div className="bg-gradient-to-r from-cyan-900/50 to-green-900/50 rounded-lg p-4">
+                  <h4 className="font-semibold text-cyan-300 mb-2">Cross-Chain Compatibility</h4>
+                  <p className="text-sm text-gray-300">Multi-blockchain support with unified address space</p>
+                </div>
+                <div className="bg-gradient-to-r from-green-900/50 to-teal-900/50 rounded-lg p-4">
+                  <h4 className="font-semibold text-green-300 mb-2">Enterprise Integration</h4>
+                  <p className="text-sm text-gray-300">RESTful APIs for seamless business adoption</p>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Token Balances */}
-          {isAuthenticated && (
-            <div className="glass neon-border p-8 mb-8 rounded-2xl bg-gradient-to-r from-green-900/20 to-blue-900/20">
-              <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                <span className="text-hologram">💰 Token Balances</span>
-              </h2>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="glass rounded-xl p-6 border border-cyan-400/30 glow-cyan">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-3xl">💧</span>
-                    <span className="text-xl font-bold text-cyan-400">DROP Tokens</span>
-                  </div>
-                  <div className="text-4xl font-bold text-cyan-300 mb-2">{dropBalance.toLocaleString()}</div>
-                  <div className="text-sm text-gray-300">Earned from receipts</div>
+      {/* Tokenomics Section */}
+      <div className="py-20 bg-gradient-to-r from-indigo-900/20 to-purple-900/20">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl font-bold text-white mb-6">💰 Tokenomics</h2>
+            <p className="text-xl text-blue-200 max-w-3xl mx-auto">
+              Sustainable dual-token economy designed for long-term ecosystem growth
+            </p>
+          </div>
+
+          <div className="max-w-7xl mx-auto">
+            {/* Smart Contract Info */}
+            <div className="bg-gradient-to-r from-indigo-900/30 to-purple-900/30 border border-indigo-500/30 rounded-2xl p-8 mb-16 text-center">
+              <h3 className="text-2xl font-bold text-white mb-4">⚡ Dual Token Smart Contract</h3>
+              <p className="text-lg text-blue-200 mb-6">
+                Both DROP and DRF tokens are deployed on Supra L1 blockchain via a unified smart contract
+              </p>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="bg-blue-900/30 rounded-lg p-4">
+                  <div className="text-3xl mb-2">🔗</div>
+                  <div className="text-blue-300 font-semibold">Supra L1 Native</div>
+                  <div className="text-sm text-gray-300">High-speed, low-cost transactions</div>
                 </div>
-                
-                <div className="glass rounded-xl p-6 border border-purple-400/30 glow-purple">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-3xl">🔷</span>
-                    <span className="text-xl font-bold text-purple-400">DRF Tokens</span>
-                  </div>
-                  <div className="text-4xl font-bold text-purple-300 mb-2">{drfBalance.toLocaleString()}</div>
-                  <div className="text-sm text-gray-300">Governance & rewards</div>
+                <div className="bg-purple-900/30 rounded-lg p-4">
+                  <div className="text-3xl mb-2">📜</div>
+                  <div className="text-purple-300 font-semibold">Dual Token Contract</div>
+                  <div className="text-sm text-gray-300">Single contract manages both tokens</div>
+                </div>
+                <div className="bg-green-900/30 rounded-lg p-4">
+                  <div className="text-3xl mb-2">🔒</div>
+                  <div className="text-green-300 font-semibold">Audited & Secure</div>
+                  <div className="text-sm text-gray-300">Enterprise-grade security</div>
                 </div>
               </div>
             </div>
-          )}
 
-          {/* Demo Flow */}
-          <div className="glass neon-border p-8 rounded-2xl">
-            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
-              <span className="text-hologram">🚀 Live Demo Flow</span>
-            </h2>
-
-            {/* Step 1: Email Signup */}
-            {demoStep === 1 && (
-              <div className="space-y-8">
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold mb-4 text-cyan-400">Step 1: Seamless Email Signup</h3>
-                  <p className="text-gray-300 mb-8 text-lg">
-                    Enter your email and we'll automatically generate a <span className="text-purple-400 font-semibold">Supra-compatible wallet</span> for you
-                  </p>
+            {/* Token Overview */}
+            <div className="grid lg:grid-cols-2 gap-8 mb-16">
+              {/* DROP Token */}
+              <div className="bg-gradient-to-br from-cyan-900/30 to-blue-900/30 border border-cyan-500/30 rounded-2xl p-8">
+                <div className="text-center mb-8">
+                  <div className="text-6xl mb-4">💧</div>
+                  <h3 className="text-3xl font-bold text-cyan-400 mb-2">DROP Token</h3>
+                  <p className="text-cyan-200">Utility & Rewards Token</p>
                 </div>
-
-                <div className="max-w-md mx-auto space-y-6">
-                  <div>
-                    <label className="block text-sm font-medium text-cyan-300 mb-3">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      value={demoEmail}
-                      onChange={(e) => setDemoEmail(e.target.value)}
-                      className="w-full px-6 py-4 glass border border-cyan-400/30 rounded-xl text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none glow-cyan transition-all duration-300"
-                      placeholder="your@email.com"
-                    />
+                <div className="space-y-4">
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Total Supply:</span>
+                    <span className="text-cyan-400 font-bold">∞ Infinite Supply</span>
                   </div>
-
-                  <button
-                    onClick={handleDemoSignup}
-                    className="btn-futuristic w-full py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold text-lg rounded-xl border border-cyan-400/50 hover:border-cyan-400 transition-all duration-300 transform hover:scale-105 glow-cyan"
-                  >
-                    🎯 Create Account & Generate Wallet
-                  </button>
-
-                  <div className="text-center text-sm text-gray-300">
-                    ✨ No wallet installation required - we handle everything!
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Blockchain:</span>
+                    <span className="text-cyan-400 font-bold">Supra L1</span>
                   </div>
-                </div>
-              </div>
-            )}
-
-            {/* Step 2: Wallet Generated */}
-            {demoStep === 2 && (
-              <div className="space-y-8">
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold mb-4 text-green-400">✅ Step 2: Wallet Generated Successfully!</h3>
-                  <p className="text-gray-300 mb-8 text-lg">
-                    Your account is ready! Here are your auto-generated wallet details:
-                  </p>
-                </div>
-
-                {walletDetails && (
-                  <div className="glass neon-border rounded-xl p-8 max-w-2xl mx-auto">
-                    <div className="space-y-6">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-400">Wallet Address:</span>
-                        <span className="text-cyan-300 font-mono text-sm">
-                          {walletDetails.address}
-                        </span>
-                      </div>
-                      
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-400">Backup Phrase:</span>
-                        <span className="text-yellow-300 text-sm">
-                          {walletDetails.mnemonic}
-                        </span>
-                      </div>
-                      
-                      <div className="border-t border-gray-600 pt-6">
-                        <div className="glass rounded-lg p-4 border border-yellow-400/30 glow-amber">
-                          <div className="flex items-start gap-3">
-                            <span className="text-yellow-400 text-xl">⚠️</span>
-                            <div className="text-sm text-yellow-200">
-                              <strong>Important:</strong> In production, this would be encrypted and securely stored. 
-                              The backup phrase allows you to recover your wallet.
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Use Cases:</span>
+                    <span className="text-cyan-400 font-bold">Payments, Rewards</span>
                   </div>
-                )}
-
-                <div className="text-center">
-                  <button
-                    onClick={handleDemoReceiptScan}
-                    disabled={isScanning}
-                    className="btn-futuristic px-10 py-4 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-bold text-lg rounded-xl border border-purple-400/50 hover:border-purple-400 transition-all duration-300 transform hover:scale-105 glow-purple disabled:opacity-50 disabled:transform-none"
-                  >
-                    {isScanning ? '📄 Scanning Receipt...' : '📄 Demo: Scan Receipt'}
-                  </button>
-                  <p className="text-sm text-gray-300 mt-4">
-                    ⚡ Simulate scanning a $8.50 Starbucks receipt
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Step 3: Receipt Scanned */}
-            {demoStep === 3 && (
-              <div className="space-y-8">
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold mb-4 text-purple-400">🎉 Step 3: Receipt Processed on Supra L1!</h3>
-                  <p className="text-gray-300 mb-8 text-lg">
-                    Your <span className="text-green-400 font-semibold">Starbucks receipt</span> has been recorded on the 
-                    <span className="text-purple-400 font-semibold"> Supra blockchain</span> and you earned 
-                    <span className="text-cyan-400 font-semibold"> DROP tokens</span>!
-                  </p>
-                </div>
-
-                <div className="glass neon-border rounded-xl p-8 max-w-2xl mx-auto bg-gradient-to-r from-purple-900/20 to-pink-900/20">
-                  <div className="space-y-6">
-                    <div className="text-center mb-6">
-                      <div className="text-6xl mb-4">🧾→💰</div>
-                      <div className="text-2xl font-bold text-hologram">Receipt Successfully Processed</div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="glass rounded-lg p-4 border border-green-400/30 glow-green">
-                        <div className="text-sm text-gray-400 mb-1">Purchase Amount</div>
-                        <div className="text-2xl font-bold text-green-400">$8.50</div>
+                  <div className="bg-cyan-900/20 rounded-lg p-4 mt-6">
+                    <h4 className="font-semibold text-cyan-300 mb-3">Emission Model</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span>Receipt Rewards:</span><span className="text-cyan-400">Dynamic</span>
                       </div>
-                      
-                      <div className="glass rounded-lg p-4 border border-cyan-400/30 glow-cyan">
-                        <div className="text-sm text-gray-400 mb-1">DROP Tokens Earned</div>
-                        <div className="text-2xl font-bold text-cyan-400">9 DROP</div>
+                      <div className="flex justify-between">
+                        <span>Staking Rewards:</span><span className="text-cyan-400">Variable APY</span>
                       </div>
-                    </div>
-
-                    <div className="text-center">
-                      <button
-                        onClick={() => setDemoStep(1)}
-                        className="btn-futuristic px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl border border-cyan-400/50 hover:border-cyan-400 transition-all duration-300 transform hover:scale-105 glow-cyan"
-                      >
-                        🔄 Try Again
-                      </button>
-                    </div>
-
-                    <div className="mt-6 p-4 glass rounded-lg border border-green-400/30 glow-green">
-                      <div className="flex items-center gap-3">
-                        <span className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></span>
-                        <span className="text-green-400 font-medium">
-                          ✅ Transaction confirmed on Supra Testnet
-                        </span>
+                      <div className="flex justify-between">
+                        <span>Liquidity Mining:</span><span className="text-cyan-400">Ongoing</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Inflation Rate:</span><span className="text-cyan-400">Algorithmic</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            )}
+
+              {/* DRF Token */}
+              <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 border border-purple-500/30 rounded-2xl p-8">
+                <div className="text-center mb-8">
+                  <div className="text-6xl mb-4">🔷</div>
+                  <h3 className="text-3xl font-bold text-purple-400 mb-2">DRF Token</h3>
+                  <p className="text-purple-200">Governance & Staking Token</p>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Total Supply:</span>
+                    <span className="text-purple-400 font-bold">1,000,000,000 DRF</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Max Cap:</span>
+                    <span className="text-purple-400 font-bold">Fixed at 1B</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Blockchain:</span>
+                    <span className="text-purple-400 font-bold">Supra L1</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Use Cases:</span>
+                    <span className="text-purple-400 font-bold">Governance, Staking</span>
+                  </div>
+                  <div className="bg-purple-900/20 rounded-lg p-4 mt-6">
+                    <h4 className="font-semibold text-purple-300 mb-3">Distribution</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span>Public Sale:</span><span className="text-purple-400">30%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Ecosystem Fund:</span><span className="text-purple-400">25%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Team & Advisors:</span><span className="text-purple-400">20%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Strategic Partners:</span><span className="text-purple-400">25%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Economic Model */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-8 mb-8">
+              <h3 className="text-2xl font-bold text-white mb-6 text-center">🏛️ Economic Model</h3>
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="text-4xl mb-4">♾️</div>
+                  <h4 className="text-lg font-semibold text-cyan-400 mb-2">Infinite Supply Model</h4>
+                  <p className="text-sm text-gray-300">
+                    DROP tokens are minted dynamically based on user activity and ecosystem growth
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl mb-4">�</div>
+                  <h4 className="text-lg font-semibold text-purple-400 mb-2">Fixed DRF Supply</h4>
+                  <p className="text-sm text-gray-300">
+                    DRF tokens are capped at 1 billion with deflationary mechanisms via governance
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl mb-4">⚖️</div>
+                  <h4 className="text-lg font-semibold text-green-400 mb-2">Balanced Ecosystem</h4>
+                  <p className="text-sm text-gray-300">
+                    Infinite utility token paired with scarce governance token creates optimal economics
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Roadmap Section */}
+      <div className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl font-bold text-white mb-6">🗺️ Roadmap</h2>
+            <p className="text-xl text-blue-200 max-w-3xl mx-auto">
+              Our strategic plan for revolutionizing Web3 adoption over the next 24 months
+            </p>
           </div>
 
-          {/* Live Network Info */}
-          <div className="glass neon-border p-8 mt-8 rounded-2xl">
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-3">
-              <span className="text-hologram">🌐 Live Supra Testnet Connection</span>
-            </h2>
+          <div className="max-w-6xl mx-auto">
+            <div className="relative">
+              {/* Timeline Line */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-cyan-400 via-purple-400 to-green-400"></div>
+
+              {/* Q4 2024 */}
+              <div className="relative flex items-center mb-16">
+                <div className="w-1/2 pr-8 text-right">
+                  <div className="bg-gradient-to-r from-cyan-900/30 to-blue-900/30 border border-cyan-500/30 rounded-xl p-6">
+                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">Q4 2024 - Foundation</h3>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="text-gray-300">Core Protocol Development</span>
+                        <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                      </div>
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="text-gray-300">Email-to-Wallet MVP</span>
+                        <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                      </div>
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="text-gray-300">Smart Contract Audit</span>
+                        <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                      </div>
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="text-gray-300">Patent Application Filed</span>
+                        <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-cyan-400 rounded-full border-4 border-purple-900"></div>
+                <div className="w-1/2 pl-8"></div>
+              </div>
+
+              {/* Q1 2025 */}
+              <div className="relative flex items-center mb-16">
+                <div className="w-1/2 pr-8"></div>
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-purple-400 rounded-full border-4 border-purple-900"></div>
+                <div className="w-1/2 pl-8">
+                  <div className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 border border-purple-500/30 rounded-xl p-6">
+                    <h3 className="text-2xl font-bold text-purple-400 mb-4">Q1 2025 - Launch</h3>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                        <span className="text-gray-300">Mainnet Launch on Supra</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                        <span className="text-gray-300">Token Generation Event</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
+                        <span className="text-gray-300">Community Beta Testing</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
+                        <span className="text-gray-300">Mobile App Release</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Q2 2025 */}
+              <div className="relative flex items-center mb-16">
+                <div className="w-1/2 pr-8 text-right">
+                  <div className="bg-gradient-to-r from-green-900/30 to-teal-900/30 border border-green-500/30 rounded-xl p-6">
+                    <h3 className="text-2xl font-bold text-green-400 mb-4">Q2 2025 - Expansion</h3>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="text-gray-300">Enterprise Partnerships</span>
+                        <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
+                      </div>
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="text-gray-300">Multi-Chain Support</span>
+                        <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
+                      </div>
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="text-gray-300">AI Receipt Processing 2.0</span>
+                        <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                      </div>
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="text-gray-300">1M+ User Milestone</span>
+                        <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-green-400 rounded-full border-4 border-purple-900"></div>
+                <div className="w-1/2 pl-8"></div>
+              </div>
+
+              {/* Q3-Q4 2025 */}
+              <div className="relative flex items-center">
+                <div className="w-1/2 pr-8"></div>
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-yellow-400 rounded-full border-4 border-purple-900"></div>
+                <div className="w-1/2 pl-8">
+                  <div className="bg-gradient-to-r from-yellow-900/30 to-orange-900/30 border border-yellow-500/30 rounded-xl p-6">
+                    <h3 className="text-2xl font-bold text-yellow-400 mb-4">Q3-Q4 2025 - Scale</h3>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                        <span className="text-gray-300">Global Enterprise Adoption</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                        <span className="text-gray-300">DeFi Integration Suite</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                        <span className="text-gray-300">NFT Marketplace Launch</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                        <span className="text-gray-300">10M+ User Ecosystem</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div className="mt-12 flex justify-center gap-8 text-sm">
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 bg-green-400 rounded-full"></span>
+                <span className="text-gray-300">Completed</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 bg-yellow-400 rounded-full"></span>
+                <span className="text-gray-300">In Progress</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 bg-gray-400 rounded-full"></span>
+                <span className="text-gray-300">Planned</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Signup Modal */}
+      {showSignupModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-br from-purple-900 to-blue-900 rounded-2xl p-8 max-w-md w-full border border-cyan-500/30">
+            <div className="text-center mb-6">
+              <h3 className="text-3xl font-bold text-white mb-2">🚀 Join Dropify</h3>
+              <p className="text-blue-200">Create your email-based wallet in seconds</p>
+            </div>
             
-            <div className="grid md:grid-cols-2 gap-8 text-sm">
+            <div className="space-y-4">
               <div>
-                <h4 className="font-semibold text-cyan-400 mb-3">Network Details</h4>
-                <div className="space-y-2">
-                  <div>RPC: <span className="text-cyan-300">https://testnet-rpc.supra.com</span></div>
-                  <div>Chain ID: <span className="text-cyan-300">6</span></div>
-                  <div>Explorer: <span className="text-cyan-300">https://testnet-explorer.supra.com</span></div>
+                <label className="block text-cyan-300 font-semibold mb-2">Email Address</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className="w-full px-4 py-3 rounded-lg bg-white/10 border border-cyan-500/30 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none"
+                />
+              </div>
+              
+              <div className="bg-cyan-900/20 rounded-lg p-4 border border-cyan-500/30">
+                <div className="flex items-start gap-3">
+                  <span className="text-cyan-400 text-lg">ℹ️</span>
+                  <div className="text-sm text-cyan-200">
+                    <strong>How it works:</strong> We'll generate a secure blockchain wallet using your email address. 
+                    No passwords, seed phrases, or complex setup required!
+                  </div>
                 </div>
               </div>
               
-              <div>
-                <h4 className="font-semibold text-purple-400 mb-3">Smart Contract</h4>
-                <div className="space-y-2">
-                  <div>Address: <span className="text-purple-300 font-mono">0x1::dropify_dual_token</span></div>
-                  <div>Functions: <span className="text-purple-300">scan_receipt, redeem_reward</span></div>
-                  <div>Tokens: <span className="text-purple-300">DROP, DRF</span></div>
-                </div>
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={() => setShowSignupModal(false)}
+                  className="flex-1 py-3 px-4 rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-800 transition-all duration-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSignup}
+                  disabled={!email || isProcessing}
+                  className="flex-1 py-3 px-4 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold hover:from-cyan-400 hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                >
+                  {isProcessing ? '⏳ Creating...' : '✨ Create Wallet'}
+                </button>
               </div>
             </div>
           </div>
-        </main>
-      </div>
+        </div>
+      )}
+
+      {/* Receipt Upload Modal */}
+      {showReceiptModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-br from-green-900 to-blue-900 rounded-2xl p-8 max-w-md w-full border border-green-500/30">
+            <div className="text-center mb-6">
+              <h3 className="text-3xl font-bold text-white mb-2">📄 AI Receipt Reader</h3>
+              <p className="text-green-200">Upload a receipt to earn DROP tokens</p>
+            </div>
+            
+            {!processingResult ? (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-green-300 font-semibold mb-2">Upload Receipt</label>
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={handleFileSelect}
+                    className="w-full px-4 py-3 rounded-lg bg-white/10 border border-green-500/30 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-green-600 file:text-white"
+                  />
+                </div>
+                
+                <div className="bg-green-900/20 rounded-lg p-4 border border-green-500/30">
+                  <div className="flex items-start gap-3">
+                    <span className="text-green-400 text-lg">🤖</span>
+                    <div className="text-sm text-green-200">
+                      <strong>AI Processing:</strong> Our advanced AI will extract merchant, amount, and other data 
+                      to calculate your DROP token rewards automatically.
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex gap-3 pt-4">
+                  <button
+                    onClick={() => {
+                      setShowReceiptModal(false);
+                      setReceiptFile(null);
+                      setProcessingResult(null);
+                    }}
+                    className="flex-1 py-3 px-4 rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-800 transition-all duration-300"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleReceiptUpload}
+                    disabled={!receiptFile || isProcessing}
+                    className="flex-1 py-3 px-4 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-bold hover:from-green-400 hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                  >
+                    {isProcessing ? '🤖 Processing...' : '🚀 Process Receipt'}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="bg-green-900/20 rounded-lg p-6 border border-green-500/30">
+                  <div className="text-center mb-4">
+                    <div className="text-4xl mb-2">🎉</div>
+                    <h4 className="text-xl font-bold text-green-400">Receipt Processed!</h4>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-green-200">Merchant:</span>
+                      <span className="text-white font-semibold">{processingResult.merchant}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-green-200">Amount:</span>
+                      <span className="text-white font-semibold">{processingResult.amount}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-green-200">DROP Earned:</span>
+                      <span className="text-green-400 font-bold text-lg">{processingResult.dropTokens}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-green-200">Transaction:</span>
+                      <span className="text-cyan-400 font-mono text-sm">{processingResult.transactionId}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <button
+                  onClick={() => {
+                    setShowReceiptModal(false);
+                    setReceiptFile(null);
+                    setProcessingResult(null);
+                  }}
+                  className="w-full py-3 px-4 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-bold hover:from-green-400 hover:to-blue-500 transition-all duration-300"
+                >
+                  ✨ Upload Another Receipt
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

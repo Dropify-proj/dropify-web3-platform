@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 
-export default function RedemptionSuccessPage() {
+function RedemptionContent() {
   const searchParams = useSearchParams();
   const [rewardData, setRewardData] = useState({
     title: 'Digital Gift Card',
@@ -226,5 +226,13 @@ export default function RedemptionSuccessPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function RedemptionSuccessPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RedemptionContent />
+    </Suspense>
   );
 }

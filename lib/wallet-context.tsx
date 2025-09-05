@@ -78,17 +78,17 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       /*
       // COMMENTED OUT - Blockchain integration pending
       // Register for both tokens
-      await dropifyContract.registerForDrop(newAccount);
-      await dropifyContract.registerForDrf(newAccount);
+      // await dropifyContract.registerForDrop(newAccount);
+      // await dropifyContract.registerForDrf(newAccount);
 
-      setAccount(newAccount);
-      setIsConnected(true);
+      // setAccount(newAccount);
+      // setIsConnected(true);
       
       // Refresh balances
-      await refreshBalances(newAccount);
+      // await refreshBalances(newAccount);
       
       // Store account in localStorage for persistence
-      localStorage.setItem('dropify_account', newAccount.toPrivateKeyObject().privateKeyHex);
+      // localStorage.setItem('dropify_account', newAccount.toPrivateKeyObject().privateKeyHex);
       */
       
     } catch (err) {
@@ -118,8 +118,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
     try {
       const [newDropBalance, newDrfBalance] = await Promise.all([
-        dropifyContract.getDropBalance(activeAccount.address()),
-        dropifyContract.getDrfBalance(activeAccount.address())
+        // dropifyContract.getDropBalance(activeAccount.address()),
+        // dropifyContract.getDrfBalance(activeAccount.address())
       ]);
       
       setDropBalance(newDropBalance);
@@ -127,8 +127,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
       // Get recent events
       const [receiptEvents, rewardEvents] = await Promise.all([
-        dropifyContract.getAccountEvents(activeAccount.address(), 'receipt'),
-        dropifyContract.getAccountEvents(activeAccount.address(), 'reward')
+        // dropifyContract.getAccountEvents(activeAccount.address(), 'receipt'),
+        // dropifyContract.getAccountEvents(activeAccount.address(), 'reward')
       ]);
       
       const allEvents = [...receiptEvents, ...rewardEvents]
@@ -153,8 +153,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         drfTreasuryBalance: 999000000
       });
       /*
-      const stats = await dropifyContract.getPlatformStats();
-      setPlatformStats(stats);
+      // const stats = await dropifyContract.getPlatformStats();
+      // setPlatformStats(stats);
       */
     } catch (err) {
       console.error('Error refreshing platform stats:', err);
@@ -180,14 +180,14 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       };
       
       /*
-      const result = await dropifyContract.scanReceipt(account, receiptHash, purchaseAmount);
+      // const result = await dropifyContract.scanReceipt(account, receiptHash, purchaseAmount);
       
-      if (result.success) {
-        await refreshBalances();
-        await refreshPlatformStats();
-      }
+      // if (result.success) {
+      //   await refreshBalances();
+      //   await refreshPlatformStats();
+      // }
       
-      return result;
+      // return result;
       */
       
       return mockResult;
@@ -221,14 +221,14 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       };
       
       /*
-      const result = await dropifyContract.redeemReward(account, rewardType, dropAmount);
+      // const result = await dropifyContract.redeemReward(account, rewardType, dropAmount);
       
-      if (result.success) {
-        await refreshBalances();
-        await refreshPlatformStats();
-      }
+      // if (result.success) {
+      //   await refreshBalances();
+      //   await refreshPlatformStats();
+      // }
       
-      return result;
+      // return result;
       */
       
       return mockResult;
@@ -262,14 +262,14 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       };
       
       /*
-      const result = await dropifyContract.purchaseAdvertising(account, drfAmount, adDuration);
+      // const result = await dropifyContract.purchaseAdvertising(account, drfAmount, adDuration);
       
-      if (result.success) {
-        await refreshBalances();
-        await refreshPlatformStats();
-      }
+      // if (result.success) {
+      //   await refreshBalances();
+      //   await refreshPlatformStats();
+      // }
       
-      return result;
+      // return result;
       */
       
       return mockResult;
@@ -357,8 +357,8 @@ export function usePlatformStats() {
       };
       setStats(mockStats);
       /*
-      const newStats = await dropifyContract.getPlatformStats();
-      setStats(newStats);
+      // const newStats = await dropifyContract.getPlatformStats();
+      // setStats(newStats);
       */
     } catch (err) {
       console.error('Error fetching platform stats:', err);

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import SeamlessAuthButton from './SeamlessAuthButton';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,7 +45,9 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-1">
             {[
               { href: '/', label: 'Home', color: 'cyan' },
-              { href: '/dashboard', label: 'Dashboard', color: 'green' },
+              { href: '/user-dashboard', label: 'Dashboard', color: 'green' },
+              { href: '/receipt-camera', label: '📱 Scan Receipt', color: 'blue' },
+              { href: '/business-subscriptions', label: '🏢 Business', color: 'purple' },
               { href: '/drop-tokens', label: 'Mint $DROP', color: 'blue' },
               { href: '/#features', label: 'Features', color: 'purple' },
               { href: '/whitepaper', label: 'Whitepaper', color: 'green' },
@@ -67,9 +68,12 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Auth Button */}
+          {/* Demo Action Button */}
           <div className="hidden md:block">
-            <SeamlessAuthButton />
+            <a href="/drop-tokens" 
+               className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg">
+              🚀 Try Demo
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -92,6 +96,9 @@ export default function Header() {
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 rounded-xl" />
               {[
                 { href: '/', label: 'Home' },
+                { href: '/user-dashboard', label: 'Dashboard' },
+                { href: '/receipt-camera', label: '📱 Scan Receipt' },
+                { href: '/business-subscriptions', label: '🏢 Business' },
                 { href: '/drop-tokens', label: 'Mint $DROP' },
                 { href: '/#features', label: 'Features' },
                 { href: '/whitepaper', label: 'Whitepaper' },
@@ -111,7 +118,11 @@ export default function Header() {
                 </a>
               ))}
               <div className="px-4 py-2 relative z-10">
-                <SeamlessAuthButton />
+                <a href="/drop-tokens" 
+                   onClick={() => setIsMenuOpen(false)}
+                   className="block w-full text-center bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg">
+                  🚀 Try Demo
+                </a>
               </div>
             </div>
           </div>

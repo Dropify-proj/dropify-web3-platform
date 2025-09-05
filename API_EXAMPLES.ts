@@ -13,7 +13,7 @@ const mockDatabase = {
   }
 };
 
-export async function POST(req: NextRequest) {
+export async function createUserPOST(req: NextRequest) {
   try {
     const { email, walletAddress } = await req.json();
     
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
 }
 
 // app/api/users/[userId]/balance/route.ts
-export async function GET(
+export async function getUserBalanceGET(
   req: NextRequest,
   { params }: { params: { userId: string } }
 ) {
@@ -77,7 +77,7 @@ export async function GET(
 }
 
 // app/api/receipts/scan/route.ts
-export async function POST(req: NextRequest) {
+export async function scanReceiptPOST(req: NextRequest) {
   try {
     const { userId, receiptHash, purchaseAmount } = await req.json();
     
@@ -142,7 +142,7 @@ export async function POST(req: NextRequest) {
 }
 
 // app/api/rewards/redeem/route.ts
-export async function POST(req: NextRequest) {
+export async function redeemRewardPOST(req: NextRequest) {
   try {
     const { userId, rewardType, dropAmount } = await req.json();
     

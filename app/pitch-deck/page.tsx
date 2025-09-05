@@ -5,7 +5,7 @@ import Header from '../components/Header';
 
 export default function PitchDeck() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const totalSlides = 7;
+  const totalSlides = 13; // Updated to include more slides
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -206,9 +206,288 @@ export default function PitchDeck() {
         </div>
       )
     },
-    // Slide 7: Call to Action
+    // Slide 7: Patent-Pending Technology
     {
       id: 7,
+      component: (
+        <div className="flex flex-col items-center justify-center text-center px-8">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-2 animate-title">🔒 Patent-Pending Technology</h2>
+          <p className="text-lg md:text-xl text-green-300 mb-8 animate-title">Revolutionary IP Portfolio Worth $15-30M</p>
+          <div className="max-w-6xl grid md:grid-cols-2 gap-6 text-left">
+            <div className="bg-gradient-to-br from-green-900/50 to-emerald-900/50 p-6 rounded-lg border border-green-500/30 animate-grid-item">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
+                  <span className="text-xl">🚀</span>
+                </div>
+                <h3 className="font-bold text-xl text-green-400">Seamless Wallet Generation</h3>
+              </div>
+              <p className="text-gray-300 mb-2">Zero-friction Web3 onboarding that eliminates user barriers</p>
+              <div className="text-sm text-green-300">• No seed phrases required • Behavioral entropy collection • Progressive Web3 disclosure</div>
+            </div>
+            <div className="bg-gradient-to-br from-blue-900/50 to-cyan-900/50 p-6 rounded-lg border border-blue-500/30 animate-grid-item">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full flex items-center justify-center">
+                  <span className="text-xl">🌉</span>
+                </div>
+                <h3 className="font-bold text-xl text-blue-400">Web2→Web3 Bridge</h3>
+              </div>
+              <p className="text-gray-300 mb-2">Universal integration system requiring zero code changes</p>
+              <div className="text-sm text-blue-300">• Transparent state sync • Business logic abstraction • Auto-adapter creation</div>
+            </div>
+            <div className="bg-gradient-to-br from-purple-900/50 to-violet-900/50 p-6 rounded-lg border border-purple-500/30 animate-grid-item">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-violet-500 rounded-full flex items-center justify-center">
+                  <span className="text-xl">⚡</span>
+                </div>
+                <h3 className="font-bold text-xl text-purple-400">Automated Token Distribution</h3>
+              </div>
+              <p className="text-gray-300 mb-2">Real-time business event monitoring with intelligent distribution</p>
+              <div className="text-sm text-purple-300">• Complex business rules • Gas optimization • Cross-platform integration</div>
+            </div>
+            <div className="bg-gradient-to-br from-orange-900/50 to-red-900/50 p-6 rounded-lg border border-orange-500/30 animate-grid-item">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center">
+                  <span className="text-xl">🔧</span>
+                </div>
+                <h3 className="font-bold text-xl text-orange-400">Universal Business API</h3>
+              </div>
+              <p className="text-gray-300 mb-2">Plug-and-play Web3 integration for any business platform</p>
+              <div className="text-sm text-orange-300">• Auto-detection • Dynamic schemas • Enterprise security</div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    // Slide 8: Competitive Advantage & IP Value
+    {
+      id: 8,
+      component: (
+        <div className="flex flex-col items-center justify-center text-center px-8">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-2 animate-title">💎 Competitive Moat & IP Value</h2>
+          <p className="text-lg md:text-xl text-yellow-300 mb-8 animate-title">First-to-Market Protection Worth $100M+ Premium</p>
+          <div className="max-w-5xl grid md:grid-cols-3 gap-6">
+            <div className="bg-gradient-to-br from-yellow-900/50 to-amber-900/50 p-6 rounded-lg border border-yellow-500/30 animate-grid-item">
+              <h3 className="font-bold text-xl mb-4 text-yellow-400">Patent Portfolio Value</h3>
+              <div className="text-left space-y-2">
+                <div className="text-white">• Individual Patents: $2-8M each</div>
+                <div className="text-white">• Portfolio Synergy: 50% multiplier</div>
+                <div className="text-white">• Total Value: $15-30M</div>
+                <div className="text-yellow-300">• Licensing Revenue: $10-50M/year</div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-green-900/50 to-teal-900/50 p-6 rounded-lg border border-green-500/30 animate-grid-item">
+              <h3 className="font-bold text-xl mb-4 text-green-400">Market Protection</h3>
+              <div className="text-left space-y-2">
+                <div className="text-white">• 15-20 year protection period</div>
+                <div className="text-white">• Blocks competitor copying</div>
+                <div className="text-white">• First-mover advantage</div>
+                <div className="text-green-300">• Premium exit valuation</div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-blue-900/50 to-indigo-900/50 p-6 rounded-lg border border-blue-500/30 animate-grid-item">
+              <h3 className="font-bold text-xl mb-4 text-blue-400">Investment Appeal</h3>
+              <div className="text-left space-y-2">
+                <div className="text-white">• Strong IP portfolio for funding</div>
+                <div className="text-white">• Defensible market position</div>
+                <div className="text-white">• Licensing revenue streams</div>
+                <div className="text-blue-300">• Acquisition premium potential</div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 p-6 bg-gradient-to-r from-purple-900/50 to-pink-900/50 rounded-lg border border-purple-500/30 max-w-4xl animate-grid-item">
+            <h3 className="font-bold text-2xl mb-2 text-purple-300">🚨 Critical Market Timing</h3>
+            <p className="text-white text-lg">Patent applications filed within 30 days to secure priority dates and prevent competitor filings. Working technology demonstration proves feasibility and strengthens patent position.</p>
+          </div>
+        </div>
+      )
+    },
+    // Slide 9: Market Opportunity
+    {
+      id: 9,
+      component: (
+        <div className="flex flex-col items-center justify-center text-center px-8">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-2 animate-title">📈 Massive Market Opportunity</h2>
+          <p className="text-lg md:text-xl text-cyan-300 mb-8 animate-title">Multi-Billion Dollar Addressable Markets</p>
+          <div className="max-w-6xl grid md:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <div className="bg-gradient-to-br from-cyan-900/50 to-blue-900/50 p-6 rounded-lg border border-cyan-500/30 animate-grid-item">
+                <h3 className="font-bold text-2xl mb-4 text-cyan-400">Web3 Onboarding Market</h3>
+                <div className="text-left space-y-2">
+                  <div className="text-white text-lg">• 4.2B people lack Web3 access</div>
+                  <div className="text-white text-lg">• 80%+ abandon wallet creation</div>
+                  <div className="text-cyan-300 text-xl font-bold">• $50B+ opportunity</div>
+                </div>
+              </div>
+              <div className="bg-gradient-to-br from-green-900/50 to-emerald-900/50 p-6 rounded-lg border border-green-500/30 animate-grid-item">
+                <h3 className="font-bold text-2xl mb-4 text-green-400">Business Integration</h3>
+                <div className="text-left space-y-2">
+                  <div className="text-white text-lg">• 28M+ businesses worldwide</div>
+                  <div className="text-white text-lg">• $100K+ per integration saved</div>
+                  <div className="text-green-300 text-xl font-bold">• $15B+ integration market</div>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-6">
+              <div className="bg-gradient-to-br from-purple-900/50 to-violet-900/50 p-6 rounded-lg border border-purple-500/30 animate-grid-item">
+                <h3 className="font-bold text-2xl mb-4 text-purple-400">Loyalty & Rewards</h3>
+                <div className="text-left space-y-2">
+                  <div className="text-white text-lg">• $323B global loyalty market</div>
+                  <div className="text-white text-lg">• 90% customer participation</div>
+                  <div className="text-purple-300 text-xl font-bold">• $2.5B token rewards</div>
+                </div>
+              </div>
+              <div className="bg-gradient-to-br from-orange-900/50 to-red-900/50 p-6 rounded-lg border border-orange-500/30 animate-grid-item">
+                <h3 className="font-bold text-2xl mb-4 text-orange-400">Revenue Projections</h3>
+                <div className="text-left space-y-2">
+                  <div className="text-white text-lg">• Year 1: $2M ARR</div>
+                  <div className="text-white text-lg">• Year 3: $50M ARR</div>
+                  <div className="text-orange-300 text-xl font-bold">• Year 5: $200M+ ARR</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    // Slide 10: Technology Demo Live
+    {
+      id: 10,
+      component: (
+        <div className="slide-gradient flex flex-col items-center justify-center text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 animate-title">🚀 Live Technology Demo</h2>
+          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8 animate-text">Experience our patent-pending Web2→Web3 integration technology. See seamless wallet generation and token distribution in action.</p>
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mb-8">
+            <a 
+              href="/" 
+              className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold text-lg px-8 py-6 rounded-lg hover:opacity-90 transition animate-button group"
+            >
+              <div className="text-xl mb-2">💎 Investor Demo</div>
+              <div className="text-sm opacity-90 group-hover:opacity-100">See seamless wallet generation</div>
+            </a>
+            <a 
+              href="/drop-tokens" 
+              className="bg-gradient-to-r from-purple-500 to-violet-500 text-white font-bold text-lg px-8 py-6 rounded-lg hover:opacity-90 transition animate-button group"
+            >
+              <div className="text-xl mb-2">⚡ Interactive Platform</div>
+              <div className="text-sm opacity-90 group-hover:opacity-100">Full receipt-to-rewards experience</div>
+            </a>
+          </div>
+          <div className="text-center p-6 bg-black/30 rounded-lg border border-gray-600 max-w-2xl animate-grid-item">
+            <h3 className="text-xl font-bold text-yellow-400 mb-2">Working Technology Proof</h3>
+            <p className="text-gray-300">Unlike concepts or prototypes, our technology is fully functional and deployed. This working demonstration significantly strengthens our patent applications and investor position.</p>
+          </div>
+        </div>
+      )
+    },
+    // Slide 11: Team & Execution
+    {
+      id: 11,
+      component: (
+        <div className="flex flex-col items-center justify-center text-center px-8">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-2 animate-title">👥 Team & Execution</h2>
+          <p className="text-lg md:text-xl text-blue-300 mb-8 animate-title">Proven Ability to Execute Revolutionary Technology</p>
+          <div className="max-w-5xl grid md:grid-cols-2 gap-8">
+            <div className="bg-gradient-to-br from-blue-900/50 to-indigo-900/50 p-6 rounded-lg border border-blue-500/30 animate-grid-item">
+              <h3 className="font-bold text-2xl mb-4 text-blue-400">Technical Achievements</h3>
+              <div className="text-left space-y-3">
+                <div className="text-white">✅ Working patent-pending technology deployed</div>
+                <div className="text-white">✅ Next.js 15 + React 19 + Move smart contracts</div>
+                <div className="text-white">✅ Supra L1 blockchain integration</div>
+                <div className="text-white">✅ Enterprise-ready architecture</div>
+                <div className="text-white">✅ Professional investor demo platform</div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-green-900/50 to-teal-900/50 p-6 rounded-lg border border-green-500/30 animate-grid-item">
+              <h3 className="font-bold text-2xl mb-4 text-green-400">Business Development</h3>
+              <div className="text-left space-y-3">
+                <div className="text-white">📋 Comprehensive patent documentation ready</div>
+                <div className="text-white">📈 Phoenix market expansion strategy</div>
+                <div className="text-white">🤝 Business partnership framework</div>
+                <div className="text-white">💼 Enterprise sales methodology</div>
+                <div className="text-white">🚀 Go-to-market execution plan</div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 p-6 bg-gradient-to-r from-purple-900/50 to-pink-900/50 rounded-lg border border-purple-500/30 max-w-4xl animate-grid-item">
+            <h3 className="font-bold text-2xl mb-3 text-purple-300">🎯 Immediate Execution Plan</h3>
+            <div className="grid md:grid-cols-3 gap-4 text-left">
+              <div>
+                <div className="text-yellow-400 font-bold">Next 30 Days</div>
+                <div className="text-white text-sm">• File provisional patents • Secure IP attorney • Phoenix investor meetings</div>
+              </div>
+              <div>
+                <div className="text-yellow-400 font-bold">Next 90 Days</div>
+                <div className="text-white text-sm">• Launch pilot partnerships • Scale platform • Team expansion</div>
+              </div>
+              <div>
+                <div className="text-yellow-400 font-bold">Next 12 Months</div>
+                <div className="text-white text-sm">• Series A funding • National expansion • Patent portfolio completion</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    // Slide 12: Investment Opportunity
+    {
+      id: 12,
+      component: (
+        <div className="flex flex-col items-center justify-center text-center px-8">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-2 animate-title">💰 Investment Opportunity</h2>
+          <p className="text-lg md:text-xl text-green-300 mb-8 animate-title">Join the Web3 Onboarding Revolution</p>
+          <div className="max-w-6xl grid md:grid-cols-3 gap-6">
+            <div className="bg-gradient-to-br from-green-900/50 to-emerald-900/50 p-6 rounded-lg border border-green-500/30 animate-grid-item">
+              <h3 className="font-bold text-xl mb-4 text-green-400">Seed Round</h3>
+              <div className="text-left space-y-2">
+                <div className="text-2xl font-bold text-white">$2M</div>
+                <div className="text-green-300">• Patent filing & protection</div>
+                <div className="text-green-300">• Team expansion</div>
+                <div className="text-green-300">• Platform development</div>
+                <div className="text-green-300">• Pilot partnerships</div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-blue-900/50 to-cyan-900/50 p-6 rounded-lg border border-blue-500/30 animate-grid-item">
+              <h3 className="font-bold text-xl mb-4 text-blue-400">Series A</h3>
+              <div className="text-left space-y-2">
+                <div className="text-2xl font-bold text-white">$10M</div>
+                <div className="text-blue-300">• National market expansion</div>
+                <div className="text-blue-300">• Enterprise sales team</div>
+                <div className="text-blue-300">• Additional IP development</div>
+                <div className="text-blue-300">• Strategic acquisitions</div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-purple-900/50 to-violet-900/50 p-6 rounded-lg border border-purple-500/30 animate-grid-item">
+              <h3 className="font-bold text-xl mb-4 text-purple-400">Exit Strategy</h3>
+              <div className="text-left space-y-2">
+                <div className="text-2xl font-bold text-white">$500M+</div>
+                <div className="text-purple-300">• Strategic acquisition by Meta/Google</div>
+                <div className="text-purple-300">• IPO opportunity</div>
+                <div className="text-purple-300">• Patent licensing revenue</div>
+                <div className="text-purple-300">• 25x+ investor return</div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 p-6 bg-gradient-to-r from-orange-900/50 to-red-900/50 rounded-lg border border-orange-500/30 max-w-4xl animate-grid-item">
+            <h3 className="font-bold text-2xl mb-3 text-orange-300">🔥 Why Invest Now</h3>
+            <div className="grid md:grid-cols-2 gap-4 text-left">
+              <div>
+                <div className="text-white">• Patent priority window closing (30 days)</div>
+                <div className="text-white">• Working technology reduces risk</div>
+                <div className="text-white">• First-mover advantage in Web3 onboarding</div>
+              </div>
+              <div>
+                <div className="text-white">• Strong IP portfolio ($15-30M value)</div>
+                <div className="text-white">• Massive addressable market ($65B+)</div>
+                <div className="text-white">• Phoenix market expansion opportunity</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    // Slide 13: Call to Action
+    {
+      id: 13,
       component: (
         <div className="slide-gradient flex flex-col items-center justify-center text-center">
           <div className="flex items-center space-x-4 mb-6 animate-title">
@@ -239,7 +518,7 @@ export default function PitchDeck() {
               🚀 Try Platform
             </a>
           </div>
-          <p className="text-lg text-white font-semibold animate-button">contact@dropify.io</p>
+          <p className="text-lg text-white font-semibold animate-button">dropifytoken@gmail.com | 602-422-3656</p>
         </div>
       )
     }

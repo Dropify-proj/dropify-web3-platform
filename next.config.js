@@ -1,16 +1,14 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/**
+ * @type {import('next').NextConfig}
+ */
+const nextConfig = {
   /* config options here */
-  output: 'export',
-  trailingSlash: true,
+  // output: 'export', // Disabled for dynamic API routes and interactive features
   images: {
     unoptimized: true,
   },
   // Disable source maps in production for faster builds
   productionBrowserSourceMaps: false,
-  // Optimize build
-  swcMinify: true,
   // Environment variables for build
   env: {
     NEXT_PUBLIC_PRIVY_APP_ID: process.env.NEXT_PUBLIC_PRIVY_APP_ID,
@@ -30,4 +28,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

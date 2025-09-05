@@ -1,161 +1,248 @@
+#!/usr/bin/env ts-node
+
+import { exec } from 'child_process';
+import { promisify } from 'util';
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Supra deployment configuration
-interface SupraConfig {
-  network: 'testnet' | 'mainnet';
-  rpcUrl: string;
-  chainId: number;
-  contractPath: string;
-  adminPrivateKey?: string;
+const execAsync = promisify(exec);
+
+// Supra Testnet Configuration
+const TESTNET_CONFIG = {
+  chainId: 6,
+  rpcUrl: "https://testnet-rpc.supra.com",
+  faucetUrl: "https://testnet-faucet.supra.com",
+  explorerUrl: "https://testnet-explorer.supra.com"
+};
+
+interface DeploymentResult {
+  success: boolean;
+  contractAddress?: string;
+  transactionHash?: string;
+  error?: string;
 }
 
-class SupraDeployer {
-  private config: SupraConfig;
+class SupraTestnetDeployer {
+  private contractPath: string;
+  private configPath: string;
 
-  constructor(network: 'testnet' | 'mainnet' = 'testnet') {
-    this.config = {
-      network,
-      rpcUrl: network === 'testnet' 
-        ? 'https://testnet-rpc.supra.com' 
-        : 'https://mainnet-rpc.supra.com',
-      chainId: network === 'testnet' ? 6 : 1,
-      contractPath: path.join(__dirname, '../contracts/supra_dual_token.move'),
-      adminPrivateKey: process.env.ADMIN_PRIVATE_KEY
-    };
+  constructor() {
+    this.contractPath = path.join(process.cwd(), 'contracts');
+    this.configPath = path.join(this.contractPath, 'Move.toml');
   }
 
-  async checkPrerequisites(): Promise<boolean> {
-    console.log('🔍 Checking deployment prerequisites...\n');
-
-    // Check contract file exists
-    if (!fs.existsSync(this.config.contractPath)) {
-      console.error('❌ Contract file not found:', this.config.contractPath);
-      return false;
-    }
-    console.log('✅ Supra-compatible contract found');
-
-    // Check private key is set
-    if (!this.config.adminPrivateKey || this.config.adminPrivateKey.includes('YOUR_ACTUAL')) {
-      console.error('❌ Admin private key not set in environment variables');
-      console.log('   Please set ADMIN_PRIVATE_KEY in your .env.local file');
-      return false;
-    }
-    console.log('✅ Admin private key configured');
-
-    console.log('✅ Supra development environment ready');
-    return true;
-  }
-
-  async deployToTestnet(): Promise<{ success: boolean; contractAddress?: string }> {
-    console.log('🚀 Deploying to Supra Testnet...\n');
-
+  // Check if Supra CLI is installed
+  async checkSupraCLI(): Promise<boolean> {
     try {
-      // Mock deployment for now - replace with actual Supra SDK calls
-      const mockContractAddress = '0x' + Math.random().toString(16).substr(2, 40);
-      
-      console.log('📡 Connecting to Supra testnet...');
-      console.log('🔑 Using admin account for deployment...');
-      console.log('💰 Checking SUPRA balance for gas fees...');
-      console.log('📝 Publishing contract bytecode...');
-      console.log('⚙️  Initializing dual token system...');
-      console.log('🎉 Contract deployed successfully!');
-      console.log(`📍 Contract Address: ${mockContractAddress}`);
-
-      // Update environment file
-      await this.updateEnvFile(mockContractAddress);
-
-      return { success: true, contractAddress: mockContractAddress };
+      await execAsync('supra --version');
+      console.log('✅ Supra CLI found');
+      return true;
     } catch (error) {
-      console.error('❌ Deployment failed:', error);
-      return { success: false };
+      console.error('❌ Supra CLI not found. Please install it from https://docs.supra.com');
+      return false;
     }
   }
 
-  async updateEnvFile(contractAddress: string): Promise<void> {
-    const envPath = path.join(__dirname, '../.env.local');
+  // Initialize wallet if needed
+  async initializeWallet(): Promise<string | null> {
+    try {
+      console.log('🔍 Checking for existing wallet...');
+      
+      // Try to get existing account
+      const { stdout } = await execAsync('supra account list');
+      
+      if (stdout.includes('No accounts found') || stdout.trim() === '') {
+        console.log('📝 Creating new testnet wallet...');
+        
+        // Create new account
+        const createResult = await execAsync('supra account create');
+        console.log('Wallet creation result:', createResult.stdout);
+        
+        // Get the created account address
+        const listResult = await execAsync('supra account list');
+        const addressMatch = listResult.stdout.match(/0x[a-fA-F0-9]+/);
+        
+        if (addressMatch) {
+          const address = addressMatch[0];
+          console.log(`✅ New wallet created: ${address}`);
+          
+          // Fund the account from testnet faucet
+          console.log('💰 Requesting testnet tokens...');
+          await this.requestTestnetTokens(address);
+          
+          return address;
+        }
+      } else {
+        // Use existing account
+        const addressMatch = stdout.match(/0x[a-fA-F0-9]+/);
+        if (addressMatch) {
+          const address = addressMatch[0];
+          console.log(`✅ Using existing wallet: ${address}`);
+          return address;
+        }
+      }
+    } catch (error) {
+      console.error('❌ Error with wallet setup:', error);
+    }
     
-    try {
-      let envContent = fs.readFileSync(envPath, 'utf8');
-      
-      // Update contract address
-      envContent = envContent.replace(
-        /NEXT_PUBLIC_CONTRACT_ADDRESS=.*/,
-        `NEXT_PUBLIC_CONTRACT_ADDRESS=${contractAddress}`
-      );
+    return null;
+  }
 
-      fs.writeFileSync(envPath, envContent);
-      console.log('✅ Environment file updated with contract address');
+  // Request testnet tokens from faucet
+  async requestTestnetTokens(address: string): Promise<void> {
+    try {
+      console.log(`🚰 Requesting testnet SUPRA tokens for ${address}...`);
+      
+      // Use Supra CLI faucet command
+      await execAsync(`supra faucet request ${address}`);
+      
+      console.log('✅ Testnet tokens requested successfully');
+      console.log('⏳ Tokens should arrive within 1-2 minutes');
+      
     } catch (error) {
-      console.error('⚠️  Could not update environment file:', error);
+      console.warn('⚠️ Auto-faucet failed. Please visit the faucet manually:');
+      console.log(`🌐 ${TESTNET_CONFIG.faucetUrl}`);
+      console.log(`📍 Address: ${address}`);
     }
   }
 
-  async displayDeploymentSummary(contractAddress: string): Promise<void> {
-    console.log('\n' + '='.repeat(60));
-    console.log('🎉 DEPLOYMENT SUCCESSFUL!');
-    console.log('='.repeat(60));
-    console.log(`Network: ${this.config.network.toUpperCase()}`);
-    console.log(`Contract Address: ${contractAddress}`);
-    console.log(`RPC URL: ${this.config.rpcUrl}`);
-    console.log(`Chain ID: ${this.config.chainId}`);
-    console.log('\n📋 Next Steps:');
-    console.log('1. ✅ Contract deployed and verified');
-    console.log('2. 🔄 Environment variables updated');
-    console.log('3. 🌐 Test the integration on your website');
-    console.log('4. 👥 Start onboarding users!');
-    console.log('\n💡 Test Functions:');
-    console.log('• Scan receipts to earn DROP tokens');
-    console.log('• Redeem DROP tokens for rewards');
-    console.log('• Purchase advertising with DRF tokens');
-    console.log('\n🔗 Useful Links:');
-    console.log(`• Explorer: https://testnet-explorer.supra.com/address/${contractAddress}`);
-    console.log(`• Your App: http://localhost:3000`);
-    console.log('='.repeat(60));
-  }
-}
-
-// Main deployment function
-async function main() {
-  const args = process.argv.slice(2);
-  const command = args[0];
-  const network = (args[1] as 'testnet' | 'mainnet') || 'testnet';
-
-  const deployer = new SupraDeployer(network);
-
-  switch (command) {
-    case 'deploy':
-      console.log('🚀 Starting Dropify Smart Contract Deployment\n');
+  // Compile the Move contract
+  async compileContract(): Promise<boolean> {
+    try {
+      console.log('🔨 Compiling Move contract...');
       
-      // Check prerequisites
-      const ready = await deployer.checkPrerequisites();
-      if (!ready) {
-        console.log('\n❌ Prerequisites not met. Please fix the issues above and try again.');
-        process.exit(1);
+      const { stdout, stderr } = await execAsync('supra move compile', {
+        cwd: this.contractPath
+      });
+      
+      if (stderr && stderr.includes('error')) {
+        console.error('❌ Compilation failed:', stderr);
+        return false;
       }
+      
+      console.log('✅ Contract compiled successfully');
+      return true;
+    } catch (error) {
+      console.error('❌ Compilation error:', error);
+      return false;
+    }
+  }
 
-      // Deploy to testnet
-      const result = await deployer.deployToTestnet();
-      if (!result.success) {
-        console.log('\n❌ Deployment failed.');
-        process.exit(1);
+  // Deploy contract to testnet
+  async deployContract(deployerAddress: string): Promise<DeploymentResult> {
+    try {
+      console.log('🚀 Deploying contract to Supra Testnet...');
+      
+      const { stdout, stderr } = await execAsync(
+        `supra move publish --network testnet --sender ${deployerAddress}`,
+        { cwd: this.contractPath }
+      );
+      
+      if (stderr && stderr.includes('error')) {
+        return {
+          success: false,
+          error: stderr
+        };
       }
+      
+      // Extract transaction hash and contract address from output
+      const txHashMatch = stdout.match(/Transaction hash: (0x[a-fA-F0-9]+)/);
+      const contractMatch = stdout.match(/Contract address: (0x[a-fA-F0-9]+)/);
+      
+      const result: DeploymentResult = {
+        success: true,
+        transactionHash: txHashMatch ? txHashMatch[1] : undefined,
+        contractAddress: contractMatch ? contractMatch[1] : `${deployerAddress}::dropify_dual_token`
+      };
+      
+      console.log('✅ Contract deployed successfully!');
+      console.log(`📍 Contract Address: ${result.contractAddress}`);
+      console.log(`🔗 Transaction: ${TESTNET_CONFIG.explorerUrl}/tx/${result.transactionHash}`);
+      
+      return result;
+      
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown deployment error'
+      };
+    }
+  }
 
-      // Show summary
-      await deployer.displayDeploymentSummary(result.contractAddress!);
-      break;
+  // Update environment variables with deployed addresses
+  async updateEnvironment(contractAddress: string, deployerAddress: string): Promise<void> {
+    const envPath = path.join(process.cwd(), '.env.local');
+    
+    const envContent = `# Supra Testnet Configuration - Updated ${new Date().toISOString()}
+NEXT_PUBLIC_SUPRA_CHAIN_ID=6
+NEXT_PUBLIC_SUPRA_RPC_URL=${TESTNET_CONFIG.rpcUrl}
+NEXT_PUBLIC_SUPRA_EXPLORER_URL=${TESTNET_CONFIG.explorerUrl}
+NEXT_PUBLIC_SUPRA_FAUCET_URL=${TESTNET_CONFIG.faucetUrl}
 
-    default:
-      console.log('Usage:');
-      console.log('  npm run deploy-contract deploy [testnet|mainnet]');
-      console.log('');
-      console.log('Examples:');
-      console.log('  npm run deploy-contract deploy testnet');
+# Deployed Contract Information
+NEXT_PUBLIC_CONTRACT_ADDRESS=${contractAddress}
+NEXT_PUBLIC_CONTRACT_OWNER=${deployerAddress}
+
+# Environment
+NEXT_PUBLIC_ENVIRONMENT=testnet
+NEXT_PUBLIC_IS_DEMO=false
+
+# Platform Configuration
+NEXT_PUBLIC_PLATFORM_NAME=Dropify
+NEXT_PUBLIC_PLATFORM_DESCRIPTION=Transforming everyday purchases into valuable digital assets
+`;
+
+    fs.writeFileSync(envPath, envContent);
+    console.log('✅ Environment variables updated');
+  }
+
+  // Main deployment process
+  async deploy(): Promise<void> {
+    console.log('🚀 Starting Dropify Testnet Deployment...\n');
+    
+    // Step 1: Check CLI
+    if (!(await this.checkSupraCLI())) {
+      process.exit(1);
+    }
+    
+    // Step 2: Setup wallet
+    const deployerAddress = await this.initializeWallet();
+    if (!deployerAddress) {
+      console.error('❌ Failed to setup wallet');
+      process.exit(1);
+    }
+    
+    // Step 3: Compile contract
+    if (!(await this.compileContract())) {
+      process.exit(1);
+    }
+    
+    // Step 4: Deploy contract
+    const deployResult = await this.deployContract(deployerAddress);
+    
+    if (!deployResult.success) {
+      console.error('❌ Deployment failed:', deployResult.error);
+      process.exit(1);
+    }
+    
+    // Step 5: Update environment
+    if (deployResult.contractAddress) {
+      await this.updateEnvironment(deployResult.contractAddress, deployerAddress);
+    }
+    
+    console.log('\n🎉 Dropify is now live on Supra Testnet!');
+    console.log('\n📋 Next steps:');
+    console.log('1. Start your development server: npm run dev');
+    console.log('2. Test wallet connection and transactions');
+    console.log('3. Share your demo link with users');
+    console.log(`4. Monitor transactions: ${TESTNET_CONFIG.explorerUrl}`);
   }
 }
 
+// Run deployment if called directly
 if (require.main === module) {
-  main().catch(console.error);
+  const deployer = new SupraTestnetDeployer();
+  deployer.deploy().catch(console.error);
 }
 
-export { SupraDeployer };
+export { SupraTestnetDeployer };

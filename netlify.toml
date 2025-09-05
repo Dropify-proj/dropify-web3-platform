@@ -1,40 +1,191 @@
-# Netlify Build Configuration for Dropify
+# ================================================================================
+# DROPIFY TECHNOLOGIES - SUPRA INTEGRATION DEMO
+# Professional Web3 Onboarding Platform
+# ================================================================================
 
 [build]
-  # Build command for production
+  # Production build with optimized performance
   command = "npm ci && npm run build"
   
-  # Output directory (Next.js builds to .next, but we need static export)
-  publish = "out"
+  # Next.js App Router with automatic optimization
+  functions = "netlify/functions"
+  
+  # Build context
+  base = ""
 
 [build.environment]
-  # Node.js version - Using LTS version for stability
+  # Runtime Configuration
   NODE_VERSION = "20.18.0"
+  NPM_VERSION = "10.x"
   
-  # Next.js specific environment variables
+  # Next.js Optimizations
   NEXT_TELEMETRY_DISABLED = "1"
+  NEXT_PRIVATE_STANDALONE = "true"
   
-  # Build optimizations
-  NPM_FLAGS = "--production=false"
-  YARN_FLAGS = "--production=false"
+  # Build Performance
+  NPM_FLAGS = "--prefer-offline --no-audit"
+  NODE_OPTIONS = "--max-old-space-size=4096"
 
-# Redirect rules for Next.js static export
-# No redirects needed - Next.js handles routing with static files
+# ================================================================================
+# FRAMEWORK INTEGRATION
+# ================================================================================
 
-# Security headers
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+  
+  [plugins.inputs]
+    # Enable ISR for dynamic content
+    revalidate = false
+    
+    # Function configuration
+    maxDuration = 30
+
+# ================================================================================
+# ROUTING & REDIRECTS
+# ================================================================================
+
+# SPA Fallback for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  conditions = {Role = ["admin"]}
+
+# API Routes Protection
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Professional Demo Routes
+[[redirects]]
+  from = "/supra"
+  to = "/supra-demo"
+  status = 301
+
+[[redirects]]
+  from = "/acquisition"
+  to = "/supra-demo"
+  status = 301
+
+# ================================================================================
+# SECURITY CONFIGURATION
+# ================================================================================
+
+# Global Security Headers
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Frame-Options = "DENY"
+    # Content Security
+    X-Frame-Options = "SAMEORIGIN"
     X-Content-Type-Options = "nosniff"
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://auth.privy.io https://verify.walletconnect.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://auth.privy.io https://testnet-rpc.supra.com wss: https:; frame-src https://auth.privy.io;"
+    
+    # Professional CSP for Web3 Integration
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-eval' 'unsafe-inline' 
+        https://auth.privy.io 
+        https://verify.walletconnect.com 
+        https://cdn.jsdelivr.net;
+      style-src 'self' 'unsafe-inline' 
+        https://fonts.googleapis.com;
+      font-src 'self' 
+        https://fonts.gstatic.com;
+      img-src 'self' data: https: blob:;
+      connect-src 'self' 
+        https://auth.privy.io 
+        https://testnet-rpc.supra.com 
+        https://api.supra.com
+        wss: https:;
+      frame-src 
+        https://auth.privy.io 
+        https://wallet.supra.com;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+    """
+    
+    # Performance Headers
+    Cache-Control = "public, max-age=31536000, immutable"
 
-# Custom headers for API routes
+# API Security Headers
 [[headers]]
   for = "/api/*"
   [headers.values]
-    Access-Control-Allow-Origin = "*"
+    # CORS Configuration
+    Access-Control-Allow-Origin = "https://supra-demo.netlify.app"
     Access-Control-Allow-Methods = "GET,POST,PUT,DELETE,OPTIONS"
-    Access-Control-Allow-Headers = "Content-Type,Authorization"
+    Access-Control-Allow-Headers = "Content-Type,Authorization,X-Requested-With"
+    Access-Control-Allow-Credentials = "true"
+    
+    # API Security
+    X-Robots-Tag = "noindex"
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# Static Asset Optimization
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/favicon.ico"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# ================================================================================
+# PERFORMANCE OPTIMIZATION
+# ================================================================================
+
+# Edge Functions for Enhanced Performance
+[[edge_functions]]
+  function = "auth-middleware"
+  path = "/auth/*"
+
+# Function Configuration
+[functions]
+  # Optimized function settings
+  node_bundler = "esbuild"
+  
+  # Regional deployment for lower latency
+  included_files = ["lib/**", "contracts/**"]
+
+# ================================================================================
+# MONITORING & ANALYTICS
+# ================================================================================
+
+[build.processing]
+  # Image optimization
+  skip_processing = false
+  
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+# ================================================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATION
+# ================================================================================
+
+# Production Context
+[context.production.environment]
+  NODE_ENV = "production"
+  NEXT_PUBLIC_ENV = "production"
+
+# Preview Context  
+[context.deploy-preview.environment]
+  NODE_ENV = "development"
+  NEXT_PUBLIC_ENV = "preview"
+
+# ================================================================================
+# END OF CONFIGURATION
+# Professional Supra Integration Demo by Dropify Technologies
+# ================================================================================

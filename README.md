@@ -1,6 +1,6 @@
-# Dropify - Beautiful Gradient Web Application
+# Dropify Technologies - Revolutionary Web3 Onboarding Platform
 
-A stunning, modern web application built with Next.js 15, TypeScript, and Tailwind CSS featuring beautiful cyan-blue to purple gradient themes. Dropify showcases best practices for building scalable web applications with proper environment configuration and API integration.
+A revolutionary Web2→Web3 onboarding platform built with Next.js 15, TypeScript, and deployed on Supra L1 blockchain. Dropify Technologies showcases patent-pending technology for seamless wallet generation and automated token distribution.
 
 ## 🌈 Design Features
 

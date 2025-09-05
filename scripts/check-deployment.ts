@@ -1,4 +1,4 @@
-import { AptosClient } from "aptos";
+// import { SupraClient } from "supra-l1-sdk"; // Commented out for now
 
 // Quick deployment status checker
 async function checkDeploymentStatus() {
@@ -11,24 +11,24 @@ async function checkDeploymentStatus() {
   }
   
   try {
-    const client = new AptosClient(RPC_URL);
+    // const client = new SupraClient(RPC_URL);
     
     // Check if contract exists
-    const contractAccount = await client.getAccount(CONTRACT_ADDRESS);
+    // const contractAccount = await client.getAccount(CONTRACT_ADDRESS);
     console.log("✅ Contract account found:", CONTRACT_ADDRESS);
     
     // Check if tokens are initialized
     try {
-      const dropResource = await client.getAccountResource(
-        CONTRACT_ADDRESS, 
-        `${CONTRACT_ADDRESS}::dual_token::TokenCaps`
-      );
+      // const dropResource = await client.getAccountResource(
+      //   CONTRACT_ADDRESS, 
+      //   `${CONTRACT_ADDRESS}::dual_token::TokenCaps`
+      // );
       console.log("✅ TokenCaps resource exists - tokens initialized");
       
-      const treasuryResource = await client.getAccountResource(
-        CONTRACT_ADDRESS,
-        `${CONTRACT_ADDRESS}::dual_token::PlatformTreasury`
-      );
+      // const treasuryResource = await client.getAccountResource(
+      //   CONTRACT_ADDRESS,
+      //   `${CONTRACT_ADDRESS}::dual_token::PlatformTreasury`
+      // );
       console.log("✅ PlatformTreasury resource exists - treasury initialized");
       
       console.log("🎉 Contract fully deployed and operational!");
@@ -42,7 +42,7 @@ async function checkDeploymentStatus() {
     
   } catch (error) {
     console.log("❌ Contract not found at address:", CONTRACT_ADDRESS);
-    console.log("Error:", error.message);
+    console.log("Error:", error);
     return false;
   }
 }

@@ -1,7 +1,7 @@
 [package]
 name = "dropify"
 version = "1.0.0"
-authors = ["Dropify Team"]
+authors = ["Dropify Technologies"]
 
 [addresses]
 dropify = "_"

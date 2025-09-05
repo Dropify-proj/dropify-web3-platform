@@ -1,10 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { useEnhancedAuth } from '@/lib/enhanced-auth-context';
+// import { useEnhancedAuth } from '@/lib/enhanced-auth-context';
 
 export default function FaucetPage() {
-  const { user, activeWalletAddress, walletType } = useEnhancedAuth();
+  // Mock auth for demo
+  const user = { email: 'demo@dropify.com', username: 'demo_user' };
+  const activeWalletAddress = '0x123...abc';
+  const walletType = 'email';
+  
   const [isRequesting, setIsRequesting] = useState(false);
   const [faucetResult, setFaucetResult] = useState<string | null>(null);
 

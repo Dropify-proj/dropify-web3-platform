@@ -20,28 +20,47 @@ interface LeaderboardUser {
   totalMultipliersPurchased: number;
 }
 
+interface WhitelistInfo {
+  totalWhitelisted: number;
+  remainingSpots: number;
+  userWhitelistStatus: boolean;
+  userWhitelistPosition: number | null;
+}
+
+interface UserStats {
+  receiptsCount: number;
+  referralsCount: number;
+  currentMultiplier: number;
+  multiplierReceiptsLeft: number;
+  totalMultipliersPurchased: number;
+}
+
 interface LeaderboardProps {
   className?: string;
 }
 
 export default function Leaderboard({ className = '' }: LeaderboardProps) {
-  const { dropBalance, drfBalance } = useEnhancedWallet();
-  const [activeTab, setActiveTab] = useState<'receipts' | 'referrals' | 'whitelist' | 'multipliers'>('receipts');
+  const { dropBalance, drfBalance, account } = useEnhancedWallet();
+  
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardUser[]>([]);
-  const [currentUserId] = useState(() => `user_${Math.random().toString(36).substr(2, 12)}`);
-  const [userStats, setUserStats] = useState({
+  const [activeTab, setActiveTab] = useState<'receipts' | 'referrals' | 'multipliers' | 'whitelist'>('receipts');
+  const [whitelistInfo, setWhitelistInfo] = useState<WhitelistInfo>({
+    totalWhitelisted: 0,
+    remainingSpots: 20000,
+    userWhitelistStatus: false,
+    userWhitelistPosition: null
+  });
+  
+  // Mock user stats - in real app this would come from the wallet context or API
+  const [userStats, setUserStats] = useState<UserStats>({
     receiptsCount: 0,
     referralsCount: 0,
     currentMultiplier: 1,
     multiplierReceiptsLeft: 0,
     totalMultipliersPurchased: 0
   });
-  const [whitelistInfo, setWhitelistInfo] = useState({
-    totalWhitelisted: 0,
-    remainingSpots: 20000,
-    userWhitelistStatus: false,
-    userWhitelistPosition: null as number | null
-  });
+  
+  const currentUserId = account?.address() || 'demo-user';
 
   // Generate mock leaderboard data
   useEffect(() => {
@@ -371,17 +390,17 @@ export default function Leaderboard({ className = '' }: LeaderboardProps) {
           <div className="col-span-2">
             {activeTab === 'receipts' ? '📸 Receipts' : 
              activeTab === 'referrals' ? '👥 Referrals' : 
-             activeTab === 'stars' ? '⭐ Stars' :
+             activeTab === 'multipliers' ? '🔥 Multipliers' :
              '🎁 Whitelist Pos'}
           </div>
           <div className="col-span-2">
-            {activeTab === 'stars' ? '� Multiplier' : '�💧 Total DROP'}
+            {activeTab === 'multipliers' ? '⚡ Current' : '💧 Total DROP'}
           </div>
           <div className="col-span-2">
-            {activeTab === 'stars' ? '📊 Progress' : '🟣 Total DRF'}
+            {activeTab === 'multipliers' ? '📊 Purchased' : '🟣 Total DRF'}
           </div>
           <div className="col-span-2">
-            {activeTab === 'stars' ? '🎯 Next Goal' : 'Performance'}
+            {activeTab === 'multipliers' ? '🎯 Receipts Left' : 'Performance'}
           </div>
           <div className="col-span-1">🎁 Airdrop</div>
         </div>
@@ -391,14 +410,14 @@ export default function Leaderboard({ className = '' }: LeaderboardProps) {
             const currentRank = index + 1;
             const primaryStat = activeTab === 'receipts' ? user.receiptsCount : 
                                activeTab === 'referrals' ? user.referralsCount :
-                               activeTab === 'stars' ? user.stars :
+                               activeTab === 'multipliers' ? user.totalMultipliersPurchased :
                                user.whitelistPosition || 'Not Listed';
             const performance = activeTab === 'receipts' 
               ? (user.totalDrops / user.receiptsCount).toFixed(1)
               : activeTab === 'referrals' 
               ? (user.referralsCount * 5).toString()
-              : activeTab === 'stars'
-              ? `${Math.min(100, (user.stars / (getNextStarMilestone(user.stars) || 1000)) * 100).toFixed(0)}%`
+              : activeTab === 'multipliers'
+              ? user.multiplierReceiptsLeft.toString()
               : user.isWhitelisted ? `Position #${user.whitelistPosition}` : 'Not Qualified';
             
             return (
@@ -445,24 +464,24 @@ export default function Leaderboard({ className = '' }: LeaderboardProps) {
                 <div className="col-span-2">
                   <div className="text-white font-bold">
                     {typeof primaryStat === 'number' ? primaryStat.toLocaleString() : primaryStat}
-                    {activeTab === 'stars' && <span className="text-yellow-400 ml-1">⭐</span>}
+                    {activeTab === 'multipliers' && <span className="text-orange-400 ml-1">🔥</span>}
                   </div>
                   <div className="text-xs text-gray-400">
                     {activeTab === 'receipts' ? 'receipts' : 
                      activeTab === 'referrals' ? 'referrals' : 
-                     activeTab === 'stars' ? 'total stars' :
+                     activeTab === 'multipliers' ? 'purchased' :
                      'whitelist position'}
                   </div>
                 </div>
 
                 {/* Second Column - Context Dependent */}
                 <div className="col-span-2">
-                  {activeTab === 'stars' ? (
+                  {activeTab === 'multipliers' ? (
                     <div>
                       {user.currentMultiplier > 1 ? (
                         <>
                           <div className="text-orange-400 font-bold">{user.currentMultiplier}x</div>
-                          <div className="text-xs text-gray-400">{user.multiplierReceiptsLeft} left</div>
+                          <div className="text-xs text-gray-400">active</div>
                         </>
                       ) : (
                         <>
@@ -481,19 +500,10 @@ export default function Leaderboard({ className = '' }: LeaderboardProps) {
 
                 {/* Third Column - Context Dependent */}
                 <div className="col-span-2">
-                  {activeTab === 'stars' ? (
-                    <div className="w-full">
-                      <div className="text-xs text-gray-400 mb-1">
-                        {user.stars}/{getNextStarMilestone(user.stars) || 1000} ⭐
-                      </div>
-                      <div className="w-full bg-gray-700 rounded-full h-2">
-                        <div 
-                          className="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full"
-                          style={{ 
-                            width: `${Math.min(100, (user.stars / (getNextStarMilestone(user.stars) || 1000)) * 100)}%` 
-                          }}
-                        ></div>
-                      </div>
+                  {activeTab === 'multipliers' ? (
+                    <div>
+                      <div className="text-purple-400 font-medium">{user.totalMultipliersPurchased}</div>
+                      <div className="text-xs text-gray-400">total purchased</div>
                     </div>
                   ) : (
                     <>
@@ -505,21 +515,10 @@ export default function Leaderboard({ className = '' }: LeaderboardProps) {
 
                 {/* Performance/Next Goal */}
                 <div className="col-span-2">
-                  {activeTab === 'stars' ? (
+                  {activeTab === 'multipliers' ? (
                     <div>
-                      {getNextStarMilestone(user.stars) ? (
-                        <>
-                          <div className="text-green-400 font-medium">{getNextStarMilestone(user.stars)} ⭐</div>
-                          <div className="text-xs text-gray-400">
-                            {getMultiplierFromStars(getNextStarMilestone(user.stars))}x DROP
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="text-purple-400 font-medium">MAX</div>
-                          <div className="text-xs text-gray-400">all unlocked</div>
-                        </>
-                      )}
+                      <div className="text-green-400 font-medium">{user.multiplierReceiptsLeft}</div>
+                      <div className="text-xs text-gray-400">receipts left</div>
                     </div>
                   ) : (
                     <>

@@ -399,6 +399,13 @@ export default function Home() {
                       !isTelegramWebApp || userStats.currentMultiplier > 1
                         ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
                         : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:scale-105'
+                    }`}
+                  >
+                    {userStats.currentMultiplier > 1 ? 'Active Multiplier' : 'Purchase'}
+                  </button>
+                </div>
+              </div>
+
             {/* Additional Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-8">
               <div className="p-6 bg-white/5 rounded-xl">
@@ -411,20 +418,6 @@ export default function Home() {
                 {userStats.multiplierReceiptsLeft > 0 && (
                   <p className="text-xs text-gray-500 mt-1">{userStats.multiplierReceiptsLeft} receipts left</p>
                 )}
-              </div>
-              <div className="p-6 bg-white/5 rounded-xl">
-                <p className="text-sm text-gray-400 font-medium">Treasury Balance</p>
-                <p className="text-4xl font-bold text-yellow-400 mt-2">{treasuryBalance.toFixed(4)}</p>
-                <p className="text-xs text-gray-500 mt-1">1% Premium</p>
-              </div>
-            </div>lassName="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-8">
-              <div className="p-6 bg-white/5 rounded-xl">
-                <p className="text-sm text-gray-400 font-medium">Receipts Processed</p>
-                <p className="text-4xl font-bold text-pink-400 mt-2">{userStats.receiptsCount}</p>
-              </div>
-              <div className="p-6 bg-white/5 rounded-xl">
-                <p className="text-sm text-gray-400 font-medium">Current Multiplier</p>
-                <p className="text-4xl font-bold text-orange-400 mt-2">{userStats.currentMultiplier}x</p>
               </div>
               <div className="p-6 bg-white/5 rounded-xl">
                 <p className="text-sm text-gray-400 font-medium">Treasury Balance</p>

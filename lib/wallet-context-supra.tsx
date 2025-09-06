@@ -288,11 +288,21 @@ export function SupraWalletProvider({ children }: { children: ReactNode }) {
   const [recentEvents, setRecentEvents] = useState<UserEvent[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Track mounted state for SSR safety
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Initialize wallet adapter and RPC client
   const [walletAdapter] = useState<WalletAdapter>(() => {
+    // Only initialize client-side wallet adapters after mount
+    if (typeof window === 'undefined') {
+      return new MockWalletAdapter();
+    }
     // Try to use StarKey wallet, fallback to mock for development
-    return typeof window !== 'undefined' && (window as any).starkey 
+    return (window as any).starkey 
       ? new StarKeyWalletAdapter()
       : new MockWalletAdapter();
   });
@@ -387,7 +397,7 @@ export function SupraWalletProvider({ children }: { children: ReactNode }) {
     if (!walletAddress) {
       try {
         // Check if enhanced auth is available and user is authenticated
-        const storedUser = safesafeLocalStorage.getItem('dropify_user_profile');
+        const storedUser = safeLocalStorage.getItem('dropify_user_profile');
         console.log('📱 Checking localStorage for custodial wallet...');
         if (storedUser) {
           const userData = JSON.parse(storedUser);
@@ -637,6 +647,8 @@ export function SupraWalletProvider({ children }: { children: ReactNode }) {
 
   // Auto-reconnect on page load
   useEffect(() => {
+    if (!isMounted) return;
+    
     if (typeof window !== 'undefined') {
       const savedAddress = safeLocalStorage.getItem('supra_wallet_address');
       if (savedAddress && walletAdapter.isConnected()) {
@@ -645,12 +657,13 @@ export function SupraWalletProvider({ children }: { children: ReactNode }) {
         refreshBalances(savedAddress);
       }
     }
-  }, []);
+  }, [isMounted]);
 
   // Load platform stats on mount
   useEffect(() => {
+    if (!isMounted) return;
     refreshPlatformStats();
-  }, []);
+  }, [isMounted]);
 
   const value: SupraWalletContextType = {
     account,

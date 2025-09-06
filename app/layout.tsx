@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Fira_Code } from "next/font/google";
 import "./globals.css";
-// Enhanced wallet provider with Web3 integration
-import { EnhancedWalletProvider } from '../lib/enhanced-wallet-context';
-// Enhanced auth provider with email authentication
-import { EnhancedAuthProvider } from '../lib/enhanced-auth-context';
-// Supra wallet provider for blockchain integration
-import { SupraWalletProvider } from '../lib/wallet-context-supra';
-// Add Telegram Mini App provider
-import { TelegramProvider } from './components/TelegramMiniApp';
+// Client-only providers wrapper
+import { ClientOnlyProviders } from './components/ClientOnlyProviders';
 // Error boundary for client-side error handling
 import ErrorBoundary from './components/ErrorBoundary';
 
@@ -48,15 +42,9 @@ export default function RootLayout({
         className={`${inter.variable} ${firaCode.variable} antialiased`}
       >
         <ErrorBoundary>
-          <EnhancedAuthProvider>
-            <SupraWalletProvider>
-              <EnhancedWalletProvider>
-                <TelegramProvider>
-                  {children}
-                </TelegramProvider>
-              </EnhancedWalletProvider>
-            </SupraWalletProvider>
-          </EnhancedAuthProvider>
+          <ClientOnlyProviders>
+            {children}
+          </ClientOnlyProviders>
         </ErrorBoundary>
       </body>
     </html>

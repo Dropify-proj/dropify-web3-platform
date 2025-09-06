@@ -116,8 +116,15 @@ export function TelegramProvider({ children }: TelegramProviderProps) {
   const [user, setUser] = useState<TelegramUser | null>(null);
   const [webApp, setWebApp] = useState<TelegramWebApp | null>(null);
   const [theme, setTheme] = useState<any>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
     // Wait for Telegram script to load
     const checkTelegram = () => {
       if (typeof window !== 'undefined' && (window as any).Telegram?.WebApp) {
@@ -146,7 +153,7 @@ export function TelegramProvider({ children }: TelegramProviderProps) {
     const timeout = setTimeout(checkTelegram, 100);
     
     return () => clearTimeout(timeout);
-  }, []);
+  }, [isMounted]);
 
   const navigateWithHaptic = (path: string) => {
     if (webApp) {

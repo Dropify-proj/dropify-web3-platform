@@ -29,7 +29,6 @@ export default function Home() {
     isTelegramWebApp, 
     user, 
     webApp, 
-    navigateWithHaptic, 
     showSuccessMessage,
     isReady 
   } = useTelegram();
@@ -50,35 +49,27 @@ export default function Home() {
     }
 
     try {
-      // Show Telegram payment invoice
-      const invoiceData = {
-        title: `${multiplierType} DROP Multiplier`,
-        description: `Activate ${multiplierType} multiplier for your next ${pricing.receipts} receipts`,
-        payload: `multiplier_${multiplierType}_${Date.now()}`,
-        provider_token: '', // Use Telegram Stars (empty for stars)
-        currency: 'XTR', // Telegram Stars currency
-        prices: [{ label: `${multiplierType} Multiplier`, amount: pricing.stars }],
-        max_tip_amount: 0,
-        suggested_tip_amounts: []
-      };
+      // For Telegram Stars payments, we'll use a simulated approach
+      // In a real implementation, you'd use webApp.openInvoice or similar
+      const confirmPurchase = webApp ? 
+        confirm(`Purchase ${multiplierType} multiplier for ${pricing.stars} Telegram Stars?`) :
+        confirm(`Purchase ${multiplierType} multiplier for ${pricing.stars} Telegram Stars?\n\nNote: This is a demo. In the Telegram Mini App, payment would be processed with Telegram Stars.`);
 
-      // Open Telegram payment
-      webApp.openInvoice(invoiceData.payload, (status: string) => {
-        if (status === 'paid') {
-          // Activate the multiplier
-          setUserStats(prev => ({
-            ...prev,
-            currentMultiplier: pricing.multiplier,
-            multiplierReceiptsLeft: pricing.receipts
-          }));
-          
-          showSuccessMessage(`🎉 ${multiplierType} multiplier activated! You'll earn ${pricing.multiplier}x DROP for your next ${pricing.receipts} receipts.`);
-        } else if (status === 'cancelled') {
-          showSuccessMessage('Payment cancelled');
-        } else {
-          showSuccessMessage('Payment failed. Please try again.');
-        }
-      });
+      if (confirmPurchase) {
+        // Simulate payment processing
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Activate the multiplier
+        setUserStats(prev => ({
+          ...prev,
+          currentMultiplier: pricing.multiplier,
+          multiplierReceiptsLeft: pricing.receipts
+        }));
+        
+        showSuccessMessage(`🎉 ${multiplierType} multiplier activated! You'll earn ${pricing.multiplier}x DROP for your next ${pricing.receipts} receipts.`);
+      } else {
+        showSuccessMessage('Purchase cancelled');
+      }
 
     } catch (error) {
       console.error('Error purchasing multiplier:', error);
@@ -405,6 +396,7 @@ export default function Home() {
                   </button>
                 </div>
               </div>
+            </div>
 
             {/* Additional Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-8">

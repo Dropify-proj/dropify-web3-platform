@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropify Technologies - Strategic Acquisition Proposal for Supra</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a2332 25%, #2d4a78 50%, #4169e1 75%, #6366f1 100%);
+            color: white;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
+            background: white;
+            color: #1a1a1a;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page:last-child {
+            page-break-after: avoid;
+        }
+        
+        /* Supra Brand Colors and Effects */
+        .supra-gradient {
+            background: linear-gradient(135deg, #6366f1, #4169e1, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .supra-bg {
+            background: linear-gradient(135deg, #6366f1, #4169e1);
+        }
+        
+        .dropify-gradient {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Header Design */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #6366f1;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 900;
+            color: white;
+        }
+        
+        .dropify-logo {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+        }
+        
+        .supra-logo {
+            background: linear-gradient(135deg, #6366f1, #4169e1);
+        }
+        
+        .company-names {
+            font-size: 32px;
+            font-weight: 800;
+        }
+        
+        .acquisition-tag {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Typography */
+        .title {
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #6b7280;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 30px 0 15px 0;
+            color: #1f2937;
+            border-left: 4px solid #6366f1;
+            padding-left: 15px;
+        }
+        
+        .subsection-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 20px 0 10px 0;
+            color: #374151;
+        }
+        
+        /* Content Boxes */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border: 2px solid #6366f1;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .financial-box {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1));
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .value-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .value-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .value-number {
+            font-size: 24px;
+            font-weight: 900;
+            color: #6366f1;
+            margin-bottom: 5px;
+        }
+        
+        .value-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Lists */
+        .benefit-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+        
+        .benefit-list li {
+            margin: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .benefit-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: 900;
+            font-size: 16px;
+        }
+        
+        /* Tables */
+        .financial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+        
+        .financial-table th {
+            background: #6366f1;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 700;
+        }
+        
+        .financial-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .financial-table tr:nth-child(even) {
+            background: #f9fafb;
+        }
+        
+        /* Footer */
+        .page-footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 20mm;
+            right: 20mm;
+            text-align: center;
+            font-size: 11px;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 10px;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .page {
+                box-shadow: none;
+                margin: 0;
+                width: 100%;
+                min-height: 100vh;
+            }
+        }
+        
+        /* Confidential Watermark */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 48px;
+            color: rgba(99, 102, 241, 0.05);
+            font-weight: 900;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page 1: Cover & Executive Summary -->
+    <div class="page">
+        <div class="watermark">CONFIDENTIAL</div>
+        <div class="content">
+            <div class="header">
+                <div class="logo-section">
+                    <div class="company-logo dropify-logo">D</div>
+                    <div class="company-names">
+                        <span class="dropify-gradient">Dropify</span>
+                        <span style="color: #6b7280; margin: 0 10px;">→</span>
+                        <span class="supra-gradient">Supra</span>
+                    </div>
+                    <div class="company-logo supra-logo">S</div>
+                </div>
+                <div class="acquisition-tag">Strategic Acquisition</div>
+            </div>
+            
+            <h1 class="title supra-gradient">Strategic Technology Acquisition Proposal</h1>
+            <p class="subtitle">Complete buyout with passive equity retention and performance-based royalties</p>
+            
+            <div class="highlight-box">
+                <h2 class="section-title">Executive Summary</h2>
+                <p><strong>Dropify Technologies</strong> proposes a strategic acquisition by Supra that combines substantial immediate buyout payment with long-term equity retention and royalty participation, while transferring all technology, operations, and brand assets to Supra.</p>
+                
+                <div class="value-grid">
+                    <div class="value-card">
+                        <div class="value-number">$16.4M - $31M</div>
+                        <div class="value-label">Total Acquisition Payment</div>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-number">20%</div>
+                        <div class="value-label">Founder Equity Retention</div>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-number">$15M - $30M</div>
+                        <div class="value-label">Patent Portfolio Value</div>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-number">Zero</div>
+                        <div class="value-label">Operational Responsibility</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Core Deal Framework</h2>
+            <ul class="benefit-list">
+                <li><strong>Complete Technology Transfer</strong>: All IP, code, patents, and brand assets to Supra</li>
+                <li><strong>Founder Equity Retention</strong>: 20% ongoing ownership in acquired entity</li>
+                <li><strong>Substantial Buyout Payment</strong>: Immediate cash compensation for technology transfer</li>
+                <li><strong>Passive Royalty Structure</strong>: Performance-based revenue sharing without operational involvement</li>
+                <li><strong>Zero Operational Responsibility</strong>: Supra assumes all day-to-day operations</li>
+            </ul>
+            
+            <div class="financial-box">
+                <h3 class="subsection-title" style="color: #059669;">Strategic Benefits for Supra</h3>
+                <ul class="benefit-list">
+                    <li>Immediate access to $15-30M patent portfolio exclusively on Supra</li>
+                    <li>Ready-to-deploy Web3 onboarding platform (already on Supra testnet)</li>
+                    <li>Potential to onboard 5-10M users directly to Supra L1</li>
+                    <li>Enterprise market penetration with Fortune 500 companies</li>
+                    <li>First-mover advantage in automated token distribution</li>
+                    <li>Complete elimination of competitive risk</li>
+                </ul>
+            </div>
+        </div>
+        <div class="page-footer">
+            <strong>CONFIDENTIAL & PROPRIETARY</strong> | Dropify Technologies LLC | Phoenix, Arizona | dropifytoken@gmail.com
+        </div>
+    </div>
+    
+    <!-- Page 2: Financial Structure -->
+    <div class="page">
+        <div class="watermark">CONFIDENTIAL</div>
+        <div class="content">
+            <h1 class="section-title">Financial Structure</h1>
+            
+            <h2 class="subsection-title">Acquisition Payment Components</h2>
+            
+            <table class="financial-table">
+                <thead>
+                    <tr>
+                        <th>Payment Component</th>
+                        <th>Amount Range</th>
+                        <th>Purpose</th>
+                        <th>Timeline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Technology Buyout</strong></td>
+                        <td>$8M - $15M</td>
+                        <td>Full acquisition of technology, patents, and codebase</td>
+                        <td>Upon closing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Brand & IP Transfer</strong></td>
+                        <td>$6.4M - $12M</td>
+                        <td>Complete Dropify brand, trademarks, domain rights</td>
+                        <td>Upon closing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transition Bonus</strong></td>
+                        <td>$2M - $4M</td>
+                        <td>Knowledge transfer and transition support</td>
+                        <td>3-6 months</td>
+                    </tr>
+                    <tr style="background: #f0f9ff; font-weight: 700;">
+                        <td><strong>TOTAL ACQUISITION</strong></td>
+                        <td><strong>$16.4M - $31M</strong></td>
+                        <td><strong>Complete technology transfer</strong></td>
+                        <td><strong>Immediate</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="highlight-box">
+                <h2 class="subsection-title">Passive Royalty Structure (20% Retention)</h2>
+                
+                <h3 style="color: #6366f1; font-size: 16px; margin: 15px 0 10px 0;">Platform Revenue Royalties</h3>
+                <ul class="benefit-list">
+                    <li><strong>Rate</strong>: 2% - 3% of all platform-generated revenue</li>
+                    <li><strong>Minimum Floor</strong>: $100,000 per year guaranteed</li>
+                    <li><strong>Growth Escalator</strong>: Automatic increases with platform success</li>
+                    <li><strong>No Cap</strong>: Unlimited upside potential with platform growth</li>
+                </ul>
+                
+                <h3 style="color: #6366f1; font-size: 16px; margin: 15px 0 10px 0;">Token Economy Royalties</h3>
+                <ul class="benefit-list">
+                    <li><strong>$DROP Transactions</strong>: 1% of all token distribution fees</li>
+                    <li><strong>$DRF Governance</strong>: 1.5% of governance token transaction fees</li>
+                    <li><strong>Enterprise Integrations</strong>: 2% of business setup and subscription fees</li>
+                    <li><strong>White-Label Licensing</strong>: 10% of any licensing revenue to third parties</li>
+                </ul>
+                
+                <h3 style="color: #6366f1; font-size: 16px; margin: 15px 0 10px 0;">Performance Milestone Bonuses</h3>
+                <ul class="benefit-list">
+                    <li><strong>User Growth</strong>: $200K bonus per 5M users onboarded</li>
+                    <li><strong>Enterprise Adoption</strong>: $500K bonus per 100 Fortune 500 companies</li>
+                    <li><strong>Network Value</strong>: $1M bonus per $10B in transaction volume</li>
+                    <li><strong>Market Leadership</strong>: $2M bonus if platform becomes #1 Web3 onboarding solution</li>
+                </ul>
+            </div>
+            
+            <div class="financial-box">
+                <h3 style="color: #059669; font-size: 18px; margin-bottom: 15px;">Passive Equity Participation (20% Retention)</h3>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <div class="value-number">20%</div>
+                        <div class="value-label">Net Profits Share</div>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-number">20%</div>
+                        <div class="value-label">Future Exit Participation</div>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-number">Board Observer</div>
+                        <div class="value-label">Minimal Voting Rights</div>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-number">Zero</div>
+                        <div class="value-label">Day-to-Day Operations</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-footer">
+            <strong>CONFIDENTIAL & PROPRIETARY</strong> | Dropify Technologies LLC | Phoenix, Arizona | dropifytoken@gmail.com
+        </div>
+    </div>
+    
+    <!-- Page 3: Technology & IP Portfolio -->
+    <div class="page">
+        <div class="watermark">CONFIDENTIAL</div>
+        <div class="content">
+            <h1 class="section-title">Technology & Intellectual Property Portfolio</h1>
+            
+            <div class="highlight-box">
+                <h2 style="color: #6366f1; font-size: 20px; margin-bottom: 15px;">🔒 Patent Portfolio Valuation: $15M - $30M</h2>
+                
+                <table class="financial-table">
+                    <thead>
+                        <tr>
+                            <th>Patent Technology</th>
+                            <th>Market Value</th>
+                            <th>Strategic Importance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Automated Token Distribution System</strong></td>
+                            <td>$5M - $8M</td>
+                            <td>Core business logic, revenue generation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Web2→Web3 Bridge Technology</strong></td>
+                            <td>$4M - $7M</td>
+                            <td>User onboarding, market differentiation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Business Partnership API System</strong></td>
+                            <td>$3M - $6M</td>
+                            <td>Enterprise adoption, scalability</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dual-Token Economic Model</strong></td>
+                            <td>$2M - $5M</td>
+                            <td>Tokenomics innovation, sustainability</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Receipt Processing Technology</strong></td>
+                            <td>$1M - $4M</td>
+                            <td>Real-world utility, user engagement</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h2 class="subsection-title">Technology Stack (Ready for Immediate Deployment)</h2>
+            <ul class="benefit-list">
+                <li><strong>Supra L1 Smart Contracts</strong>: Move-based dual token system already deployed on testnet</li>
+                <li><strong>Next.js 15 Frontend</strong>: Modern React application with enhanced UI/UX</li>
+                <li><strong>Wallet Integration</strong>: StarKey, Petra, and custodial wallet support</li>
+                <li><strong>Business APIs</strong>: Enterprise-ready integration endpoints</li>
+                <li><strong>Receipt Processing</strong>: AI-powered real-world purchase verification</li>
+                <li><strong>Admin Dashboard</strong>: Complete platform management interface</li>
+            </ul>
+            
+            <div class="financial-box">
+                <h3 style="color: #059669; font-size: 18px; margin-bottom: 15px;">Immediate ROI Projections for Supra</h3>
+                
+                <table class="financial-table">
+                    <thead>
+                        <tr>
+                            <th>Revenue Stream</th>
+                            <th>Year 1</th>
+                            <th>Year 3</th>
+                            <th>Year 5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Platform Transaction Fees</td>
+                            <td>$2M</td>
+                            <td>$15M</td>
+                            <td>$50M</td>
+                        </tr>
+                        <tr>
+                            <td>Enterprise Subscriptions</td>
+                            <td>$1M</td>
+                            <td>$10M</td>
+                            <td>$25M</td>
+                        </tr>
+                        <tr>
+                            <td>Token Economics Revenue</td>
+                            <td>$0.5M</td>
+                            <td>$5M</td>
+                            <td>$20M</td>
+                        </tr>
+                        <tr>
+                            <td>Licensing & White-Label</td>
+                            <td>$0.2M</td>
+                            <td>$2M</td>
+                            <td>$8M</td>
+                        </tr>
+                        <tr style="background: #f0f9ff; font-weight: 700;">
+                            <td><strong>TOTAL ANNUAL REVENUE</strong></td>
+                            <td><strong>$3.7M</strong></td>
+                            <td><strong>$32M</strong></td>
+                            <td><strong>$103M</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p style="margin-top: 15px; font-size: 12px; color: #6b7280;"><em>* Conservative projections based on 5M user onboarding in Year 1, scaling to 50M+ users by Year 5</em></p>
+            </div>
+            
+            <h2 class="subsection-title">Risk Mitigation</h2>
+            <ul class="benefit-list">
+                <li><strong>Technology Risk</strong>: Platform already deployed and functional on Supra testnet</li>
+                <li><strong>Market Risk</strong>: Patent protection provides 20-year competitive moat</li>
+                <li><strong>Execution Risk</strong>: Complete documentation and transition support included</li>
+                <li><strong>Founder Risk</strong>: Passive structure eliminates dependency on founder involvement</li>
+                <li><strong>Competition Risk</strong>: Exclusive Supra deployment prevents competitive use</li>
+            </ul>
+        </div>
+        <div class="page-footer">
+            <strong>CONFIDENTIAL & PROPRIETARY</strong> | Dropify Technologies LLC | Phoenix, Arizona | dropifytoken@gmail.com
+        </div>
+    </div>
+    
+    <!-- Page 4: Contact & Next Steps -->
+    <div class="page">
+        <div class="watermark">CONFIDENTIAL</div>
+        <div class="content">
+            <h1 class="section-title">Contact Information & Next Steps</h1>
+            
+            <div class="highlight-box">
+                <h2 style="color: #6366f1; font-size: 20px; margin-bottom: 20px;">📞 Dropify Technologies Contact</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div>
+                        <h3 style="color: #374151; margin-bottom: 10px;">Founder & CEO</h3>
+                        <p><strong>Email</strong>: dropifytoken@gmail.com</p>
+                        <p><strong>Location</strong>: Phoenix, Arizona</p>
+                        <p><strong>Company</strong>: Dropify Technologies LLC</p>
+                        <p><strong>Available</strong>: Immediate discussions</p>
+                    </div>
+                    <div>
+                        <h3 style="color: #374151; margin-bottom: 10px;">Technology</h3>
+                        <p><strong>Platform</strong>: Live on Supra Testnet</p>
+                        <p><strong>Demo</strong>: Available for immediate testing</p>
+                        <p><strong>Documentation</strong>: Complete technical specs ready</p>
+                        <p><strong>Patents</strong>: Filed and documented</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="subsection-title">Proposed Timeline</h2>
+            
+            <table class="financial-table">
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Duration</th>
+                        <th>Activities</th>
+                        <th>Deliverables</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Initial Review</strong></td>
+                        <td>1-2 weeks</td>
+                        <td>Technology demo, due diligence</td>
+                        <td>Technical assessment, IP verification</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Term Negotiation</strong></td>
+                        <td>2-3 weeks</td>
+                        <td>Financial structure, legal terms</td>
+                        <td>Letter of Intent (LOI)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Due Diligence</strong></td>
+                        <td>4-6 weeks</td>
+                        <td>Deep technical review, legal audit</td>
+                        <td>Final acquisition agreement</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transition</strong></td>
+                        <td>3-6 months</td>
+                        <td>Knowledge transfer, integration</td>
+                        <td>Complete platform handover</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="financial-box">
+                <h3 style="color: #059669; font-size: 18px; margin-bottom: 15px;">Immediate Next Steps</h3>
+                
+                <ol style="padding-left: 20px; margin: 15px 0;">
+                    <li style="margin: 10px 0;"><strong>Schedule Initial Demo</strong>: 30-minute platform demonstration on Supra testnet</li>
+                    <li style="margin: 10px 0;"><strong>Technical Due Diligence</strong>: Supra engineering team reviews codebase and contracts</li>
+                    <li style="margin: 10px 0;"><strong>IP Verification</strong>: Patent portfolio assessment and valuation confirmation</li>
+                    <li style="margin: 10px 0;"><strong>Financial Modeling</strong>: Revenue projections and ROI analysis for Supra</li>
+                    <li style="margin: 10px 0;"><strong>Term Sheet</strong>: Formal offer and negotiation of acquisition terms</li>
+                </ol>
+            </div>
+            
+            <div class="highlight-box">
+                <h3 style="color: #6366f1; font-size: 18px; margin-bottom: 15px;">Why This Acquisition Makes Strategic Sense</h3>
+                
+                <div class="value-grid">
+                    <div class="value-card">
+                        <div class="value-number">5-10M</div>
+                        <div class="value-label">Users Onboarded to Supra</div>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-number">$500M+</div>
+                        <div class="value-label">User Lifetime Value</div>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-number">80x</div>
+                        <div class="value-label">Potential ROI Multiple</div>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-number">20 Years</div>
+                        <div class="value-label">Patent Protection</div>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 15px; text-align: center; font-style: italic;">
+                    "This acquisition positions Supra as the definitive leader in Web3 onboarding technology, with exclusive access to patent-protected innovation that will drive massive mainstream adoption."
+                </p>
+            </div>
+            
+            <div style="margin-top: 40px; text-align: center; padding: 20px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 12px; color: white;">
+                <h3 style="margin-bottom: 10px;">Ready to Accelerate Supra's Market Dominance?</h3>
+                <p style="font-size: 16px; margin-bottom: 15px;">Contact us today to schedule your technology demonstration</p>
+                <p style="font-size: 18px; font-weight: 700;">📧 dropifytoken@gmail.com</p>
+            </div>
+        </div>
+        <div class="page-footer">
+            <strong>CONFIDENTIAL & PROPRIETARY</strong> | Dropify Technologies LLC | Phoenix, Arizona | dropifytoken@gmail.com
+        </div>
+    </div>
+</body>
+</html>

@@ -1,6 +1,8 @@
 // Testnet DRF Reward System Integration
 // For Next.js frontend integration with the dual token contract
 
+import React from 'react';
+
 export interface TestnetDRFStatus {
   isActive: boolean;
   distributed: number;

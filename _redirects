@@ -1,5 +1,5 @@
-# Netlify redirects for Next.js SPA routing
-/*    /index.html   200
+# Netlify redirects for Next.js App Router
+# Let Next.js handle all routing - no SPA fallback needed
 
-# API routes
+# API routes to Netlify functions
 /api/*  /.netlify/functions/:splat  200

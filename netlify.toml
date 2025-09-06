@@ -1,14 +1,14 @@
 # ================================================================================
-# DROPIFY TECHNOLOGIES - SUPRA INTEGRATION DEMO
+# DROPIFY TECHNOLOGIES - NEXT.JS APP ROUTER CONFIGURATION
 # Professional Web3 Onboarding Platform
 # ================================================================================
 
 [build]
-  # Production build with optimized performance
+  # Next.js production build command
   command = "npm ci && npm run build"
   
-  # Next.js App Router with automatic optimization
-  functions = "netlify/functions"
+  # Let Netlify automatically detect Next.js output
+  # Don't set publish directory for Next.js
   
   # Build context
   base = ""
@@ -20,7 +20,6 @@
   
   # Next.js Optimizations
   NEXT_TELEMETRY_DISABLED = "1"
-  NEXT_PRIVATE_STANDALONE = "true"
   
   # Build Performance
   NPM_FLAGS = "--prefer-offline --no-audit"
@@ -36,13 +35,6 @@
 # ================================================================================
 # ROUTING & REDIRECTS
 # ================================================================================
-
-# SPA Fallback for client-side routing
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  conditions = {Role = ["admin"]}
 
 # API Routes Protection
 [[redirects]]

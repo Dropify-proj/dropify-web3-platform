@@ -32,13 +32,6 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-  
-  [plugins.inputs]
-    # Enable ISR for dynamic content
-    revalidate = false
-    
-    # Function configuration
-    maxDuration = 30
 
 # ================================================================================
 # ROUTING & REDIRECTS

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
 import { useSupraWallet, SUPRA_CONFIG } from './wallet-context-supra';
+import { safeLocalStorage } from './safe-storage';
 
 // Email-based user profile interface
 interface UserProfile {
@@ -98,8 +99,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // await fetch('/api/auth/signup', { method: 'POST', body: JSON.stringify({ email, username }) });
       
       // Store user profile
-      localStorage.setItem('dropify_user_profile', JSON.stringify(userProfile));
-      localStorage.setItem('dropify_email_auth', 'true');
+      safeLocalStorage.setItem('dropify_user_profile', JSON.stringify(userProfile));
+      safeLocalStorage.setItem('dropify_email_auth', 'true');
       
       setUser(userProfile);
       setIsEmailAuthenticated(true);
@@ -124,7 +125,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // const response = await fetch('/api/auth/signin', { method: 'POST', body: JSON.stringify({ email }) });
       
       // Check if user exists in localStorage (demo)
-      const savedProfile = localStorage.getItem('dropify_user_profile');
+      const savedProfile = safeLocalStorage.getItem('dropify_user_profile');
       if (savedProfile) {
         const profile = JSON.parse(savedProfile);
         if (profile.email === email) {
@@ -135,8 +136,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             profile.walletAddress = walletAddress;
           }
           
-          localStorage.setItem('dropify_user_profile', JSON.stringify(profile));
-          localStorage.setItem('dropify_email_auth', 'true');
+          safeLocalStorage.setItem('dropify_user_profile', JSON.stringify(profile));
+          safeLocalStorage.setItem('dropify_email_auth', 'true');
           
           setUser(profile);
           setIsEmailAuthenticated(true);

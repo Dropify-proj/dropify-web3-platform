@@ -118,24 +118,34 @@ export function TelegramProvider({ children }: TelegramProviderProps) {
   const [theme, setTheme] = useState<any>(null);
 
   useEffect(() => {
-    // Check if running in Telegram Web App
-    if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
-      const tg = window.Telegram.WebApp as TelegramWebApp;
-      
-      setIsTelegramWebApp(true);
-      setWebApp(tg);
-      setUser(tg.initDataUnsafe.user || null);
-      setTheme(tg.themeParams);
-      
-      // Initialize the app
-      tg.ready();
-      tg.expand();
-      
-      setIsReady(true);
-    } else {
-      // Still mark as ready for non-Telegram usage
-      setIsReady(true);
-    }
+    // Wait for Telegram script to load
+    const checkTelegram = () => {
+      if (typeof window !== 'undefined' && (window as any).Telegram?.WebApp) {
+        const tg = (window as any).Telegram.WebApp as TelegramWebApp;
+        
+        setIsTelegramWebApp(true);
+        setWebApp(tg);
+        setUser(tg.initDataUnsafe.user || null);
+        setTheme(tg.themeParams);
+        
+        // Initialize the app
+        tg.ready();
+        tg.expand();
+        
+        setIsReady(true);
+      } else {
+        // Still mark as ready for non-Telegram usage
+        setIsReady(true);
+      }
+    };
+
+    // Try immediately
+    checkTelegram();
+
+    // Also try after a short delay in case script is still loading
+    const timeout = setTimeout(checkTelegram, 100);
+    
+    return () => clearTimeout(timeout);
   }, []);
 
   const navigateWithHaptic = (path: string) => {

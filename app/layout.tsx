@@ -7,6 +7,8 @@ import { EnhancedWalletProvider } from '../lib/enhanced-wallet-context';
 import { EnhancedAuthProvider } from '../lib/enhanced-auth-context';
 // Add Telegram Mini App provider
 import { TelegramProvider } from './components/TelegramMiniApp';
+// Error boundary for client-side error handling
+import ErrorBoundary from './components/ErrorBoundary';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -43,13 +45,15 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${firaCode.variable} antialiased`}
       >
-        <EnhancedAuthProvider>
-          <EnhancedWalletProvider>
-            <TelegramProvider>
-              {children}
-            </TelegramProvider>
-          </EnhancedWalletProvider>
-        </EnhancedAuthProvider>
+        <ErrorBoundary>
+          <EnhancedAuthProvider>
+            <EnhancedWalletProvider>
+              <TelegramProvider>
+                {children}
+              </TelegramProvider>
+            </EnhancedWalletProvider>
+          </EnhancedAuthProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

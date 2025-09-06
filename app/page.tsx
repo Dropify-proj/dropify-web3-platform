@@ -105,7 +105,9 @@ export default function Home() {
       webApp.showAlert('You are already in the Telegram Mini App!');
     } else {
       // Redirect to Telegram bot or show instructions
-      window.open('https://t.me/DropifyBot', '_blank');
+      if (typeof window !== 'undefined') {
+        window.open('https://t.me/DropifyBot', '_blank');
+      }
     }
   };
 

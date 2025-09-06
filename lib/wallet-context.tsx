@@ -335,6 +335,26 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 export function useWallet() {
   const context = useContext(WalletContext);
   if (context === undefined) {
+    // During SSR/static generation, return safe defaults instead of throwing
+    if (typeof window === 'undefined') {
+      return {
+        account: null,
+        isConnected: false,
+        dropBalance: 0,
+        drfBalance: 0,
+        platformStats: null,
+        recentEvents: [],
+        isLoading: false,
+        error: null,
+        connectWallet: async () => {},
+        disconnectWallet: () => {},
+        scanReceipt: async () => {},
+        redeemReward: async () => {},
+        purchaseAdvertising: async () => {},
+        refreshBalances: async () => {},
+        refreshPlatformStats: async () => {},
+      };
+    }
     throw new Error('useWallet must be used within a WalletProvider');
   }
   return context;

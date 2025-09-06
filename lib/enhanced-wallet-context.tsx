@@ -350,6 +350,31 @@ export function EnhancedWalletProvider({ children }: { children: ReactNode }) {
 export function useEnhancedWallet() {
   const context = useContext(EnhancedWalletContext);
   if (context === undefined) {
+    // During SSR/static generation, return safe defaults instead of throwing
+    if (typeof window === 'undefined') {
+      return {
+        account: null,
+        isConnected: false,
+        isConnecting: false,
+        walletType: null,
+        dropBalance: 0,
+        drfBalance: 0,
+        platformStats: null,
+        recentTransactions: [],
+        isLoading: false,
+        error: null,
+        connectWallet: async () => {},
+        disconnectWallet: () => {},
+        processReceiptComplete: async () => ({ 
+          success: false,
+          error: 'Not available during SSR'
+        }),
+        convertDropToDrf: async () => {},
+        redeemReward: async () => {},
+        refreshBalances: async () => {},
+        refreshPlatformStats: async () => {},
+      };
+    }
     throw new Error('useEnhancedWallet must be used within an EnhancedWalletProvider');
   }
   return context;

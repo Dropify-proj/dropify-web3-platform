@@ -1,1 +1,1 @@
-Build trigger for fetch timeout fix - replaced timeout property with AbortSignal.timeout() for native fetch API compatibility
+Build trigger for TypeScript configuration fix - removed explicit react-dom types to prevent conflicts with Next.js auto-discovery

@@ -292,6 +292,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
+    // During SSR/static generation, return safe defaults instead of throwing
+    if (typeof window === 'undefined') {
+      return {
+        user: null,
+        isEmailAuthenticated: false,
+        emailLoading: false,
+        emailError: null,
+        walletConnected: false,
+        walletAddress: null,
+        isFullyAuthenticated: false,
+        signUpWithEmail: async () => {},
+        signInWithEmail: async () => {},
+        signOut: () => {},
+        connectWallet: async () => {},
+        disconnectWallet: () => {},
+        updateProfile: async () => {},
+        linkWallet: async () => {},
+      };
+    }
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;

@@ -489,6 +489,27 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
 export function useEnhancedAuth() {
   const context = useContext(EnhancedAuthContext);
   if (context === undefined) {
+    // During SSR/static generation, return safe defaults instead of throwing
+    if (typeof window === 'undefined') {
+      return {
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+        activeWalletAddress: null,
+        walletType: 'custodial' as const,
+        signUpWithEmail: async () => {},
+        signInWithEmail: async () => {},
+        signOut: () => {},
+        connectExternalWallet: async () => {},
+        disconnectExternalWallet: () => {},
+        switchToExternalWallet: () => {},
+        switchToCustodialWallet: () => {},
+        getCustodialWallet: () => null,
+        exportWalletDetails: () => null,
+        updateProfile: async () => {},
+      };
+    }
     throw new Error('useEnhancedAuth must be used within an EnhancedAuthProvider');
   }
   return context;

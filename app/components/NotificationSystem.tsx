@@ -88,6 +88,17 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 export function useNotifications() {
   const context = useContext(NotificationContext);
   if (!context) {
+    // During SSR/static generation, return safe defaults instead of throwing
+    if (typeof window === 'undefined') {
+      return {
+        notifications: [],
+        unreadCount: 0,
+        addNotification: () => {},
+        markAsRead: () => {},
+        markAllAsRead: () => {},
+        clearNotifications: () => {},
+      };
+    }
     throw new Error('useNotifications must be used within a NotificationProvider');
   }
   return context;

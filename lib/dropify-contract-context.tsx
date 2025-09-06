@@ -206,6 +206,18 @@ export function DropifyProvider({ children }: { children: ReactNode }) {
 export function useDropify() {
   const context = useContext(DropifyContext);
   if (context === undefined) {
+    // During SSR/static generation, return safe defaults instead of throwing
+    if (typeof window === 'undefined') {
+      return {
+        isConnected: false,
+        isLoading: false,
+        error: null,
+        contract: null,
+        connect: async () => {},
+        disconnect: () => {},
+        refreshData: async () => {},
+      };
+    }
     throw new Error('useDropify must be used within a DropifyProvider');
   }
   return context;

@@ -685,6 +685,26 @@ export function SupraWalletProvider({ children }: { children: ReactNode }) {
 export function useSupraWallet() {
   const context = useContext(SupraWalletContext);
   if (context === undefined) {
+    // During SSR/static generation, return safe defaults instead of throwing
+    if (typeof window === 'undefined') {
+      return {
+        account: null,
+        isConnected: false,
+        dropBalance: 0,
+        drfBalance: 0,
+        platformStats: null,
+        recentEvents: [],
+        isLoading: false,
+        error: null,
+        connectWallet: async () => {},
+        disconnectWallet: () => {},
+        scanReceipt: async () => '0x',
+        redeemReward: async () => '0x',
+        purchaseAdvertising: async () => '0x',
+        refreshBalances: async () => {},
+        refreshPlatformStats: async () => {},
+      };
+    }
     throw new Error('useSupraWallet must be used within a SupraWalletProvider');
   }
   return context;

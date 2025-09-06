@@ -1,1 +1,1 @@
-Build trigger for node-fetch TypeScript fix - replaced node-fetch with native fetch API and removed unnecessary dependencies
+Build trigger for fetch timeout fix - replaced timeout property with AbortSignal.timeout() for native fetch API compatibility

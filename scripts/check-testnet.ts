@@ -1,6 +1,7 @@
 #!/usr/bin/env ts-node
 
-import fetch from 'node-fetch';
+// Using native fetch API available in Node.js 18+
+// No need for node-fetch import
 
 // Supra Testnet Configuration
 const TESTNET_CONFIG = {

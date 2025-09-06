@@ -1,1 +1,1 @@
-Build trigger for React import fix
+Build trigger for font configuration fix - replaced Geist fonts with Inter and Fira Code for Next.js 14 compatibility

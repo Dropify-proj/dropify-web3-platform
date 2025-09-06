@@ -1,1 +1,1 @@
-Build trigger for font configuration fix - replaced Geist fonts with Inter and Fira Code for Next.js 14 compatibility
+Build trigger for node-fetch TypeScript fix - replaced node-fetch with native fetch API and removed unnecessary dependencies

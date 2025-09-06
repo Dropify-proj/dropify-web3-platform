@@ -27,6 +27,7 @@ class TestnetHealthChecker {
     try {
       console.log('🌐 Checking Supra Testnet connectivity...');
       
+      // Use AbortSignal.timeout() for native fetch timeout support
       const response = await fetch(TESTNET_CONFIG.rpcUrl, {
         method: 'POST',
         headers: {
@@ -38,7 +39,7 @@ class TestnetHealthChecker {
           params: {},
           id: 1
         }),
-        timeout: 10000 // 10 second timeout
+        signal: AbortSignal.timeout(10000) // 10 second timeout
       });
 
       const latency = Date.now() - startTime;

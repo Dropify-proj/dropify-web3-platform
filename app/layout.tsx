@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Fira_Code } from "next/font/google";
 import "./globals.css";
 // Enhanced wallet provider with Web3 integration
 import { EnhancedWalletProvider } from '../lib/enhanced-wallet-context';
@@ -8,13 +8,13 @@ import { EnhancedAuthProvider } from '../lib/enhanced-auth-context';
 // Add Telegram Mini App provider
 import { TelegramProvider } from './components/TelegramMiniApp';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const firaCode = Fira_Code({
+  variable: "--font-fira-code",
   subsets: ["latin"],
 });
 
@@ -41,7 +41,7 @@ export default function RootLayout({
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.variable} ${firaCode.variable} antialiased`}
       >
         <EnhancedAuthProvider>
           <EnhancedWalletProvider>

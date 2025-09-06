@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
+import { safeLocalStorage } from './safe-storage';
 
 // Supra Testnet Configuration
 const SUPRA_CONFIG = {
@@ -313,9 +314,7 @@ export function SupraWalletProvider({ children }: { children: ReactNode }) {
       await refreshPlatformStats();
 
       // Store session
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('supra_wallet_address', accountInfo.address);
-      }
+      safeLocalStorage.setItem('supra_wallet_address', accountInfo.address);
 
       console.log('🔗 Connected to Supra Testnet:', accountInfo.address);
     } catch (err) {
@@ -337,9 +336,7 @@ export function SupraWalletProvider({ children }: { children: ReactNode }) {
     setRecentEvents([]);
     setError(null);
     
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('supra_wallet_address');
-    }
+    safeLocalStorage.removeItem('supra_wallet_address');
     
     console.log('🔌 Disconnected from Supra wallet');
   };
@@ -390,21 +387,19 @@ export function SupraWalletProvider({ children }: { children: ReactNode }) {
     if (!walletAddress) {
       try {
         // Check if enhanced auth is available and user is authenticated
-        if (typeof window !== 'undefined') {
-          const storedUser = localStorage.getItem('dropify_user_profile');
-          console.log('📱 Checking localStorage for custodial wallet...');
-          if (storedUser) {
-            const userData = JSON.parse(storedUser);
-            console.log('👤 User data found:', userData);
-            if (userData.custodialWallet?.address) {
-              walletAddress = userData.custodialWallet.address;
-              console.log('🔐 Using custodial wallet for transaction:', walletAddress);
-            } else {
-              console.log('❌ No custodial wallet address in user data');
-            }
+        const storedUser = safesafeLocalStorage.getItem('dropify_user_profile');
+        console.log('📱 Checking localStorage for custodial wallet...');
+        if (storedUser) {
+          const userData = JSON.parse(storedUser);
+          console.log('👤 User data found:', userData);
+          if (userData.custodialWallet?.address) {
+            walletAddress = userData.custodialWallet.address;
+            console.log('🔐 Using custodial wallet for transaction:', walletAddress);
           } else {
-            console.log('❌ No user data in localStorage');
+            console.log('❌ No custodial wallet address in user data');
           }
+        } else {
+          console.log('❌ No user data in localStorage');
         }
       } catch (error) {
         console.log('❌ Error accessing custodial wallet:', error);
@@ -488,7 +483,7 @@ export function SupraWalletProvider({ children }: { children: ReactNode }) {
     if (!walletAddress) {
       try {
         if (typeof window !== 'undefined') {
-          const storedUser = localStorage.getItem('dropify_user_profile');
+          const storedUser = safeLocalStorage.getItem('dropify_user_profile');
           if (storedUser) {
             const userData = JSON.parse(storedUser);
             if (userData.custodialWallet?.address) {
@@ -569,7 +564,7 @@ export function SupraWalletProvider({ children }: { children: ReactNode }) {
     if (!walletAddress) {
       try {
         if (typeof window !== 'undefined') {
-          const storedUser = localStorage.getItem('dropify_user_profile');
+          const storedUser = safeLocalStorage.getItem('dropify_user_profile');
           if (storedUser) {
             const userData = JSON.parse(storedUser);
             if (userData.custodialWallet?.address) {
@@ -643,7 +638,7 @@ export function SupraWalletProvider({ children }: { children: ReactNode }) {
   // Auto-reconnect on page load
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const savedAddress = localStorage.getItem('supra_wallet_address');
+      const savedAddress = safeLocalStorage.getItem('supra_wallet_address');
       if (savedAddress && walletAdapter.isConnected()) {
         setAccount({ address: savedAddress });
         setIsConnected(true);

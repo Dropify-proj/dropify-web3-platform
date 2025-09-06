@@ -5,6 +5,8 @@ import "./globals.css";
 import { EnhancedWalletProvider } from '../lib/enhanced-wallet-context';
 // Enhanced auth provider with email authentication
 import { EnhancedAuthProvider } from '../lib/enhanced-auth-context';
+// Supra wallet provider for blockchain integration
+import { SupraWalletProvider } from '../lib/wallet-context-supra';
 // Add Telegram Mini App provider
 import { TelegramProvider } from './components/TelegramMiniApp';
 // Error boundary for client-side error handling
@@ -47,11 +49,13 @@ export default function RootLayout({
       >
         <ErrorBoundary>
           <EnhancedAuthProvider>
-            <EnhancedWalletProvider>
-              <TelegramProvider>
-                {children}
-              </TelegramProvider>
-            </EnhancedWalletProvider>
+            <SupraWalletProvider>
+              <EnhancedWalletProvider>
+                <TelegramProvider>
+                  {children}
+                </TelegramProvider>
+              </EnhancedWalletProvider>
+            </SupraWalletProvider>
           </EnhancedAuthProvider>
         </ErrorBoundary>
       </body>

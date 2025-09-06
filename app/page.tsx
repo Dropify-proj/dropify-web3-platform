@@ -7,7 +7,7 @@ import Web3Dashboard from "./components/Web3Dashboard";
 import EnhancedStats from "./components/EnhancedStats";
 import AIReceiptProcessor from "./components/AIReceiptProcessor";
 import SeamlessAuthButton from "./components/SeamlessAuthButton";
-import { Leaderboard } from "./components/Leaderboard";
+import Leaderboard from "./components/Leaderboard";
 import { useEnhancedWallet } from "../lib/enhanced-wallet-context";
 
 export default function Home() {

@@ -54,6 +54,29 @@ const nextConfig = {
     // Allow production builds to complete even if there are ESLint errors
     ignoreDuringBuilds: true,
   },
+  
+  // Experimental features for module resolution
+  experimental: {
+    // External modules that should not be bundled
+    external: ['react', 'react-dom'],
+    // Improved module resolution
+    esmExternals: 'loose',
+    // Additional experimental features
+    appDir: true,
+  },
+  
+  // Webpack configuration for module resolution
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Resolve modules properly
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+    };
+    
+    return config;
+  },
 };
 
 module.exports = nextConfig;

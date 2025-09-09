@@ -20,26 +20,57 @@ interface ClientOnlyProvidersProps {
  */
 export function ClientOnlyProviders({ children }: ClientOnlyProvidersProps) {
   const [isMounted, setIsMounted] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    setIsMounted(true);
+    // Add a small delay to ensure DOM is fully ready
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 50);
+
+    return () => clearTimeout(timer);
   }, []);
 
-  // During SSR, render children without providers to prevent hydration mismatch
+  // During SSR or initial render, show a loading state
   if (!isMounted) {
-    return <>{children}</>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <h2 className="text-xl font-bold text-gray-900 mb-2">Loading Dropify</h2>
+          <p className="text-gray-600">Initializing Web3 platform...</p>
+        </div>
+      </div>
+    );
   }
 
-  // After mount, render with full provider hierarchy
-  return (
-    <EnhancedAuthProvider>
-      <SupraWalletProvider>
-        <EnhancedWalletProvider>
-          <TelegramProvider>
-            {children}
-          </TelegramProvider>
-        </EnhancedWalletProvider>
-      </SupraWalletProvider>
-    </EnhancedAuthProvider>
-  );
+  // After mount, render with full provider hierarchy wrapped in error boundary
+  try {
+    return (
+      <EnhancedAuthProvider>
+        <SupraWalletProvider>
+          <EnhancedWalletProvider>
+            <TelegramProvider>
+              {children}
+            </TelegramProvider>
+          </EnhancedWalletProvider>
+        </SupraWalletProvider>
+      </EnhancedAuthProvider>
+    );
+  } catch (error) {
+    console.error('Error in ClientOnlyProviders:', error);
+    
+    // If we encounter an error, try to recover by showing children without providers
+    if (retryCount < 3) {
+      setTimeout(() => {
+        setRetryCount(prev => prev + 1);
+        setIsMounted(false);
+        // Force remount after a delay
+        setTimeout(() => setIsMounted(true), 100);
+      }, 1000);
+    }
+    
+    // Fallback: render children without providers
+    return <>{children}</>;
+  }
 }

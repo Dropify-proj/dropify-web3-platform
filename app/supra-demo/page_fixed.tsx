@@ -2,25 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-// Telegram Web App SDK integration
-declare global {
-  interface Window {
-    Telegram?: {
-      WebApp?: {
-        ready: () => void;
-        expand: () => void;
-        initData: string;
-        MainButton: {
-          text: string;
-          color: string;
-          show: () => void;
-          hide: () => void;
-          onClick: (callback: () => void) => void;
-        };
-      };
-    };
-  }
-}
+// Telegram Web App SDK integration - using global types
+// (Types are defined in types/global.d.ts)
 
 export default function GeneralDemo() {
   const [isTelegramWebApp, setIsTelegramWebApp] = useState(false);

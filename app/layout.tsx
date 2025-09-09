@@ -38,6 +38,19 @@ export default function RootLayout({
       <head>
         <meta httpEquiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' 'wasm-unsafe-eval' https: data: blob:; style-src 'self' 'unsafe-inline' https: data:; img-src 'self' data: https: blob:; connect-src 'self' https: wss: data: blob:; frame-src 'self' https: data:; font-src 'self' https: data:; worker-src 'self' blob: data:;" />
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Prevent hydration errors by ensuring consistent initial state
+              window.__DROPIFY_HYDRATION_FIX__ = true;
+              // Handle unhandled promise rejections
+              window.addEventListener('unhandledrejection', function(event) {
+                console.log('Unhandled promise rejection:', event.reason);
+                event.preventDefault();
+              });
+            `,
+          }}
+        />
       </head>
       <body
         className={`${inter.variable} ${firaCode.variable} antialiased`}

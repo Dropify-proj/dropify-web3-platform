@@ -4,14 +4,17 @@
 # ================================================================================
 
 [build]
-  # Next.js production build command
-  command = "npm ci && npm run build"
+  # Next.js production build command with hooks - Always run build
+  command = "npm ci && npm run build && npm run postbuild"
   
   # Let Netlify automatically detect Next.js output
   # Don't set publish directory for Next.js
   
   # Build context
   base = ""
+  
+  # Force build every time to catch hydration errors
+  # ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF ."
 
 [build.environment]
   # Runtime Configuration

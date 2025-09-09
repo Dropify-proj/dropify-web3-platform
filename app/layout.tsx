@@ -41,13 +41,34 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Prevent hydration errors by ensuring consistent initial state
+              // Enhanced hydration error prevention
               window.__DROPIFY_HYDRATION_FIX__ = true;
-              // Handle unhandled promise rejections
-              window.addEventListener('unhandledrejection', function(event) {
-                console.log('Unhandled promise rejection:', event.reason);
-                event.preventDefault();
-              });
+              window.__NEXT_HYDRATION_DISABLED__ = false;
+              
+              // Prevent hydration mismatches
+              if (typeof window !== 'undefined') {
+                // Store initial timestamp
+                window.__DROPIFY_LOAD_TIME__ = Date.now();
+                
+                // Enhanced error handling for hydration issues
+                window.addEventListener('error', function(event) {
+                  console.log('🚨 Global error caught:', event.error);
+                  if (event.error && event.error.message && 
+                      (event.error.message.includes('hydrat') || 
+                       event.error.message.includes('423'))) {
+                    console.log('🔧 Hydration error detected, attempting recovery...');
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 2000);
+                  }
+                });
+                
+                // Handle unhandled promise rejections
+                window.addEventListener('unhandledrejection', function(event) {
+                  console.log('🚨 Unhandled promise rejection:', event.reason);
+                  event.preventDefault();
+                });
+              }
             `,
           }}
         />

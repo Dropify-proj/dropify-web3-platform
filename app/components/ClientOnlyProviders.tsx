@@ -23,10 +23,29 @@ export function ClientOnlyProviders({ children }: ClientOnlyProvidersProps) {
   const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    // Add a small delay to ensure DOM is fully ready
+    // Ensure DOM is fully ready and hydration is complete
     const timer = setTimeout(() => {
+      console.log('🚀 ClientOnlyProviders mounting after DOM ready');
       setIsMounted(true);
-    }, 50);
+    }, 200); // Increased delay for better hydration safety
+
+    // Also check if document is fully loaded
+    if (document.readyState === 'complete') {
+      console.log('📄 Document already loaded, mounting immediately');
+      clearTimeout(timer);
+      setIsMounted(true);
+    } else {
+      const handleLoad = () => {
+        console.log('📄 Document loaded, mounting providers');
+        clearTimeout(timer);
+        setIsMounted(true);
+      };
+      window.addEventListener('load', handleLoad);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('load', handleLoad);
+      };
+    }
 
     return () => clearTimeout(timer);
   }, []);

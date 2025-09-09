@@ -19,12 +19,27 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    // Check if this is a hydration error (React Error #423)
+    // Enhanced hydration error detection (React Error #423 and related)
     const isHydrationError = 
       error.message?.includes('Minified React error #423') ||
       error.message?.includes('hydration') ||
       error.message?.includes('server') ||
-      error.stack?.includes('hydrate');
+      error.message?.includes('client') ||
+      error.message?.includes('mismatch') ||
+      error.message?.includes('expected server HTML') ||
+      error.message?.includes('Warning: Text content did not match') ||
+      error.stack?.includes('hydrate') ||
+      error.stack?.includes('hydrateRoot') ||
+      // Common Next.js hydration errors
+      error.message?.includes('There was an error while hydrating') ||
+      error.name === 'ChunkLoadError';
+
+    console.log('🚨 Error detected:', {
+      message: error.message,
+      name: error.name,
+      isHydrationError,
+      stack: error.stack?.substring(0, 200)
+    });
 
     return { 
       hasError: true, 
@@ -38,11 +53,21 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     
     // If it's a hydration error, try to recover by forcing a client-side render
     if (this.state.isHydrationError) {
-      console.log('Hydration error detected, attempting recovery...');
-      // Force a re-render after a short delay
+      console.log('🔧 Hydration error detected, attempting automatic recovery...');
+      
+      // Try multiple recovery strategies
       setTimeout(() => {
+        console.log('🔄 Attempting recovery step 1...');
         this.setState({ hasError: false, error: undefined, isHydrationError: false });
-      }, 100);
+      }, 500);
+      
+      // Fallback recovery if first attempt fails
+      setTimeout(() => {
+        if (this.state.hasError) {
+          console.log('🔄 Attempting recovery step 2...');
+          window.location.reload();
+        }
+      }, 3000);
     }
   }
 

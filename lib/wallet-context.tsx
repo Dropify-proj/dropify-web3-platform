@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
+import { safeLocalStorage } from './safe-storage';
 
 // Mock account for demo mode
 class MockAccount {
@@ -105,7 +106,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     setDropBalance(0);
     setDrfBalance(0);
     setRecentEvents([]);
-    localStorage.removeItem('dropify_account');
+    safeLocalStorage.removeItem('dropify_account');
   };
 
   // Refresh user balances
@@ -287,7 +288,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     // TEMPORARY: localStorage integration disabled for build safety
     console.log('🔄 Auto-connect disabled - demo mode');
     /*
-    const savedAccount = localStorage.getItem('dropify_account');
+    const savedAccount = safeLocalStorage.getItem('dropify_account');
     if (savedAccount) {
       try {
         const account = AptosAccount.fromPrivateKeyHex(savedAccount);
@@ -296,7 +297,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         refreshBalances(account);
       } catch (err) {
         console.error('Error loading saved account:', err);
-        localStorage.removeItem('dropify_account');
+        safeLocalStorage.removeItem('dropify_account');
       }
     }
     */

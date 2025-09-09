@@ -10,8 +10,9 @@ import AIReceiptProcessor from "./components/AIReceiptProcessor";
 import SeamlessAuthButton from "./components/SeamlessAuthButton";
 import Leaderboard from "./components/Leaderboard";
 import { useEnhancedWallet } from "../lib/enhanced-wallet-context";
+import { SSRSafeHome } from "./components/SSRSafeHome";
 
-export default function Home() {
+function HomeContent() {
   const [userStats, setUserStats] = useState({
     dropTokens: 0,
     drfTokens: 0,
@@ -349,5 +350,13 @@ export default function Home() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <SSRSafeHome>
+      <HomeContent />
+    </SSRSafeHome>
   );
 }

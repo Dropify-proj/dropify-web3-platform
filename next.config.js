@@ -20,16 +20,18 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: `
               default-src 'self';
-              script-src 'self' 'unsafe-eval' 'unsafe-inline' 'wasm-unsafe-eval' https://telegram.org https://auth.privy.io https://cdn.jsdelivr.net;
-              style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-              font-src 'self' https://fonts.gstatic.com;
+              script-src 'self' 'unsafe-eval' 'unsafe-inline' 'wasm-unsafe-eval' https: data: blob: https://telegram.org https://auth.privy.io https://cdn.jsdelivr.net https://unpkg.com https://cdn.skypack.dev https://esm.sh;
+              style-src 'self' 'unsafe-inline' https: data:;
+              font-src 'self' https: data:;
               img-src 'self' data: https: blob:;
-              connect-src 'self' https://testnet-rpc.supra.com https://api.supra.com wss: https:;
-              frame-src https://auth.privy.io https://wallet.supra.com;
+              connect-src 'self' https: wss: data: blob:;
+              frame-src 'self' https: data:;
               object-src 'none';
               base-uri 'self';
               form-action 'self';
-              worker-src 'self' blob:;
+              worker-src 'self' blob: data:;
+              child-src 'self' blob: data:;
+              media-src 'self' https: data: blob:;
             `.replace(/\s{2,}/g, ' ').trim()
           }
         ]

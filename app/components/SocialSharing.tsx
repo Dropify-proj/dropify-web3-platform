@@ -38,13 +38,6 @@ export const SocialPlatforms = {
     shareUrl: 'https://reddit.com/submit',
     params: (text: string, url: string) => `url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`
   },
-  TELEGRAM: {
-    name: 'Telegram',
-    icon: '✈️',
-    color: 'bg-blue-400',
-    shareUrl: 'https://t.me/share/url',
-    params: (text: string, url: string) => `url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`
-  },
   WHATSAPP: {
     name: 'WhatsApp',
     icon: '💬',

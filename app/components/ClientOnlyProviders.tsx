@@ -8,8 +8,6 @@ import { EnhancedWalletProvider } from '../../lib/enhanced-wallet-context';
 import { EnhancedAuthProvider } from '../../lib/enhanced-auth-context';
 // Supra wallet provider for blockchain integration
 import { SupraWalletProvider } from '../../lib/wallet-context-supra';
-// Add Telegram Mini App provider
-import { TelegramProvider } from './TelegramMiniApp';
 
 interface ClientOnlyProvidersProps {
   children: ReactNode;
@@ -69,9 +67,7 @@ export function ClientOnlyProviders({ children }: ClientOnlyProvidersProps) {
       <EnhancedAuthProvider>
         <SupraWalletProvider>
           <EnhancedWalletProvider>
-            <TelegramProvider>
               {children}
-            </TelegramProvider>
           </EnhancedWalletProvider>
         </SupraWalletProvider>
       </EnhancedAuthProvider>

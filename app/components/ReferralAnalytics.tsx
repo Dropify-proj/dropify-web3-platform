@@ -299,9 +299,9 @@ export function ReferralAnalyticsDashboard({ userAddress, adminAddress }: {
         totalDrfEarned: 115,
         conversionRate: 78.3,
         topReferralSources: [
-          { source: 'Telegram', count: 12, percentage: 52.2 },
-          { source: 'Twitter', count: 7, percentage: 30.4 },
-          { source: 'WhatsApp', count: 3, percentage: 13.0 },
+          { source: 'Twitter', count: 12, percentage: 52.2 },
+          { source: 'WhatsApp', count: 7, percentage: 30.4 },
+          { source: 'Reddit', count: 3, percentage: 13.0 },
           { source: 'Direct Link', count: 1, percentage: 4.3 }
         ],
         dailyStats: [

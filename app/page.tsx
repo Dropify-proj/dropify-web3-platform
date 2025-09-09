@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import { useTelegram, TelegramButton } from "./components/TelegramMiniApp";
 import SimpleStatsDisplay, { RecentActivity } from "./components/SimpleStatsDisplay";
 import Web3Dashboard from "./components/Web3Dashboard";
 import EnhancedStats from "./components/EnhancedStats";
@@ -30,15 +29,6 @@ function HomeContent() {
   const [lastProcessingResult, setLastProcessingResult] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { 
-    isTelegramWebApp, 
-    user, 
-    webApp, 
-    navigateWithHaptic, 
-    showSuccessMessage,
-    isReady 
-  } = useTelegram();
-
   // Use enhanced wallet for Web3 functionality
   const {
     isConnected,
@@ -49,19 +39,6 @@ function HomeContent() {
     isLoading: walletLoading,
     error: walletError
   } = useEnhancedWallet();
-
-  // Telegram Web App setup
-  useEffect(() => {
-    if (isReady && isTelegramWebApp && webApp) {
-      webApp.ready();
-      webApp.expand();
-      webApp.MainButton.setText('🚀 Start Earning');
-      webApp.MainButton.show();
-      webApp.MainButton.onClick(() => {
-        handleUploadClick();
-      });
-    }
-  }, [isReady, isTelegramWebApp, webApp]);
 
   // Handle AI receipt processing completion
   const handleAIProcessComplete = (result: any) => {
@@ -81,13 +58,6 @@ function HomeContent() {
         drfTokens: Math.floor((dropBalance + result.blockchainResult.dropEarned) / 100)
       }));
 
-      // Show success message
-      if (isTelegramWebApp && webApp) {
-        showSuccessMessage(
-          `🤖 AI processed your receipt! Earned ${result.blockchainResult.dropEarned.toFixed(2)} DROP tokens`
-        );
-      }
-
       // Show all dashboards
       setShowDashboard(true);
       setShowWeb3Dashboard(true);
@@ -99,17 +69,6 @@ function HomeContent() {
     if (isProcessing || walletLoading) return; // Prevent action when processing
     setShowEnhancedStats(true); // Show enhanced stats when user clicks upload
     // The AIReceiptProcessor will handle the actual file selection
-  };
-
-  const handleTelegramOpen = () => {
-    if (isTelegramWebApp && webApp) {
-      webApp.showAlert('You are already in the Telegram Mini App!');
-    } else {
-      // Redirect to Telegram bot or show instructions
-      if (typeof window !== 'undefined') {
-        window.open('https://t.me/DropifyBot', '_blank');
-      }
-    }
   };
 
   return (
@@ -160,14 +119,14 @@ function HomeContent() {
 
           {/* Prominent Buttons Section */}
           <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6 mt-8">
-            <TelegramButton
+            <button
               onClick={() => setShowEnhancedStats(true)}
               className="bg-gradient-to-r from-indigo-600 to-blue-600 py-4 px-10 rounded-full font-bold text-lg text-white transform transition-transform hover:scale-105 shadow-lg"
             >
               View Dashboard
-            </TelegramButton>
+            </button>
             
-            <TelegramButton
+            <button
               onClick={handleUploadClick}
               className={`bg-transparent border-2 border-blue-500 py-4 px-10 rounded-full font-bold text-lg text-white transform transition-transform hover:scale-105 shadow-lg flex items-center justify-center ${
                 isProcessing || walletLoading ? 'opacity-50 cursor-not-allowed' : ''
@@ -181,14 +140,14 @@ function HomeContent() {
               ) : (
                 'AI Receipt Upload'
               )}
-            </TelegramButton>
+            </button>
 
-            <TelegramButton
+            <button
               onClick={() => setShowLeaderboard(true)}
               className="bg-gradient-to-r from-yellow-600 to-orange-600 py-4 px-10 rounded-full font-bold text-lg text-white transform transition-transform hover:scale-105 shadow-lg"
             >
               🏆 Leaderboard
-            </TelegramButton>
+            </button>
           </div>
 
           {/* AI Receipt Processor */}
@@ -197,13 +156,6 @@ function HomeContent() {
               <AIReceiptProcessor onProcessComplete={handleAIProcessComplete} />
             </div>
           )}
-          
-          <button
-            onClick={handleTelegramOpen}
-            className="mt-8 text-blue-400 hover:text-blue-200 transition-colors"
-          >
-            {isTelegramWebApp ? 'You\'re in Telegram Mini App!' : 'Open in Telegram Mini App'}
-          </button>
         </main>
 
         {/* Enhanced Stats Dashboard */}
@@ -335,19 +287,6 @@ function HomeContent() {
             </div>
           </div>
         </section>
-
-        {/* Telegram User Info */}
-        {isTelegramWebApp && user && (
-          <div className="mt-16 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-6 text-center">
-            <h3 className="text-xl font-semibold mb-4">Welcome to Dropify Mini App!</h3>
-            <p className="text-gray-300">
-              Hello, {user.first_name}! {user.is_premium && '👑'}
-            </p>
-            <p className="text-sm text-gray-400 mt-2">
-              You're using the Telegram Mini App version
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );

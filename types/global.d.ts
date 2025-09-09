@@ -16,7 +16,6 @@ declare module 'react-dom/client' {
 // Global type extensions
 declare global {
   interface Window {
-    Telegram?: any;
     ethereum?: any;
   }
 }

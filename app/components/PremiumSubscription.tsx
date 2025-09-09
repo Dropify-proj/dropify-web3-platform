@@ -1,10 +1,9 @@
 /**
  * Premium Subscription UI Component
- * Telegram Stars integration for 1.5x rewards
+ * Enhanced rewards system for premium users
  */
 
 import React, { useState, useEffect } from 'react';
-import { useTelegramStarsPremium, PremiumUtils } from '../../lib/telegram-stars-premium';
 
 interface PremiumSubscriptionProps {
   userAddress: string;
@@ -17,23 +16,58 @@ export default function PremiumSubscription({
   adminAddress, 
   onPremiumChange 
 }: PremiumSubscriptionProps) {
-  const {
-    premiumStatus,
-    premiumPricing,
-    isStarsAvailable,
-    loading,
-    error,
-    purchasePremium,
-    calculateRewardBonus,
-    benefits,
-    formatTimeRemaining
-  } = useTelegramStarsPremium(adminAddress, userAddress);
-
+  const [premiumStatus, setPremiumStatus] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [showRewardCalculator, setShowRewardCalculator] = useState(false);
   const [calculatorAmount, setCalculatorAmount] = useState('100');
   const [rewardComparison, setRewardComparison] = useState<any>(null);
 
-  const isUserPremium = PremiumUtils.isUserPremium(premiumStatus);
+  const isUserPremium = premiumStatus;
+
+  // Simplified premium pricing
+  const premiumPricing = {
+    monthly: { price: 4.99 },
+    quarterly: { price: 12.99 },
+    yearly: { price: 39.99 }
+  };
+
+  const benefits = [
+    '1.5x reward multiplier on all receipts',
+    'Priority AI processing',
+    'Exclusive premium-only rewards',
+    'Advanced analytics dashboard',
+    'Early access to new features'
+  ];
+
+  const calculateRewardBonus = (baseAmount: number) => {
+    return isUserPremium ? baseAmount * 1.5 : baseAmount;
+  };
+
+  const formatTimeRemaining = (timestamp: number) => {
+    const now = Date.now();
+    const remaining = timestamp - now;
+    if (remaining <= 0) return 'Expired';
+    
+    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    
+    return `${days}d ${hours}h remaining`;
+  };
+
+  const purchasePremium = async (plan: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Simulate premium purchase - in real implementation, integrate with payment system
+      console.log(`Purchasing premium plan: ${plan}`);
+      setPremiumStatus(true);
+    } catch (err) {
+      setError('Failed to purchase premium. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Notify parent component of premium status changes
   useEffect(() => {
@@ -57,20 +91,6 @@ export default function PremiumSubscription({
       console.log('Premium purchased successfully!');
     }
   };
-
-  if (!isStarsAvailable) {
-    return (
-      <div className="bg-gray-100 border-2 border-gray-300 rounded-xl p-6 text-center">
-        <div className="text-4xl mb-3">📱</div>
-        <h3 className="text-lg font-semibold text-gray-700 mb-2">
-          Telegram Required
-        </h3>
-        <p className="text-gray-600 text-sm">
-          Premium features are only available in the Telegram Mini App
-        </p>
-      </div>
-    );
-  }
 
   if (loading && !premiumStatus) {
     return (
@@ -103,21 +123,12 @@ export default function PremiumSubscription({
               </h3>
               <p className="text-sm text-gray-600">
                 {isUserPremium 
-                  ? formatTimeRemaining(premiumStatus?.expiresAt || 0)
-                  : 'Unlock 1.5x rewards with Telegram Stars'
+                  ? 'Enjoying 1.5x rewards boost!'
+                  : 'Unlock 1.5x rewards with Premium'
                 }
               </p>
             </div>
           </div>
-          
-          {premiumStatus && (
-            <div className="text-right">
-              <div className="text-sm text-gray-500">Total Stars Spent</div>
-              <div className="text-lg font-semibold">
-                ⭐ {premiumStatus.totalStarsSpent}
-              </div>
-            </div>
-          )}
         </div>
 
         {isUserPremium ? (
@@ -143,8 +154,8 @@ export default function PremiumSubscription({
               </span>
             ) : (
               <span className="flex items-center justify-center space-x-2">
-                <span>⭐</span>
-                <span>Get Premium for {premiumPricing?.starsCost || 50} Stars</span>
+                <span>💎</span>
+                <span>Get Premium - ${premiumPricing.monthly.price}/month</span>
               </span>
             )}
           </button>
@@ -240,37 +251,6 @@ export default function PremiumSubscription({
           <div className="flex items-center space-x-2">
             <span className="text-red-500">⚠️</span>
             <span className="text-red-700 text-sm">{error}</span>
-          </div>
-        </div>
-      )}
-
-      {/* Premium Statistics */}
-      {premiumStatus && premiumStatus.activations > 0 && (
-        <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-6">
-          <h4 className="text-lg font-semibold mb-4 flex items-center">
-            <span className="mr-2">📊</span>
-            Your Premium History
-          </h4>
-          
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <div className="text-2xl font-bold text-purple-600">
-                {premiumStatus.activations}
-              </div>
-              <div className="text-sm text-gray-600">Times Activated</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-purple-600">
-                ⭐ {premiumStatus.totalStarsSpent}
-              </div>
-              <div className="text-sm text-gray-600">Total Stars Spent</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-purple-600">
-                ${(premiumStatus.totalStarsSpent * 0.02).toFixed(2)}
-              </div>
-              <div className="text-sm text-gray-600">Approx. Value</div>
-            </div>
           </div>
         </div>
       )}

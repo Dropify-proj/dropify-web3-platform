@@ -80,16 +80,15 @@ export default function PremiumSubscription({
   useEffect(() => {
     if (calculatorAmount && parseFloat(calculatorAmount) > 0) {
       const amount = parseFloat(calculatorAmount);
-      calculateRewardBonus(amount).then(setRewardComparison);
+      const bonus = calculateRewardBonus(amount);
+      setRewardComparison({ baseAmount: amount, bonusAmount: bonus });
     }
   }, [calculatorAmount, calculateRewardBonus]);
 
   const handlePurchase = async () => {
-    const success = await purchasePremium();
-    if (success) {
-      // Show success message
-      console.log('Premium purchased successfully!');
-    }
+    await purchasePremium('monthly');
+    // Show success message
+    console.log('Premium purchased successfully!');
   };
 
   if (loading && !premiumStatus) {

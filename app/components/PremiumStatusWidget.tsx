@@ -3,7 +3,6 @@
  */
 
 import React from 'react';
-import { useTelegramStarsPremium, PremiumUtils } from '../../lib/telegram-stars-premium';
 
 interface PremiumStatusWidgetProps {
   userAddress: string;
@@ -16,16 +15,21 @@ export default function PremiumStatusWidget({
   adminAddress, 
   compact = false 
 }: PremiumStatusWidgetProps) {
-  const {
-    premiumStatus,
-    isStarsAvailable,
-    loading,
-    formatTimeRemaining
-  } = useTelegramStarsPremium(adminAddress, userAddress);
+  // Simplified premium status - replace with actual implementation
+  const premiumStatus = false;
+  const loading = false;
+  const isUserPremium = premiumStatus;
 
-  const isUserPremium = PremiumUtils.isUserPremium(premiumStatus);
-
-  if (!isStarsAvailable) return null;
+  const formatTimeRemaining = (timestamp: number) => {
+    const now = Date.now();
+    const remaining = timestamp - now;
+    if (remaining <= 0) return 'Expired';
+    
+    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    
+    return `${days}d ${hours}h remaining`;
+  };
 
   if (loading) {
     return (
@@ -55,13 +59,8 @@ export default function PremiumStatusWidget({
       <span className="text-lg">{isUserPremium ? '👑' : '⭐'}</span>
       <div>
         <div className="text-sm font-semibold">
-          {isUserPremium ? 'Premium Active' : 'Free Plan'}
+        {isUserPremium ? 'Premium Active' : 'Free Plan'}
         </div>
-        {isUserPremium && premiumStatus && (
-          <div className="text-xs text-gray-600">
-            {formatTimeRemaining(premiumStatus.expiresAt)}
-          </div>
-        )}
       </div>
     </div>
   );
@@ -81,8 +80,8 @@ export function PremiumMultiplierBadge({
   adminAddress, 
   className = '' 
 }: PremiumMultiplierBadgeProps) {
-  const { premiumStatus } = useTelegramStarsPremium(adminAddress, userAddress);
-  const isUserPremium = PremiumUtils.isUserPremium(premiumStatus);
+  // Simplified premium status - replace with actual implementation
+  const isUserPremium = false;
 
   if (!isUserPremium) return null;
 

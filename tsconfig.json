@@ -17,6 +17,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "forceConsistentCasingInFileNames": true,
     "plugins": [
       {
         "name": "next"
@@ -26,8 +27,7 @@
       "@/*": [
         "./*"
       ]
-    },
-    "types": ["react", "react-dom", "node"]
+    }
   },
   "include": [
     "next-env.d.ts",

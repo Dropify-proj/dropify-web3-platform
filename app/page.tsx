@@ -7,7 +7,7 @@ import Web3Dashboard from "./components/Web3Dashboard";
 import EnhancedStats from "./components/EnhancedStats";
 import AIReceiptProcessor from "./components/AIReceiptProcessor";
 import SeamlessAuthButton from "./components/SeamlessAuthButton";
-import Leaderboard from "./components/Leaderboard";
+
 import { useEnhancedWallet } from "../lib/enhanced-wallet-context";
 import { SSRSafeHome } from "./components/SSRSafeHome";
 
@@ -24,7 +24,6 @@ function HomeContent() {
   const [showDashboard, setShowDashboard] = useState(false);
   const [showWeb3Dashboard, setShowWeb3Dashboard] = useState(false);
   const [showEnhancedStats, setShowEnhancedStats] = useState(false);
-  const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [lastProcessingResult, setLastProcessingResult] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -141,13 +140,6 @@ function HomeContent() {
                 'AI Receipt Upload'
               )}
             </button>
-
-            <button
-              onClick={() => setShowLeaderboard(true)}
-              className="bg-gradient-to-r from-yellow-600 to-orange-600 py-4 px-10 rounded-full font-bold text-lg text-white transform transition-transform hover:scale-105 shadow-lg"
-            >
-              🏆 Leaderboard
-            </button>
           </div>
 
           {/* AI Receipt Processor */}
@@ -166,23 +158,6 @@ function HomeContent() {
               <p className="text-gray-400">AI-powered receipt processing with Web3 rewards</p>
             </div>
             <EnhancedStats />
-          </div>
-        )}
-
-        {/* Leaderboard Section */}
-        {showLeaderboard && (
-          <div className="w-full my-16">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-semibold mb-2 text-white">Global Competition</h2>
-              <p className="text-gray-400">See how you rank against other Dropify users worldwide</p>
-              <button
-                onClick={() => setShowLeaderboard(false)}
-                className="mt-4 text-gray-400 hover:text-white transition-colors"
-              >
-                ← Back to Dashboard
-              </button>
-            </div>
-            <Leaderboard />
           </div>
         )}
 
@@ -267,24 +242,6 @@ function HomeContent() {
           <h2 className="text-4xl font-bold mb-12">The Future: Mainnet Rewards</h2>
           <div className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-8">
             <p className="text-gray-300">The Dropify mainnet will feature a variety of rewards from participating partners, allowing you to redeem your DRF tokens for exclusive products, discounts, and experiences.</p>
-          </div>
-        </section>
-
-        {/* Tokenomics Section */}
-        <section className="w-full max-w-7xl mx-auto py-16 text-center">
-          <h2 className="text-4xl font-bold mb-12">The Tokenomics</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-8">
-              <h3 className="text-2xl font-semibold mb-4 text-green-300">Drop & DRF Tokens</h3>
-              <p className="text-gray-300 mb-2">Drop tokens are earned at a rate of 1 per dollar spent on a receipt.</p>
-              <p className="text-gray-300 mb-2">You can burn 100 Drop Tokens to receive 1 DRF Token. Referrals earn you 5 DRF Tokens.</p>
-              <p className="text-gray-300">After the mainnet launch, <strong>DRF tokens will become governance tokens</strong>, and users can continue to earn and burn Drop for rewards.</p>
-            </div>
-            <div className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-8">
-              <h3 className="text-2xl font-semibold mb-4 text-green-300">Total Distribution</h3>
-              <p className="text-gray-300 mb-2">The total supply of DRF is a capped 1,000,000,000.</p>
-              <p className="text-gray-300">A total of 250,000,000 DRF tokens are set aside specifically for testnet early users.</p>
-            </div>
           </div>
         </section>
       </div>

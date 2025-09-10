@@ -13,7 +13,7 @@ export default function UserDashboard() {
     refreshBalances 
   } = useSupraWallet();
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'receipts' | 'rewards' | 'analytics' | 'tokenomics' | 'roadmap' | 'whitepaper'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'receipts' | 'rewards' | 'analytics' | 'roadmap' | 'whitepaper'>('overview');
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [email, setEmail] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -72,7 +72,6 @@ export default function UserDashboard() {
               { id: 'receipts', label: 'Receipts', icon: '🧾' },
               { id: 'rewards', label: 'Rewards', icon: '🎁' },
               { id: 'analytics', label: 'Analytics', icon: '📈' },
-              { id: 'tokenomics', label: 'Tokenomics', icon: '💎' },
               { id: 'roadmap', label: 'Roadmap', icon: '🗺️' },
               { id: 'whitepaper', label: 'Whitepaper', icon: '📋' },
             ].map((tab) => (
@@ -239,45 +238,6 @@ export default function UserDashboard() {
               <div className="text-6xl mb-4">📊</div>
               <h3 className="text-xl font-semibold text-white mb-2">Analytics Coming Soon</h3>
               <p className="text-gray-400">Start uploading receipts to see your detailed analytics and insights!</p>
-            </div>
-          </div>
-        )}
-
-        {/* Tokenomics Tab */}
-        {activeTab === 'tokenomics' && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-white">Dual Token Economy</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gradient-to-br from-cyan-900/50 to-blue-900/50 p-8 rounded-lg border border-cyan-500/30">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center">
-                    <span className="text-xl font-bold">💧</span>
-                  </div>
-                  <h3 className="font-bold text-2xl text-cyan-400">$DROP Token</h3>
-                </div>
-                <div className="space-y-3 text-gray-300">
-                  <div className="text-white font-semibold">Infinite Supply • Utility Token</div>
-                  <div>• Earned by scanning receipts</div>
-                  <div>• Burned to redeem rewards</div>
-                  <div>• Dynamic supply based on activity</div>
-                  <div>• Deflationary through burn mechanics</div>
-                </div>
-              </div>
-              <div className="bg-gradient-to-br from-purple-900/50 to-violet-900/50 p-8 rounded-lg border border-purple-500/30">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-violet-500 rounded-full flex items-center justify-center">
-                    <span className="text-xl font-bold">💎</span>
-                  </div>
-                  <h3 className="font-bold text-2xl text-purple-400">$DRF Token</h3>
-                </div>
-                <div className="space-y-3 text-gray-300">
-                  <div className="text-white font-semibold">1B Fixed Supply • Governance Token</div>
-                  <div>• Platform governance voting</div>
-                  <div>• Advertising space purchases</div>
-                  <div>• Premium feature access</div>
-                  <div>• Staking rewards & airdrops</div>
-                </div>
-              </div>
             </div>
           </div>
         )}

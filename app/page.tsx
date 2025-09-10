@@ -241,7 +241,7 @@ function HomeContent() {
         <section className="w-full max-w-7xl mx-auto py-16 text-center">
           <h2 className="text-4xl font-bold mb-12">The Future: Mainnet Rewards</h2>
           <div className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-8">
-            <p className="text-gray-300">The Dropify mainnet will feature a variety of rewards from participating partners, allowing you to redeem your DRF tokens for exclusive products, discounts, and experiences.</p>
+            <p className="text-gray-300">The Dropify Testnet points will be redeemed for DRF governance tokens at mainnet at a rate TBD after that $Drop can be redeemed for a variety of rewards from participating partner like exclusive products, discounts, and experiences.</p>
           </div>
         </section>
       </div>

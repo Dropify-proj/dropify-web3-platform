@@ -23,6 +23,35 @@ if (process.env.NODE_ENV === 'development') {
   console.log('  - useEnhancedWallet:', typeof useEnhancedWallet);
 }
 
+interface UserStatsProps {
+  dropTokens: number;
+  drfTokens: number;
+  referrals: number;
+  className?: string;
+}
+
+interface RecentActivityProps {
+  receiptData?: ReceiptData;
+  className?: string;
+}
+
+interface Web3DashboardProps {
+  className?: string;
+}
+
+interface EnhancedStatsProps {
+  className?: string;
+}
+
+interface AIReceiptProcessorProps {
+  onProcessComplete: (result: any) => void;
+  className?: string;
+}
+
+interface SSRSafeHomeProps {
+  children: React.ReactNode;
+}
+
 interface UserStats {
   dropTokens: number;
   drfTokens: number;

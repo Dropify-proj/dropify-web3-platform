@@ -31,17 +31,18 @@
     "crypto-js": "^4.2.0",
     "framer-motion": "^12.23.12",
     "next": "^15.5.2",
-    "react": "18.3.0",
-    "react-dom": "18.3.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
     "supra-l1-sdk": "^4.5.0",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "viem": "^2.34.0"
   },
   "devDependencies": {
+    "@types/next": "^8.0.7",
     "@types/node": "^20.19.11",
-    "@types/react": "18.3.24",
-    "@types/react-dom": "18.3.7",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.7",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.0",
     "typescript": "^5"

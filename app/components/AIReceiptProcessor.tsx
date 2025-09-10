@@ -204,6 +204,7 @@ export default function AIReceiptProcessor({ onProcessComplete, className = '' }
           ref={fileInputRef}
           onChange={handleFileUpload}
           accept="image/*"
+          title="Upload receipt image for AI processing"
           className="hidden"
         />
       </div>

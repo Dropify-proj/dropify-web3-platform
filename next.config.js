@@ -7,6 +7,12 @@ const nextConfig = {
     unoptimized: true, // Required for static deployment compatibility
   },
   
+  // Output configuration for Netlify
+  output: 'standalone',
+  
+  // Fix workspace root warning
+  outputFileTracingRoot: __dirname,
+  
   // Disable source maps in production for faster builds
   productionBrowserSourceMaps: false,
   
@@ -40,6 +46,10 @@ const nextConfig = {
     
     return config;
   },
+  
+  // Netlify-specific configuration
+  trailingSlash: false,
+  skipTrailingSlashRedirect: true,
 }
  
 module.exports = nextConfig

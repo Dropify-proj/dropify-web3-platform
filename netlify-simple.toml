@@ -1,0 +1,54 @@
+# ================================================================================
+# DROPIFY TECHNOLOGIES - NETLIFY DEPLOYMENT CONFIGURATION (ALTERNATIVE)
+# Fixes @netlify/plugin-nextjs errors
+# ================================================================================
+
+[build]
+  # Simplified build command without post-build hooks
+  command = "npm ci && npm run build"
+  
+  # Let Netlify auto-detect Next.js output
+  publish = ".next"
+  
+  # Node.js version
+  environment = { NODE_VERSION = "20.18.0" }
+
+# ================================================================================
+# NEXT.JS PLUGIN (SIMPLIFIED)
+# ================================================================================
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# ================================================================================
+# REDIRECTS AND ROUTING
+# ================================================================================
+
+# SPA Fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  conditions = {Role = ["admin"], Country = ["US"]}
+
+# API Routes
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# ================================================================================
+# HEADERS
+# ================================================================================
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

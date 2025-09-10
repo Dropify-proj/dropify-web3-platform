@@ -8,7 +8,8 @@ const nextConfig = {
   },
   
   // Output configuration for Netlify
-  output: 'standalone',
+  output: 'export',
+  distDir: 'out',
   
   // Fix workspace root warning
   outputFileTracingRoot: __dirname,

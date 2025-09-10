@@ -8,7 +8,7 @@
   command = "npm ci && npm run build"
   
   # Explicit publish directory for Next.js static export
-  publish = ".next"
+  publish = "out"
   
   # Build context
   base = ""

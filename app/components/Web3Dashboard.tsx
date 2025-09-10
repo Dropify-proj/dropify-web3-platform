@@ -9,6 +9,30 @@ interface Web3DashboardProps {
 }
 
 export default function Web3Dashboard({ className = '' }: Web3DashboardProps) {
+  // Safe wallet context usage with error handling
+  let walletContext;
+  try {
+    walletContext = useEnhancedWallet();
+  } catch (error) {
+    console.error('❌ Web3Dashboard: Failed to access wallet context:', error);
+    // Provide fallback context
+    walletContext = {
+      account: null,
+      isConnected: false,
+      walletType: null,
+      dropBalance: 0,
+      drfBalance: 0,
+      platformStats: null,
+      recentTransactions: [],
+      isLoading: false,
+      error: 'Wallet context not available',
+      connectWallet: async () => {},
+      disconnectWallet: () => {},
+      convertDropToDrf: async () => ({ success: false, error: 'Wallet context not available' }),
+      redeemReward: async () => ({ success: false, error: 'Wallet context not available' })
+    };
+  }
+
   const {
     account,
     isConnected,
@@ -23,7 +47,7 @@ export default function Web3Dashboard({ className = '' }: Web3DashboardProps) {
     disconnectWallet,
     convertDropToDrf,
     redeemReward
-  } = useEnhancedWallet();
+  } = walletContext;
 
   const [showConversion, setShowConversion] = useState(false);
   const [conversionAmount, setConversionAmount] = useState(100);

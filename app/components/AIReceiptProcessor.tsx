@@ -3,6 +3,11 @@
 import { useState, useRef } from 'react';
 import { useEnhancedWallet } from '@/lib/enhanced-wallet-context';
 
+// Debug logging for development
+if (process.env.NODE_ENV === 'development') {
+  console.log('🔍 AIReceiptProcessor: Attempting to use enhanced wallet context');
+}
+
 interface AIReceiptProcessorProps {
   onProcessComplete?: (result: any) => void;
   className?: string;
@@ -24,10 +29,23 @@ export default function AIReceiptProcessor({ onProcessComplete, className = '' }
   const [lastResult, setLastResult] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
+  // Safe wallet context usage with error handling
+  let walletContext;
+  try {
+    walletContext = useEnhancedWallet();
+  } catch (error) {
+    console.error('❌ Failed to access wallet context:', error);
+    // Provide fallback context
+    walletContext = {
+      processReceiptComplete: async () => ({ success: false, error: 'Wallet context not available' }),
+      isLoading: false
+    };
+  }
+  
   const {
     processReceiptComplete,
     isLoading: walletLoading
-  } = useEnhancedWallet();
+  } = walletContext;
 
   // Simulate AI-powered receipt processing similar to your HTML version
   const processReceiptWithAI = async (file: File) => {

@@ -80,6 +80,24 @@ function HomeContent() {
   const [lastProcessingResult, setLastProcessingResult] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Safe wallet context usage with error handling
+  let walletContext;
+  try {
+    walletContext = useEnhancedWallet();
+  } catch (error) {
+    console.error('❌ HomeContent: Failed to access wallet context:', error);
+    // Provide fallback context
+    walletContext = {
+      isConnected: false,
+      walletType: null,
+      dropBalance: 0,
+      drfBalance: 0,
+      processReceiptComplete: async () => ({ success: false, error: 'Wallet context not available' }),
+      isLoading: false,
+      error: 'Wallet context not available'
+    };
+  }
+
   // Use enhanced wallet for Web3 functionality
   const {
     isConnected,
@@ -89,7 +107,7 @@ function HomeContent() {
     processReceiptComplete,
     isLoading: walletLoading,
     error: walletError
-  } = useEnhancedWallet();
+  } = walletContext;
 
   // Handle AI receipt processing completion
   const handleAIProcessComplete = (result: any) => {

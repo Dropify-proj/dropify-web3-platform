@@ -21,13 +21,29 @@ interface EnhancedStatsProps {
 }
 
 export default function EnhancedStats({ className = '' }: EnhancedStatsProps) {
+  // Safe wallet context usage with error handling
+  let walletContext;
+  try {
+    walletContext = useEnhancedWallet();
+  } catch (error) {
+    console.error('❌ EnhancedStats: Failed to access wallet context:', error);
+    // Provide fallback context
+    walletContext = {
+      dropBalance: 0,
+      drfBalance: 0,
+      isConnected: false,
+      walletType: null,
+      recentTransactions: []
+    };
+  }
+
   const {
     dropBalance,
     drfBalance,
     isConnected,
     walletType,
     recentTransactions
-  } = useEnhancedWallet();
+  } = walletContext;
 
   const [firebaseState, setFirebaseState] = useState<FirebaseState>({
     drops: 0,

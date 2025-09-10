@@ -397,33 +397,46 @@ export function EnhancedWalletProvider({ children }: { children: ReactNode }) {
 
 export function useEnhancedWallet() {
   const context = useContext(EnhancedWalletContext);
-  if (context === undefined) {
-    // During SSR/static generation, return safe defaults instead of throwing
-    if (typeof window === 'undefined') {
-      return {
-        account: null,
-        isConnected: false,
-        isConnecting: false,
-        walletType: null,
-        dropBalance: 0,
-        drfBalance: 0,
-        platformStats: null,
-        recentTransactions: [],
-        isLoading: false,
-        error: null,
-        connectWallet: async () => {},
-        disconnectWallet: () => {},
-        processReceiptComplete: async () => ({ 
-          success: false,
-          error: 'Not available during SSR'
-        }),
-        convertDropToDrf: async () => {},
-        redeemReward: async () => {},
-        refreshBalances: async () => {},
-        refreshPlatformStats: async () => {},
-      };
-    }
-    throw new Error('useEnhancedWallet must be used within an EnhancedWalletProvider');
+  
+  // During SSR/static generation, return safe defaults
+  if (typeof window === 'undefined') {
+    return {
+      account: null,
+      isConnected: false,
+      isConnecting: false,
+      walletType: null,
+      dropBalance: 0,
+      drfBalance: 0,
+      platformStats: null,
+      recentTransactions: [],
+      isLoading: false,
+      error: null,
+      connectWallet: async () => {},
+      disconnectWallet: () => {},
+      processReceiptComplete: async () => ({ 
+        success: false,
+        error: 'Not available during SSR'
+      }),
+      convertDropToDrf: async () => ({ success: false, error: 'Not available during SSR' }),
+      redeemReward: async () => ({ success: false, error: 'Not available during SSR' }),
+      refreshBalances: async () => {},
+      refreshPlatformStats: async () => {},
+    };
   }
+  
+  if (context === undefined) {
+    // Enhanced error message for debugging
+    console.error('🚨 useEnhancedWallet called outside of EnhancedWalletProvider');
+    console.error('🔍 Check that your component is wrapped with <EnhancedWalletProvider>');
+    
+    // In development, provide more helpful error information
+    if (process.env.NODE_ENV === 'development') {
+      console.error('🏗️ Current component tree should be:');
+      console.error('  Layout.tsx -> EnhancedWalletProvider -> YourComponent');
+    }
+    
+    throw new Error('useEnhancedWallet must be used within an EnhancedWalletProvider. Check that your component is wrapped with <EnhancedWalletProvider>.');
+  }
+  
   return context;
 }

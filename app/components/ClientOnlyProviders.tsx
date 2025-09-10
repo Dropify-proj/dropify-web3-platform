@@ -3,8 +3,9 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { SupraWalletProvider } from '@/lib/wallet-context-supra';
 import { EnhancedAuthProvider } from '@/lib/enhanced-auth-context';
+import { EnhancedWalletProvider } from '@/lib/enhanced-wallet-context';
 
-function AppProviders({ children }: { children: ReactNode }) {
+function ClientOnlyProviders({ children }: { children: ReactNode }) {
   const [someState, setSomeState] = useState(false);
 
   useEffect(() => {
@@ -16,10 +17,12 @@ function AppProviders({ children }: { children: ReactNode }) {
   return (
     <SupraWalletProvider>
       <EnhancedAuthProvider>
-        {children}
+        <EnhancedWalletProvider>
+          {children}
+        </EnhancedWalletProvider>
       </EnhancedAuthProvider>
     </SupraWalletProvider>
   );
 }
 
-export default AppProviders;
+export default ClientOnlyProviders;

@@ -232,28 +232,28 @@ export default function AIReceiptProcessor({ onProcessComplete, className = '' }
       {lastResult && (
         <div className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-4 border border-white/10">
           <div className="text-sm font-semibold text-gray-300 mb-2">Last Transaction</div>
-          
+
           {lastResult.success ? (
             <div className="space-y-2">
               <div className="text-green-300 text-sm">
                 ✅ Receipt processed successfully!
               </div>
-              
-              {lastResult.ocrData && (
+
+              {lastResult.aiData && (
                 <div className="text-xs text-gray-400">
-                  📍 Store: {lastResult.ocrData.vendor || 'Unknown'}
+                  📍 Store: {lastResult.aiData.storeName || 'Unknown'}
                   <br />
-                  💰 Amount: ${lastResult.ocrData.total?.toFixed(2) || '0.00'}
+                  💰 Amount: ${lastResult.aiData.total?.toFixed(2) || '0.00'}
                   <br />
                   🪙 Earned: {lastResult.blockchainResult?.dropEarned || 0} DROP tokens
                 </div>
               )}
-              
+
               {lastResult.blockchainResult?.transactionHash && (
                 <div className="text-xs">
-                  <a 
+                  <a
                     href={`https://testnet-explorer.supra.com/tx/${lastResult.blockchainResult.transactionHash}`}
-                    target="_blank" 
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-400 hover:text-blue-300"
                   >

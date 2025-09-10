@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import { Inter, Fira_Code } from "next/font/google";
 import "./globals.css";
-// Client-only providers wrapper
-import ClientOnlyProviders from './components/ClientOnlyProviders';
+// Enhanced wallet provider for Web3 integration
+import { EnhancedWalletProvider } from '@/lib/enhanced-wallet-context';
 // Error boundary for client-side error handling
 import ErrorBoundary from './components/ErrorBoundary';
+
+// Debug logging for development
+if (process.env.NODE_ENV === 'development') {
+  console.log('🔍 Layout Debug - EnhancedWalletProvider:', typeof EnhancedWalletProvider);
+  console.log('🔍 Layout Debug - ErrorBoundary:', typeof ErrorBoundary);
+}
 
 const inter = Inter({
   variable: "--font-inter",
@@ -76,9 +82,9 @@ export default function RootLayout({
         className={`${inter.variable} ${firaCode.variable} antialiased`}
       >
         <ErrorBoundary>
-          <ClientOnlyProviders>
+          <EnhancedWalletProvider>
             {children}
-          </ClientOnlyProviders>
+          </EnhancedWalletProvider>
         </ErrorBoundary>
       </body>
     </html>

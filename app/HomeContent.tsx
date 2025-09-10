@@ -11,13 +11,36 @@ import SeamlessAuthButton from "./components/SeamlessAuthButton";
 import { useEnhancedWallet } from "@/lib/enhanced-wallet-context";
 import { SSRSafeHome } from "./components/SSRSafeHome";
 
+// Debug logging for development
+if (process.env.NODE_ENV === 'development') {
+  console.log('🔍 HomeContent Debug Components:');
+  console.log('  - SimpleStatsDisplay:', typeof SimpleStatsDisplay);
+  console.log('  - Web3Dashboard:', typeof Web3Dashboard);
+  console.log('  - EnhancedStats:', typeof EnhancedStats);
+  console.log('  - AIReceiptProcessor:', typeof AIReceiptProcessor);
+  console.log('  - SeamlessAuthButton:', typeof SeamlessAuthButton);
+  console.log('  - SSRSafeHome:', typeof SSRSafeHome);
+  console.log('  - useEnhancedWallet:', typeof useEnhancedWallet);
+}
+
+interface UserStats {
+  dropTokens: number;
+  drfTokens: number;
+  referrals: number;
+}
+
+interface ReceiptData {
+  total: number;
+  items: string;
+}
+
 function HomeContent() {
-  const [userStats, setUserStats] = useState({
+  const [userStats, setUserStats] = useState<UserStats>({
     dropTokens: 0,
     drfTokens: 0,
     referrals: 0
   });
-  const [receiptData, setReceiptData] = useState({
+  const [receiptData, setReceiptData] = useState<ReceiptData>({
     total: 0,
     items: 'No data'
   });
@@ -51,7 +74,7 @@ function HomeContent() {
       });
 
       // Update user stats for the simplified dashboard
-      setUserStats(prev => ({
+      setUserStats((prev: UserStats) => ({
         ...prev,
         dropTokens: dropBalance + result.blockchainResult.dropEarned,
         drfTokens: Math.floor((dropBalance + result.blockchainResult.dropEarned) / 100)

@@ -8,7 +8,7 @@ import EnhancedStats from "./components/EnhancedStats";
 import AIReceiptProcessor from "./components/AIReceiptProcessor";
 import SeamlessAuthButton from "./components/SeamlessAuthButton";
 
-import { useEnhancedWallet } from "../lib/enhanced-wallet-context";
+import { useEnhancedWallet } from "@/lib/enhanced-wallet-context";
 import { SSRSafeHome } from "./components/SSRSafeHome";
 
 function HomeContent() {

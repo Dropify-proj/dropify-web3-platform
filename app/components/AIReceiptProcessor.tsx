@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { useEnhancedWallet } from '../../lib/enhanced-wallet-context';
+import { useEnhancedWallet } from '@/lib/enhanced-wallet-context';
 
 interface AIReceiptProcessorProps {
   onProcessComplete?: (result: any) => void;

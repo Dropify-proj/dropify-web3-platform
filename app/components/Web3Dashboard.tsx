@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useEnhancedWallet } from '../../lib/enhanced-wallet-context';
+import { useEnhancedWallet } from '@/lib/enhanced-wallet-context';
 import { SUPRA_CONFIG } from '../../lib/dropify-smart-contract';
 
 interface Web3DashboardProps {

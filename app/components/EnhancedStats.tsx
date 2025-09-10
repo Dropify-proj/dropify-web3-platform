@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useEnhancedWallet } from '../../lib/enhanced-wallet-context';
+import { useEnhancedWallet } from '@/lib/enhanced-wallet-context';
 
 // Firebase-like state management for the enhanced platform
 interface FirebaseState {

@@ -30,7 +30,7 @@
     "@types/crypto-js": "^4.2.2",
     "crypto-js": "^4.2.0",
     "framer-motion": "^12.23.12",
-    "next": "^14.2.0",
+    "next": "^15.5.2",
     "react": "18.3.0",
     "react-dom": "18.3.0",
     "supra-l1-sdk": "^4.5.0",

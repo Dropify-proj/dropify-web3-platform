@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Fira_Code } from "next/font/google";
 import "./globals.css";
 // Client-only providers wrapper
-import { ClientOnlyProviders } from './components/ClientOnlyProviders';
+import ClientOnlyProviders from './components/ClientOnlyProviders';
 // Error boundary for client-side error handling
 import ErrorBoundary from './components/ErrorBoundary';
 

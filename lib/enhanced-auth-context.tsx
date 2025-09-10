@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
+import { useState, useEffect, useContext, createContext, ReactNode, useMemo } from 'react';
 import { useSupraWallet, SUPRA_CONFIG } from './wallet-context-supra';
 
 // Custodial wallet generation utilities
@@ -218,14 +218,18 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
     disconnectWallet: disconnectExternalSupraWallet 
   } = useSupraWallet();
 
-  // Determine active wallet
-  const activeWalletAddress = user?.preferences.useExternalWallet && user?.externalWallet?.address 
-    ? user.externalWallet.address 
-    : user?.custodialWallet.address || null;
+  // Memoize wallet calculations to prevent unnecessary re-renders
+  const activeWalletAddress = useMemo(() => {
+    return user?.preferences.useExternalWallet && user?.externalWallet?.address 
+      ? user.externalWallet.address 
+      : user?.custodialWallet.address || null;
+  }, [user?.preferences.useExternalWallet, user?.externalWallet?.address, user?.custodialWallet.address]);
 
-  const walletType: 'custodial' | 'external' | null = user?.preferences.useExternalWallet && user?.externalWallet?.address 
-    ? 'external' 
-    : user?.custodialWallet ? 'custodial' : null;
+  const walletType: 'custodial' | 'external' | null = useMemo(() => {
+    return user?.preferences.useExternalWallet && user?.externalWallet?.address 
+      ? 'external' 
+      : user?.custodialWallet ? 'custodial' : null;
+  }, [user?.preferences.useExternalWallet, user?.externalWallet?.address, user?.custodialWallet]);
 
   // Sign up with email - automatically generates custodial wallet
   const signUpWithEmail = async (email: string, username?: string) => {

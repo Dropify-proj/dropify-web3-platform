@@ -77,29 +77,42 @@ export function EnhancedWalletProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Auto-connect on load
+  // Auto-connect on load with proper error handling
   useEffect(() => {
-    // Try to connect to a wallet on load
+    // Only try auto-connect if window is available and wallet provider might be present
     const autoConnect = async () => {
       try {
+        // Check if we're in browser environment
+        if (typeof window === 'undefined') {
+          console.log('🚫 Not in browser environment, skipping auto-connect');
+          return;
+        }
+
+        // Add a small delay to ensure wallet providers are loaded
+        await new Promise(resolve => setTimeout(resolve, 100));
+
         // Check if we have Supra/StarKey wallet
-        if (typeof window !== 'undefined') {
-          const starkey = (window as any).starkey || (window as any).supra;
-          if (starkey) {
-            await connectWallet('starkey');
-            return;
-          }
+        const starkey = (window as any).starkey || (window as any).supra;
+        if (starkey) {
+          console.log('🔍 Supra wallet detected, attempting connection...');
+          await connectWallet('starkey');
+          return;
         }
         
+        console.log('📱 No external wallet detected, using demo mode');
         // Fallback to demo mode
         await connectWallet('mock');
       } catch (error) {
-        console.log('Auto-connect failed, using demo mode');
+        console.log('❌ Auto-connect failed:', error);
+        console.log('🔄 Falling back to demo mode');
         await connectWallet('mock');
       }
     };
 
-    autoConnect();
+    // Only auto-connect if we have a potential wallet provider
+    if (typeof window !== 'undefined') {
+      autoConnect();
+    }
   }, []);
 
   const connectWallet = async (preferredType?: string) => {
@@ -111,55 +124,90 @@ export function EnhancedWalletProvider({ children }: { children: ReactNode }) {
       let type: 'mock' | 'starkey' | 'supra' = 'mock';
 
       if (preferredType === 'starkey' || preferredType === 'supra') {
-        // Try to connect to real Supra wallet
-        if (typeof window !== 'undefined') {
-          const wallet = (window as any).starkey || (window as any).supra;
-          if (wallet) {
-            try {
-              const response = await wallet.connect();
-              newAccount = {
-                address: () => response.address || response,
-                signAndSubmitTransaction: wallet.signAndSubmitTransaction?.bind(wallet)
-              };
-              type = 'starkey';
-              console.log('✅ Connected to Supra wallet');
-            } catch (walletError) {
-              console.warn('Supra wallet connection failed:', walletError);
-              throw new Error('Wallet connection failed');
-            }
+        // Enhanced wallet connection with proper error handling
+        if (typeof window === 'undefined') {
+          throw new Error('Window object not available - browser environment required');
+        }
+
+        const wallet = (window as any).starkey || (window as any).supra;
+        if (!wallet) {
+          throw new Error('No Supra wallet provider found. Please install StarKey wallet extension.');
+        }
+
+        try {
+          console.log('🔗 Attempting to connect to Supra wallet...');
+          const response = await wallet.connect();
+          
+          if (!response || (!response.address && !response)) {
+            throw new Error('Wallet connection returned invalid response');
+          }
+
+          newAccount = {
+            address: () => response.address || response,
+            signAndSubmitTransaction: wallet.signAndSubmitTransaction?.bind(wallet)
+          };
+          type = 'starkey';
+          console.log('✅ Successfully connected to Supra wallet:', response.address || response);
+          
+        } catch (walletError: any) {
+          // Handle specific wallet errors
+          if (walletError.code === 4001) {
+            throw new Error('Wallet connection rejected by user. Please try again and approve the connection.');
+          } else if (walletError.code === -32002) {
+            throw new Error('Wallet connection request already pending. Please check your wallet.');
           } else {
-            throw new Error('Supra wallet not found');
+            console.error('Supra wallet connection failed:', walletError);
+            throw new Error(`Wallet connection failed: ${walletError.message || 'Unknown error'}`);
           }
         }
       }
       
       // Fallback to mock account
       if (!newAccount) {
+        console.log('🎭 Initializing demo wallet mode...');
         newAccount = new MockAccount();
         type = 'mock';
-        console.log('🔄 Using demo wallet mode');
+        console.log('🔄 Demo wallet ready');
       }
 
       setAccount(newAccount);
       setWalletType(type);
       setIsConnected(true);
       
-      // Refresh balances and stats
-      await Promise.all([
-        refreshBalances(newAccount),
-        refreshPlatformStats()
-      ]);
+      // Refresh balances and stats with error handling
+      try {
+        await Promise.all([
+          refreshBalances(newAccount),
+          refreshPlatformStats()
+        ]);
+      } catch (refreshError) {
+        console.warn('⚠️ Failed to refresh data after connection:', refreshError);
+        // Don't throw here, connection was successful
+      }
 
     } catch (error) {
-      console.error('Wallet connection error:', error);
-      setError(error instanceof Error ? error.message : 'Connection failed');
+      console.error('❌ Wallet connection error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown connection error';
+      setError(errorMessage);
       
-      // Fallback to demo mode
-      const mockAccount = new MockAccount();
-      setAccount(mockAccount);
-      setWalletType('mock');
-      setIsConnected(true);
-      await refreshBalances(mockAccount);
+      // Only fallback to demo mode if it wasn't already attempted
+      if (preferredType !== 'mock') {
+        console.log('🔄 Falling back to demo mode due to connection failure');
+        try {
+          const mockAccount = new MockAccount();
+          setAccount(mockAccount);
+          setWalletType('mock');
+          setIsConnected(true);
+          await refreshBalances(mockAccount);
+          setError(null); // Clear error since fallback succeeded
+        } catch (fallbackError) {
+          console.error('❌ Even demo mode failed:', fallbackError);
+          setError('Failed to initialize wallet system');
+        }
+      } else {
+        // If mock mode itself failed, rethrow
+        throw error;
+      }
     } finally {
       setIsConnecting(false);
     }
